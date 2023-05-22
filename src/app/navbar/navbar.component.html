@@ -1,0 +1,77 @@
+<nav>
+  <div class="logo">Vizo</div>
+  <div (click)="toggleMenu()" class="menu-toggle">☰</div>
+  <div *ngIf="isMenuOpen" class="dialog-overlay">
+    <div class="dialog-content">
+      <button (click)="closeDialog()" class="close-button">X</button>
+      <div class="logo">Vizo</div>
+      <div class="logo-bar"></div>
+      <div class="buttons-container">
+        <div class="destination-buttons">
+          <a href="#">Destination 1</a>
+          <a href="#">Destination 2</a>
+          <a href="#">Destination 3</a>
+        </div>
+
+        <div class="auth-buttons2">
+          <a href="#" class="text-button">Log in </a>
+          <span>/</span>
+          <a href="#" class="text-button">Sign up</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ul  class="menu">
+    <li class="dropdown">
+      <a class="dropdown-toggle">Discover </a>
+      <span class="arrow-down"></span>
+      <ul class="dropdown-menu">
+        <li><a href="#">Destination 1</a></li>
+        <li><a href="#">Destination 2</a></li>
+        <li><a href="#">Destination 3</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <nav tuiTabBar class="tabs">
+    <button *ngFor="let item of items" tuiTabBarItem [icon]="item.icon"  >
+      {{ item.text }}
+    </button>
+  </nav>
+
+
+  <div class="auth-buttons">
+    <button (click)="login()" *ngIf="!isLoggin()" class="button sign-in">Log in</button>
+    <button (click)="login()"  *ngIf="!isLoggin()" class="button sign-up">Sign up</button>
+    <tui-input *ngIf="isLoggin()"
+      tuiTextfieldIconLeft="tuiIconSearchLarge"
+      class="input"
+      [tuiTextfieldCleaner]="true"
+      [(ngModel)]="value">
+      Search
+      <input
+        tuiTextfield/>
+    </tui-input>
+    <tui-svg *ngIf="isLoggin()"
+              src="tuiIconUserLarge"
+              class=" icon"
+    ></tui-svg>
+    <tui-svg *ngIf="isLoggin()"
+              src="tuiIconSendLarge"
+              class=" icon"
+    ></tui-svg>
+    <tui-svg *ngIf="isLoggin()"
+                      src="tuiIconBellLarge"
+                      class=" icon"
+    ></tui-svg>
+
+    <button (click)="login()"  *ngIf="isLoggin()" class="button sign-up" >
+      <tui-svg style="margin-right: 10px"
+        src="tuiIconArrowUpLarge"
+        class=" icon"
+      ></tui-svg>Upload  </button>
+  </div>
+</nav>
+

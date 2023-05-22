@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+}
+
+.background-image {
+  flex: 1;
+  position: relative;
+}
+
+.background-image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/imgs/house2.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  right: 50px; /* Ajustați distanța de la dreapta */
+  transform: translateY(-50%);
+  width: 400px; /* Ajustați dimensiunea formularului după preferință */
+  height: calc(100% - 40px); /* Scadeți înălțimea padding-ului pentru a obține înălțimea containerului imaginii */
+  padding: 20px;
+  //background-color: rgba(255, 255, 255, 0.8); /* Ajustați valoarea opacității aici */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  backdrop-filter: blur(4px); /* Ajustați nivelul de blur aici */
+
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  font-size: 17px;
+  background-color: transparent;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adăugați umbra aici */
+
+  backdrop-filter: blur(4px); /* Ajustați nivelul de blur aici */
+
+}
+
+h2{
+  margin-top: 50%;
+  margin-bottom: 20%;
+}
+.login-form label {
+  color: black;
+  opacity: 0.5;
+  display: block;
+  margin-bottom: 5px;
+  //font-weight: bold;
+}
+
+.login-form button {
+  margin-top: 5%;
+  width: 110%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #45a049;
+}
+
+.login-link {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.login-link a {
+  color: #4CAF50;
+}
