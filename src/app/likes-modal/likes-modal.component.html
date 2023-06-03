@@ -1,0 +1,51 @@
+<div class="modal-container" *ngIf="isModalOpen">
+  <div class="modal-wrapper">
+    <div class="modal-box" *ngIf="likesModal$ | async as likesModal">
+      <div class="box-title">
+        <div class="modal-close-button">
+          <div class="close-modal">
+            <tui-svg (click)="closeModal()"
+                     src="tuiIconCloseLarge"
+                     class=" icon"
+            ></tui-svg>
+          </div>
+        </div>
+        <h4 class="title-style">
+          <span>Likes</span>
+        </h4>
+      </div>
+      <div class="likes-modal" #scrollContainer (scroll)="onScroll()">
+        <div class="modal-content">
+          <div class="infinite-scroll-component">
+            <div class="style-box" *ngFor="let modal of likesModal">
+              <div class="user-info">
+                <a>
+                  <img src="assets/imgs/rux.jpg">
+                  <!--                  //TODO USER PHOTO-->
+                </a>
+                <div class="user-name">
+                  <a>
+                    <p class="name-style"> {{modal.likedImage.user.name}}</p>
+                  </a>
+                  <p class="follow-style">
+                    <span>49</span>
+                    &nbsp;
+                    <span>Followers</span>
+                  </p>
+                </div>
+
+              </div>
+
+              <button class="form-submit-button"               (click)="onFollowChange(likesModal ,modal.likedImage.user.id)"
+
+                      [ngClass]="{'unfollow-button':  modal.following}">
+                <span>    {{ modal.following ? 'Unfollow' : 'Follow' }}</span>
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

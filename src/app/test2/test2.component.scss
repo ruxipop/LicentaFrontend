@@ -1,0 +1,249 @@
+.modal-container {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  position: fixed;
+  background-color: rgb(34, 34, 34, 0.4);
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  margin-left: 0 !important;
+}
+
+.modal-wrapper {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.modal-box {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  background-color: white;
+  display: flex;
+  overflow: hidden; /* Asigurați-vă că overflow-ul este setat la "hidden" pentru modal-box */
+
+  flex-direction: column;
+
+  .likes-modal {
+    flex: 1 1 0%;
+    position: relative;
+    padding: 0 0 16px;
+    overflow: auto;
+
+    outline: none;
+
+    .modal-content {
+      padding: 0 16px;
+
+      .infinite-scroll-component {
+        height: auto;
+        overflow: auto;
+
+        .style-box {
+          word-break: break-word;
+          max-width: 100%;
+          -webkit-box-pack: justify;
+          justify-content: space-between;
+          -webkit-box-align: center;
+          align-items: center;
+          display: flex;
+          margin-top: 24px;
+          margin-bottom: 24px;
+
+          .user-info {
+            word-break: break-word;
+            max-width: 100%;
+            display: flex;
+            flex: 1 1 0%;
+
+            .user-name {
+              word-break: break-word;
+              max-width: 100%;
+              margin-left: 16px;
+
+              .name-style {
+                font-size: 14px;
+                line-height: 20px;
+                letter-spacing: 0;
+                text-transform: none;
+                margin: 0;
+                color: black;
+                font-weight: bold;
+              }
+
+              .follow-style {
+                font-size: 14px;
+                line-height: 20px;
+                letter-spacing: 0;
+                text-transform: none;
+                margin: 0;
+                color: rgb(109, 115, 120);
+              }
+            }
+          }
+
+          a {
+            color: black;
+            text-decoration: none;
+            background-color: transparent;
+            outline: none;
+            cursor: pointer;
+            -webkit-transition: color .3s;
+            transition: color .3s;
+
+            img {
+              width: 25px;
+              height: 25px;
+              border-radius: 50%;
+              vertical-align: middle;
+              border-style: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.box-title {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  word-break: break-word;
+  width: 100%;
+  height: 53px;
+  flex: 0 0 52px;
+}
+
+.modal-close-button {
+  position: absolute;
+  left: 16px;
+  top: unset;
+}
+
+.close-modal {
+  word-break: break-word;
+  max-width: 100%;
+  position: relative;
+  height: 16px;
+  width: 16px;
+  z-index: 6;
+
+  button {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.title-style {
+  font-size: 21px;
+  line-height: 24px;
+  font-weight: bold;
+  text-transform: none;
+  margin: 0px;
+  color: black;
+
+}
+
+@media screen and (min-width: 429px) {
+  .modal-wrapper {
+    padding: 32px;
+    width: 528px;
+    height: 736px;
+
+  }
+  .modal-box {
+    height: initial;
+    max-height: 500px;
+    border-radius: 4px;
+    overflow: hidden; /* Asigurați-vă că overflow-ul este setat la "hidden" pentru modal-box */
+
+  }
+
+  .modal-close-button {
+    left: 24px;
+    top: unset;
+  }
+
+  .likes-modal {
+    padding: 0 0 24px;
+  }
+
+  .modal-content {
+    padding: 0 24px;
+  }
+}
+
+
+.follow-button {
+  min-width: 110px;
+  width: auto !important;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 28px;
+  text-align: center;
+  background-color: blue;
+  color: white;
+  max-height: 32px;
+  padding: 4px 14px;
+}
+
+
+.icon {
+  margin-right: 20px;
+  z-index: 5;
+  margin-left: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+
+.icon::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 40px;
+  opacity: 0.5;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  display: none;
+  pointer-events: none;
+}
+
+.icon:hover::before {
+  display: block;
+}
+
+.icon::before tui-svg {
+  width: 20px;
+  fill: white;
+  height: 20px;
+}
+
+.icon:hover::before {
+  background-color: lightgray
+}

@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, HostListener} from '@angular/core';
 import {Router} from "@angular/router";
 import {TuiAlertService} from "@taiga-ui/core";
+import {isAuthenticated, isUserAuthenticated} from "../utils";
 
 @Component({
   selector: 'app-navbar',
@@ -12,14 +13,28 @@ import {TuiAlertService} from "@taiga-ui/core";
 export class NavbarComponent {
 
   isMenuOpen = false;
-  optionCityDropdownVisible=true;
 
-  constructor(
+  value: any;
+  constructor(private elementRef:ElementRef,
     private router:Router,
-    private alertService: TuiAlertService,
 
   ) { }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const dropdownElement = this.elementRef.nativeElement;
+    const dropdownMenu = dropdownElement.querySelector('.dropdown-menu');
+
+    if (!dropdownElement.contains(target) && !dropdownMenu?.contains(target)) {
+      this.isDropdownOpen = false;
+      this.isUserMenuOpen=false;
+    }
+  }
+
+  closeUserMenu() {
+    this.isUserMenuOpen = false;
+  }
 
 
   toggleMenu() {
@@ -44,19 +59,41 @@ export class NavbarComponent {
       icon: 'tuiIconUserLarge',
     },
   ];
-  search = '';
-  value: any;
-  customSeparator: any;
+
   login() {
     this.router.navigate(['auth/login']).then();
   }
 
 
-  toggleOptionLocationDropdown() {
+ isLoggedIn(){
+    return isAuthenticated();
+ }
+  isDropdownOpen = false;
 
+  toggleDropdown() {
+    this.isUserMenuOpen=false;
+
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  register() {
+    this.router.navigate(['auth/register'])
   }
 
-  isLoggin(){
-    return false;
+  logOut() {
+
+    localStorage.clear();
+    this.router.navigate(["auth/login"])
+  }
+
+  isUserMenuOpen=false;
+  openUserMenu() {
+    this.isDropdownOpen =false;
+      this.isUserMenuOpen=!this.isUserMenuOpen;
+  }
+
+  goToUserProfile() {
+    let  userId=localStorage.getItem("id");
+    if(userId){
+    this.router.navigate(['user/'+parseInt(userId)])}
   }
 }

@@ -1,0 +1,64 @@
+
+<div class="container">
+  <div class="button-group">
+    <button class="icon-button" (click)="clickButton(this.drawTypes.drawBrush)">
+      <tui-svg
+               src="tuiIconHiliteLarge"
+               class=" icon"
+      ></tui-svg>
+    </button>
+    <button class="icon-button" (click)="clickButton(this.drawTypes.drawShape)">
+      <tui-svg
+        src="tuiIconHiliteLarge"
+        class=" icon"
+      ></tui-svg>
+    </button>
+
+  </div>
+
+  <div *ngIf="this.menuType===this.drawTypes.drawBrush">
+  <div class="color-picker">
+    <input type="color" [(ngModel)]="selectedColor" (input)="selectColor()" />
+  </div>
+<input id="fontSizeSlider" type="range" min="1" max="100" step="0.1" [(ngModel)]="selectedThickness" (input)="onThicknessChange()">
+  </div>
+
+
+  <div *ngIf="this.menuType===this.drawTypes.drawShape">
+    <div>
+      <button (click)="createRect()" class="button">Rect</button>
+      <button (click)="createCircle()" class="button">Circle</button>
+      <button  (click)="createStar()" class="button">Star</button>
+
+      <button  (click)="createTriangle()" class="button">Triangle</button>
+      <button  (click)="createHeart()" class="button">Heart</button>
+      <button  (click)="createHexagon()" class="button">Hexagon</button>
+
+    </div>
+
+    <div class="toggle">
+      <label for="fillToggle">Fill</label>
+      <input type="checkbox" id="fillToggle" [(ngModel)]="fillToggle">
+      <div class="color-input" *ngIf="fillToggle">
+        <label for="fillColor">Culoare:</label>
+        <input type="color" id="fillColor" [(ngModel)]="fillColor" name="fillColor">
+      </div>
+    </div>
+
+    <div class="toggle">
+      <label for="outlineToggle">Outline</label>
+      <input type="checkbox" id="outlineToggle" [(ngModel)]="outlineToggle">
+      <div class="outline-inputs" *ngIf="outlineToggle">
+        <label for="outlineColor">Culoare:</label>
+        <input type="color" id="outlineColor" [(ngModel)]="outlineColor" name="outlineColor">
+        <br>
+        <label for="outlineThickness">Grosime:</label>
+        <input type="range" id="outlineThickness" min="1" max="10" step="1" [(ngModel)]="outlineThickness" name="outlineThickness">
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>

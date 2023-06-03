@@ -1,0 +1,26 @@
+<div class="sidebar">
+  <div class="vertical-menu">
+    <div *ngFor="let icon of icons; let i = index" [ngClass]="{'selected': i === selectedIconIndex}">
+      <tui-svg [src]=icon.name class="icon" (click)="selectIconM( i,icon.type)"></tui-svg>
+    </div>
+  </div>
+
+    <div class="sub-menu-content">
+      <ng-container *ngIf="selectedIconIndex === 0">
+        <app-drawing-menu
+          (colorChange)="handleColorChange($event)"
+          (thicknessChange)="handleThicknessChange($event)"
+          (buttonChanges)="handleButtonChange($event)"
+
+        ></app-drawing-menu>
+      </ng-container>
+
+      <ng-container *ngIf="selectedIconIndex === 1">
+        <app-text-menu (addNewTextBox)="handleAddNewTextBox($event)" (textChanges)="handleTextFormat($event)"></app-text-menu>
+      </ng-container>
+
+      <ng-container *ngIf="selectedIconIndex === 2">
+        <app-filters ></app-filters>
+      </ng-container>
+    </div>
+  </div>

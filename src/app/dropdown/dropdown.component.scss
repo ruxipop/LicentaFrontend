@@ -1,0 +1,130 @@
+@import '../../variables.scss';
+
+.dropdown {
+  border-radius: 20px;
+  position: relative;
+  display: inline-block;
+  max-width: 512px;
+  min-width: 24px;
+
+  .dropdown-toggle {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    padding: 6px 17px;
+    color: $app-category-text;
+    cursor: pointer;
+    font-size: 17px;
+  }
+
+  .arrow {
+    border-top: 4px solid #777;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    display: inline-block;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .arrow.up {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    padding: 10px;
+    z-index: 1000;
+    display: none;
+    min-width: max-content;
+    width: fit-content;
+    white-space: nowrap;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+
+    .dropdown-menu .dropdown-item.selected::before {
+      content: '\2713';
+      position: absolute;
+      color: #000;
+      right: 0;
+
+    }
+
+    .dropdown-header {
+      margin-bottom: 1rem;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .dropdown-columns {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+
+    .dropdown-column {
+      width: 50%;
+      box-sizing: border-box;
+      padding-right: 30px;
+    }
+
+
+  }
+
+  .regular-checkbox {
+    -webkit-appearance: none;
+    background-color: white;
+    border: 2px solid rgb(215, 216, 219);
+    padding: 9px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    font-size: 15px;
+    vertical-align: middle;
+  }
+
+  .regular-checkbox:checked {
+    background-color: white;
+    border: 2px solid rgb(215, 216, 219);
+    color: $app-category-button;
+  }
+
+  .regular-checkbox:checked:after {
+    content: '\2714';
+    font-size: 14px;
+    position: absolute;
+    top: 0;
+    left: 3px;
+    color: $app-category-button;
+  }
+
+  .dropdown-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .show {
+    display: block;
+  }
+
+  .button-pressed {
+    border-color: $app-category-button;
+  }
+
+}
+
+
+@media (max-width: 767px) {
+  .dropdown-column {
+    width: 100%;
+    padding-right: 0;
+  }
+}
+
+
+
+

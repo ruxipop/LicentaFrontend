@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  //align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin-left: 60px;
+  width: 300px;
+  z-index: 900;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border: 1px solid #000; /* sau orice altă culoare dorită */
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.color-picker {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.line-thickness {
+  margin-top: 10px;
+}
+
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.color-input,
+.outline-inputs {
+  margin-left: 20px;
+}

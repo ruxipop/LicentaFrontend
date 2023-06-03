@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="dropdown">
+    <label for="fontSelect" class="label">Font:</label>
+    <select id="fontSelect" [(ngModel)]="selectedFont" (change)="onFontChange(fontSelect.value)" #fontSelect>
+      <option *ngFor="let font of fontList" [value]="font" [style.font-family]="font" [ngClass]="{ 'selected': font === fontList[0] }">{{ font }}</option>
+    </select>
+  </div>
+
+  <button (click)="addNewText()" class="icon-button"> ADD TEXT
+  </button>
+
+  <div class="button-group">
+    <label class="label">Style:</label>
+    <div class="but">
+    <div>
+
+      <button (click)="toggleBold()" class="icon-button">
+        <tui-svg src="tuiIconBoldLarge" class="icon"></tui-svg>
+      </button>
+    </div>
+    <div>
+      <button (click)="toggleItalic()" class="icon-button">
+        <tui-svg src="tuiIconItalicLarge" class="icon"></tui-svg>
+      </button>
+    </div>
+    <div>
+      <button (click)="toggleUnderline()" class="icon-button">
+        <tui-svg src="tuiIconUnderlineLarge" class="icon"></tui-svg>
+      </button>
+    </div>
+    </div>
+  </div>
+
+  <div class="color-picker">
+    <label for="colorPicker" class="label">Select color:</label>
+    <input type="color" id="colorPicker" [value]="selectedColor" (input)="onColorChange($event)">
+  </div>
+
+
+  <div class="slider-container">
+    <div class="label-container">
+      <label for="fontSizeSlider" class="label">Size:</label>
+      <span contenteditable="true" class="value" #labelElement (input)="onFontSizeLabelChange(labelElement.innerText)">
+      {{ fontSize }}
+    </span>
+    </div>
+    <input id="fontSizeSlider" type="range" min="10" max="1000" step="0.1" [(ngModel)]="fontSize" (input)="onFontSizeChange()">
+  </div>
+
+
+
+</div>
