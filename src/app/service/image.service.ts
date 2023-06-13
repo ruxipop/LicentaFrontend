@@ -4,7 +4,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Image} from "../models/image";
 import {Observable} from "rxjs";
 import {SecuritySettingsService} from "./security-settings.service";
-import {LikesModal} from "../models/likesModal";
+import {Modal} from "../models/modal";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class ImageService {
       params = params.set("category", category);
     }
     console.log(params.get("category"))
-    return this.http.get<any>(`${environment.apiUrl}/api/Image/pages/`, {params, headers: this.settings.getHeaders()});
+    return this.http.get<any>(`${environment.apiUrl}/api/Image/pages/`, {params});
   }
 
   getImagesByType(type: string) {
@@ -63,15 +63,16 @@ export class ImageService {
   }
 
 
-  getImageLikes(imageId:number,pageNb: number, pageSize:number ,userId:number) {
+  getImageLikes(imageId:number,pageNb: number, pageSize:number ,userId:number,type:string) {
     console.log(userId)
     let params = new HttpParams()
       .set("id",imageId)
       .set('pageNb', pageNb.toString())
       .set('pageSize', pageSize.toString())
       .set('userId',userId)
+      .set('type',type)
 
-    return this.http.get<LikesModal[]>(`${environment.apiUrl}/api/Image/getImageLikes/`, {params});
+    return this.http.get<Modal[]>(`${environment.apiUrl}/api/Image/getImageLikes/`, {params});
   }
 
 }

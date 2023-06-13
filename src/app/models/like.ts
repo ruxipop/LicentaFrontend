@@ -9,7 +9,7 @@ export class Like{
 
   constructor(id: number,userId:number) {
     this.id = id;
-    this.userId=userId;
+    this.userId=userId
 
   }
 }

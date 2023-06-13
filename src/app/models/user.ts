@@ -8,12 +8,14 @@ export class User {
   backgroundPhoto:string |null;
   profilePhoto:string |null
   location:Location;
-  constructor(id: number, email: string, password: string, name:string,role:string) {
+  username:string;
+  constructor(id: number, email: string, password: string, name:string,role:string,username:string) {
     this.id = id;
     this.email = email;
     this.password=password;
     this.name=name;
     this.role=role;
+    this.username=username;
 
   }
 }

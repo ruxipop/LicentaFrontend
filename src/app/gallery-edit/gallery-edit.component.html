@@ -1,0 +1,64 @@
+<body>
+<div class="container">
+  <div class="box">
+    <div class="title"><h3>{{ galleryId === 0 ? 'Create Gallery' : 'Edit Gallery'}}</h3></div>
+    <form>
+      <div class="element-input-wrapper">
+        <label for="title-input">Title</label>
+        <input type="text" id="title-input" name="title" [(ngModel)]="this.galleryName">
+      </div>
+
+      <div class="description">
+        <div class="description-container">
+          <label>
+            Description
+          </label>
+
+          <textarea maxlength="255" name="textareaValue" [(ngModel)]="this.galleryDescription"></textarea>
+
+
+        </div>
+        <p>
+          Visibility
+        </p>
+        <div class="radio-button">
+          <div class="radio-button-wrapper">
+<span role="radio" (click)="changeVisibility()">
+   <div class="radio-fill" *ngIf="!isPrivate">
+   </div>
+
+
+</span>
+            <tui-svg class="public-radio" src="tuiIconEye"></tui-svg>
+
+            <label>
+              Visible to everyone
+            </label>
+          </div>
+          <div class="radio-button-wrapper">
+<span role="radio" (click)="changeVisibility()">
+   <div class="radio-fill" *ngIf="isPrivate">
+   </div>
+
+
+</span>
+            <tui-svg class="public-radio" src="tuiIconLock"></tui-svg>
+
+            <label>
+              Only visible to me
+            </label>
+          </div>
+
+
+        </div>
+        <div class="actions">
+          <button class="cancel-button" (click)="goToPreviousPage()">Cancel</button>
+          <button class="post-button" (click)="updateGallery()">{{ galleryId === 0 ? 'Create' : 'Edit'}}</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+</body>

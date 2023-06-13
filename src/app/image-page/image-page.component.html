@@ -143,7 +143,7 @@
       </div>
     </div>
   </div>
-  <app-likes-modal (followEvent)="changeFollowStatus($event)" [imageDetails]="[image.id,image.autor.id]"  (closeEvent)="handleCloseModal()" [isModalOpen]="openLikesModal"></app-likes-modal>
+  <app-likes-modal (followEvent)="changeFollowStatus($event)" [title]="'Likes'" [pageDetails]="[image.id,image.autor.id]"  (closeEvent)="handleCloseModal()" [isModalOpen]="openLikesModal"></app-likes-modal>
 
 </div>
 

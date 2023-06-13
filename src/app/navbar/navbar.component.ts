@@ -96,4 +96,8 @@ export class NavbarComponent {
     if(userId){
     this.router.navigate(['user/'+parseInt(userId)])}
   }
+
+  goToPage(chat: string) {
+    this.router.navigate(["/"+chat])
+  }
 }

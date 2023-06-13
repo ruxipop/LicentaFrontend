@@ -1,0 +1,105 @@
+<div class="modal-container" *ngIf="isModalOpen">
+  <div class="modal-wrapper">
+    <div class="modal-box">
+      <div class="box-title">
+        <div class="modal-close-button">
+          <div class="close-modal">
+            <tui-svg (click)="closeModal()"
+                     src="tuiIconCloseLarge"
+                     class=" icon"
+            ></tui-svg>
+          </div>
+        </div>
+        <h4 class="title-style">
+          <span>Add to Gallery</span>
+        </h4>
+      </div>
+
+
+      <div class="gallery-list">
+        <div class="modal-button" *ngIf="!createNewGallery">
+          <div class="add-button " (click)="openNewGalleyDialog()">
+            <button>
+              <tui-svg
+                src="tuiIconPlusLarge"></tui-svg>
+              <span>Create new Gallery</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="add-new-gallery" *ngIf="createNewGallery">
+          <p>
+            Create new Gallery
+          </p>
+
+          <form>
+            <div class="element-input-wrapper">
+              <label for="title-input">Title</label>
+              <input type="text" id="title-input" name="title" [(ngModel)]="newGalleryName">
+            </div>
+
+            <div class="check-box-wrapper">
+              <input class="regular-checkbox" type="checkbox"
+                   >
+              <span>Private</span>
+            </div>
+          </form>
+
+          <div class="actions">
+            <button (click)="cancelCreate()" class="cancel-button">Cancel</button>
+            <button [disabled]="newGalleryName.trim().length === 0 || value === ' '" (click)="postComment()"
+                    class="post-button">
+               Create and add
+            </button>
+          </div>
+        </div>
+
+        <hr class="border">
+
+
+        <div class="modal-search">
+          <tui-input
+
+            tuiTextfieldIconLeft="tuiIconSearchLarge"
+
+            (input)="searchMethod()"
+            [(ngModel)]="value">
+
+            Search
+            <input tuiTextfield/>
+          </tui-input>
+
+        </div>
+        <div class="infinite-scroll">
+          <div class="item">
+            <img src="assets/imgs/rux.jpg">
+            <p>
+              imgs
+            </p>
+          </div>
+          <div class="item">
+            <img src="assets/imgs/rux.jpg">
+            <p>
+              imgs
+            </p>
+
+            <tui-svg
+              src="tuiIconLock"></tui-svg>
+            <tui-svg style="margin-left: auto;margin-right: 0;flex: 0 0 32px;color: rgb(8,112,209)"
+              src="tuiIconCheckLarge"></tui-svg>
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>

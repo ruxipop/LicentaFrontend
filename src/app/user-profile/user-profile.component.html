@@ -5,8 +5,8 @@
 
   </div>
 
-  <div class="user-info" [ngClass]="{'no-background': !user.backgroundPhoto}">
-    <div class="profile-picture">
+  <div class="user-info" >
+    <div class="profile-picture" [ngClass]="{'no-background': !user.backgroundPhoto}">
       <ng-container *ngIf="user.profilePhoto; else profileIcon">
         <img [src]="user.profilePhoto">
       </ng-container>
@@ -18,29 +18,42 @@
     </div>
 
 
-    <div class="user-icon">
+    <div class="user-icon" [ngClass]="{'no-background-user': !user.backgroundPhoto}">
 
-      <svg width="24" fill="none" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+      <svg *ngIf="this.loggedUser!=this.userID" width="24" fill="none" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M 24 0.75 C 24 0.49367 23.8691 0.255093 23.6529 0.117398 C 23.4366 -0.0202958 23.1651 -0.0380342 22.9328 0.0703641 L 0.432842 10.5703 C 0.154609 10.7002 -0.0163823 10.9865 0.00124378 11.293 C 0.0188698 11.5996 0.221553 11.8644 0.512835 11.9615 L 8.99999 14.7905 V 23.25 C 8.99999 23.5638 9.19542 23.8445 9.48978 23.9534 C 9.78414 24.0623 10.1152 23.9764 10.3194 23.7381 L 15.9912 17.121 L 23.0128 19.4615 C 23.2415 19.5377 23.4929 19.4994 23.6885 19.3584 C 23.8841 19.2174 24 18.9911 24 18.75 V 0.75 Z M 22.5 17.7094 L 15.9872 15.5385 L 11.1384 13.9222 L 22.5 2.56069 V 17.7094 Z M 19.7095 3.22989 L 9.54745 13.3919 L 2.77277 11.1337 L 19.7095 3.22989 Z M 10.5 21.2225 V 15.2905 L 14.4546 16.6088 L 10.5 21.2225 Z"
           fill="rgb(34,34,34)" fill-rule="evenodd" clip-rule="evenodd" stroke="black" stroke-width="0.1"/>
       </svg>
+      <tui-svg  class="icon" style="margin-right: -0.5rem" *ngIf="this.loggedUser==this.userID"
+                src="tuiIconEdit2Large"></tui-svg>
+
+        <tui-svg src="tuiIconLinkLarge" class="icon"></tui-svg>
+
+      <tui-svg  *ngIf="this.loggedUser!=this.userID" src="tuiIconFlagLarge" class="icon"></tui-svg>
+
     </div>
 
     <div class="profile-info">
       <div class="profile-name">
         <h4> {{user.name}} </h4>
         <div class="profile-location">
-<!--             *ngIf="user.location">-->
           <tui-svg
             src="tuiIconMapPinLarge"
             class=" icon"
           ></tui-svg>
-          <p class="location-text">datu mare</p>
+          <p class="location-text">satu mare</p>
         </div>
       </div>
 
-      <button>Follow</button>
+      <button *ngIf="this.loggedUser!=this.userID" class="form-submit-button"
+              (click)="onFollowChange()"
+              [ngClass]="{'unfollow-button': isUserFollowing}">
+        {{ isUserFollowing ? 'Unfollow' : 'Follow' }}
+      </button>
+
+
       <div class="profile-about">
         <p>"O persoană unică și fascinantă, cu o combinație distinctă de trăsături și calități, care îi definesc
           individualitatea. Această persoană este un explorator al vieții, mereu deschisă pentru noi experiențe și
@@ -48,17 +61,14 @@
           descopere lumea din jurul lor.</p>
       </div>
       <div class="profile-details">
-        <div class="profile-followers">
-          <p> 36.5K &nbsp;</p>
-          <p> Followers</p>
+        <div class="profile-followers " [ngClass]="{'zero-followers': this.FollowersNb === 0}">
+          <p (click)="this.FollowersNb !== 0 && openFollowers()"> {{ this.FollowersNb }} &nbsp;</p>
+          <p (click)="this.FollowersNb !== 0 && openFollowers()"> Followers </p>
         </div>
-        <div class="profile-following">
-          <p> 10 &nbsp;</p>
-          <p> Following</p>
-        </div>
-        <div class="profile-likes">
-          <p> 10 &nbsp;</p>
-          <p> Total Likes</p>
+
+        <div class="profile-following" [ngClass]="{'zero-followers': this.FollowingNb === 0}">
+          <p (click)=" this.FollowingNb!== 0 && openFollowing()"> {{this.FollowingNb}} &nbsp;</p>
+          <p (click)=" this.FollowingNb !== 0 &&openFollowing()"> Following</p>
         </div>
       </div>
 
@@ -74,11 +84,12 @@
       </app-tab>
       <app-tab [tabTitle]="'Galleries'">
 
-      </app-tab>
-      <app-tab  (removeEvent)="removeElement($event)" [tabTitle]="'Liked'" [images]="images">
+      </app-tab >
+      <app-tab   *ngIf="this.loggedUser==this.userID" (removeEvent)="removeElement($event)" [tabTitle]="'Liked'" [images]="images">
 
       </app-tab>
-
     </app-tabs>
   </div>
 </div>
+<app-likes-modal (followingChangeEvent)="changeProfileFol()" [title]="'Followers'" [pageDetails]="[this.userID,0]"  (closeEvent)="handleCloseModal()" [isModalOpen]="openFollowersModal"></app-likes-modal>
+<app-likes-modal  (followingChangeEvent)="changeProfileFol()" [title]="'Following'" [pageDetails]="[this.userID,0]"  (closeEvent)="handleCloseModal()" [isModalOpen]="openFollowingModal"></app-likes-modal>

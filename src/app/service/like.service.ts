@@ -16,7 +16,6 @@ export class LikeService {
     params=params.set("imageId",imageId);
     return this.http.post(`${environment.apiUrl}/api/Like`, {},
       {
-        headers: this.settings.getHeaders(),
         params:params
       });
   }

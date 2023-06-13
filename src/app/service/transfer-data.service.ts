@@ -4,6 +4,7 @@ import {TextFormat} from "../models/textFormat";
 import {fabric} from "fabric";
 import {IBaseFilter} from "fabric/fabric-impl";
 import {SubMenuType} from "../models/subMenuType";
+import {MessageResponse} from "../models/message";
 
 @Injectable({
   providedIn: 'root'
@@ -27,14 +28,16 @@ export class TransferDataService {
   private dataSubject4 = new Subject<any>();
 
   data$4 = this.dataSubject4.asObservable();
-  private dataSubject5 = new Subject<any>();
+  private dataSubject5 = new Subject<MessageResponse>();
 
   data$5 = this.dataSubject5.asObservable();
 
 
-  sendTab(tab:string){
-    this.dataSubject5.next(tab);
+  sendResponseMessage(message:MessageResponse){
+    this.dataSubject5.next(message);
   }
+
+
   sendObject(data:any){
     this.dataSubject.next(data)
   }

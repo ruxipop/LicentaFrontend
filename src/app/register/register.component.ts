@@ -6,6 +6,8 @@ import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {AuthenticationService} from "../service/authentication.service";
 import {ConfirmedValidator} from "../validators/confirmPasswordValidator";
 import {AngularFireStorageModule} from "angularfire2/storage";
+import {FileService} from "../service/file.service";
+import {SealService} from "../service/seal.service";
 
 @Component({
   selector: 'app-register',
@@ -21,12 +23,15 @@ export class RegisterComponent {
   password: any;
 
   constructor(
+    private sealService:SealService,
     private formBuilder: FormBuilder,
     private alertService: TuiAlertService,
     private authService: AuthenticationService
   ) {
     this.form = formBuilder.group(
       {
+        username: new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z ]+')]),
+
         name: new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z ]+')]),
         email: new FormControl(null, [Validators.required, Validators.email]),
         password: new FormControl(null, [Validators.required, Validators.pattern('(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z\\d$@$!%*?&].{7,}')]),
@@ -48,6 +53,7 @@ export class RegisterComponent {
         this.form.controls['password'].value,
         this.form.controls['name'].value,
         'user',
+        this.form.controls['username'].value
       );
       this.authService.register(user)
         .pipe(
@@ -56,6 +62,8 @@ export class RegisterComponent {
         )
         .subscribe({
           next: () => {
+            this.sealService.generatePublicKey(user.username);
+            this.sealService.generateSecretKry(user.password,user.username)
             this.alertService.open('Account created successfully! You can log in with your new credentials.', {
               label: 'Hooray!',
               status: TuiNotification.Success,

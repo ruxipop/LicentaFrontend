@@ -11,35 +11,33 @@
           </div>
         </div>
         <h4 class="title-style">
-          <span>Likes</span>
+          <span>{{this.title}}</span>
         </h4>
       </div>
       <div class="likes-modal" #scrollContainer (scroll)="onScroll()">
         <div class="modal-content">
           <div class="infinite-scroll-component">
             <div class="style-box" *ngFor="let modal of likesModal">
-              <div class="user-info">
+              <div class="user-info" >
                 <a>
-                  <img src="assets/imgs/rux.jpg">
+                  <img  (click)="onUserClick(modal.following.id)" src="assets/imgs/rux.jpg">
                   <!--                  //TODO USER PHOTO-->
                 </a>
-                <div class="user-name">
+                <div  class="user-name">
                   <a>
-                    <p class="name-style"> {{modal.likedImage.user.name}}</p>
+                    <p (click)="onUserClick(modal.following.id)" class="name-style"> username</p>
                   </a>
                   <p class="follow-style">
-                    <span>49</span>
-                    &nbsp;
-                    <span>Followers</span>
+                    <span>{{modal.following.name}}</span>
                   </p>
                 </div>
 
               </div>
 
-              <button class="form-submit-button"               (click)="onFollowChange(likesModal ,modal.likedImage.user.id)"
+              <button class="form-submit-button" [disabled]="modal.following.id==this.currentUserId" (click)="onFollowChange(likesModal ,modal.following.id)"
 
-                      [ngClass]="{'unfollow-button':  modal.following}">
-                <span>    {{ modal.following ? 'Unfollow' : 'Follow' }}</span>
+                      [ngClass]="{'unfollow-button':  modal.isFollowing }">
+                <span>    {{ modal.isFollowing ? 'Unfollow' : 'Follow' }}</span>
               </button>
 
             </div>

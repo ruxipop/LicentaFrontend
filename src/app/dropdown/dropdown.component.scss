@@ -75,32 +75,6 @@
 
   }
 
-  .regular-checkbox {
-    -webkit-appearance: none;
-    background-color: white;
-    border: 2px solid rgb(215, 216, 219);
-    padding: 9px;
-    border-radius: 3px;
-    display: inline-block;
-    position: relative;
-    font-size: 15px;
-    vertical-align: middle;
-  }
-
-  .regular-checkbox:checked {
-    background-color: white;
-    border: 2px solid rgb(215, 216, 219);
-    color: $app-category-button;
-  }
-
-  .regular-checkbox:checked:after {
-    content: '\2714';
-    font-size: 14px;
-    position: absolute;
-    top: 0;
-    left: 3px;
-    color: $app-category-button;
-  }
 
   .dropdown-header {
     display: flex;

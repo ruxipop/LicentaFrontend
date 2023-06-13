@@ -1,0 +1,70 @@
+<body>
+<div class="profile-container">
+  <div class="background">
+    <img src="assets/imgs/var2.jpg">
+    <div class="icon-overlay">
+      <tui-svg src="tuiIconEdit2Large" class="icon-edit"></tui-svg>
+    </div>
+  </div>
+
+  <div class="user-info">
+    <div class="profile-picture">
+
+
+        <div class="profile-icon">
+          <tui-svg src="tuiIconUserLarge" class="icon-edit"></tui-svg>
+        </div>
+      <div class="edit-icon">
+        <tui-svg src="tuiIconEdit2" class="icon-edit"></tui-svg>
+      </div>
+    </div>
+
+    <div class="form-wrapper">
+      <form #myForm="ngForm" (ngSubmit)="submitForm()">
+        <div class="form-row" style="margin-top: 30px">
+          <div class="form-column">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" [(ngModel)]="user.username">
+          </div>
+          <div class="form-column">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" [(ngModel)]="user.name">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-column">
+            <div class="select-container">
+              <label>Country:</label>
+              <div class="select-wrapper form-column form-column-field">
+
+              <select name="country" id="country"
+                      onfocus="this.size=10;" onblur="this.size=1;" onchange="this.size=1; this.blur();">
+                <option value="" disabled selected>Romania</option>
+                <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+              </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-column">
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" [(ngModel)]="user.city">
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 30px">
+          <div class="form-column">
+            <label for="description">Bio (max 300 words):</label>
+            <textarea id="description" name="description" [(ngModel)]="user.description" maxlength="300" rows="5"
+                      placeholder="About me..."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="cancel-button">Cancel</button>
+          <button class="post-button" [disabled]="!myForm.valid">Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>

@@ -1,7 +1,10 @@
+@import '../../variables.scss';
+
 .container {
   width: 100%;
 
   .grid {
+
     display: flex;
     flex-wrap: wrap;
   }
@@ -12,7 +15,8 @@
   }
 
   .grid > figure {
-    margin: 2px;
+    filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.16)) drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.08));
+    margin: 0.7rem;
     overflow: hidden;
     cursor: pointer;
     background-color: white;
@@ -20,6 +24,7 @@
   }
 
   .grid > figure > i {
+
     display: block;
   }
 
@@ -117,8 +122,159 @@
   }
 
 }
-.checked{
-  color: white!important;
 
-  fill: white!important;
+.checked {
+  color: white !important;
+
+  fill: white !important;
 }
+
+
+.no-image {
+
+  .no-image-inner {
+    word-break: break-word;
+    max-width: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .icon {
+    font-size: 40px !important;
+    color: $app-fav-text;
+  }
+
+  h3 {
+    color: $app-fav-text;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  p {
+    width: 75%;
+    margin-top: -10px;
+    color: $app-fav-text;
+    font-size: 16px;
+  }
+
+  .form-submit-button {
+    width: 30% !important;
+
+  }
+
+}
+
+.container-no-likes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.gallery-name {
+  flex-direction: column;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  //padding: 8px;
+  background-color: white;
+  box-shadow: none;
+  color: black;
+  margin-top: -10rem;
+
+  height: 50px;
+  transition: opacity 0.2s ease 0s, max-height 0.2s ease 0s, transform 0.3s ease;
+
+  span {
+    //margin-top: -5rem;
+    ////font-size: 14px;
+  }
+}
+
+.gallery-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+.gallery-cover {
+  width: 350px;
+  height: 200px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lock {
+  margin-bottom: 10px;
+  margin-top: -10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.gallery-description {
+  flex: 1; /* This will make the description take up remaining space */
+  text-align: left; /* Align the text to the left */
+
+}
+
+.button-container {
+
+  text-align: right; /* Align the button container to the right */
+}
+
+.gallery-info {
+  padding-left: 10px;
+
+  width: 90%;
+}
+
+
+tui-svg {
+  margin-bottom: 4px;
+  margin-right: 4px;
+  font-size: 12px !important;
+}
+
+.form-submit-button {
+  height: 50px !important;
+  width: 70% !important;
+}
+
+
+.container-button {
+
+  svg{
+    width: 24px;
+    height: 24px;
+  }
+  p {
+    margin-bottom: -5px !important;
+  }
+
+  width: 350px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20%;
+}
+
+

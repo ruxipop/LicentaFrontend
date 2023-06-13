@@ -76,14 +76,6 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
   }
 
 
-  // fetchFollowing() {
-  //   this.followingList$ = this.followService.getAllFollowing(this.currentUserId).;
-  // }
-
-
-  // isFollowing(followingList: Follow[], following: User) {
-  //   return followingList.find((item) => item.following.id == following.id);
-  // }
 
   fetchImage() {
     this.image$ = this.imageService.getImage(this.id).pipe(
@@ -350,14 +342,11 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
   protected readonly Follow = Follow;
 
   onFollowChange(following: User) {
-    console.log("da" + this.isFollowing)
     if (this.isUserAuthenticated()) {
 
       if (this.isFollowing) {
-        console.log("ce")
         this.removeFollow(following.id)
       } else {
-        console.log("add")
         this.addFollow(following.id)
       }
     } else {

@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {SecuritySettingsService} from "./security-settings.service";
 import {environment} from "../../environments/environment";
 import {Follow} from "../models/follow";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,24 @@ export class FollowService {
 
 
   getAllFollowersForUser(userID:number){
-    return this.http.get(`${environment.apiUrl}/api/Follow/getFollower/${userID}`);
+    return this.http.get<number>(`${environment.apiUrl}/api/Follow/getFollowersNb/${userID}`);
   }
 
-  getAllFollowing(userID:number){
-    return this.http.get<Follow[]>(`${environment.apiUrl}/api/Follow/getFollowing/${userID}`);
+  getAllFollowingNb(userID:number){
+    return this.http.get<number>(`${environment.apiUrl}/api/Follow/getFollowingNb/${userID}`);
+  }
+
+  getAllFollowingByPage(userId:number,pageNb:number,pageSize:number,searchTerm:string){
+    let params = new HttpParams()
+      .set("id",userId)
+      .set('pageNb', pageNb.toString())
+      .set('pageSize', pageSize.toString())
+
+      if(searchTerm!=' '){
+        params=params.set("searchTerm",searchTerm)
+      }
+    return this.http.get<User[]>(`${environment.apiUrl}/api/Follow/getAllFollowing/`,{params});
+
   }
 
   addFollow(followingId:number){

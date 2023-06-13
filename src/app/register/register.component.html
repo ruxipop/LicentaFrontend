@@ -12,6 +12,13 @@
           </div>
         </div>
         <div class="form-field">
+          <input placeholder="Username" type="text" id="username" formControlName="username" required class="no-border-form">
+          <div *ngIf="form.get('username')?.invalid && (form.get('username')?.dirty || form.get('username')?.touched)"
+               class="error">
+            {{ getNameErrorMessage() }}
+          </div>
+        </div>
+        <div class="form-field">
           <input placeholder="Email" type="email" id="email" formControlName="email" class="no-border-form" required>
           <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)"
                class="error">

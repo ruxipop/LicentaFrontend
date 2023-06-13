@@ -11,12 +11,13 @@ import {BehaviorSubject, forkJoin, Observable, take} from "rxjs";
 import {ImageService} from "../service/image.service";
 import {Follow} from "../models/follow";
 import {User} from "../models/user";
-import {LikesModal} from "../models/likesModal";
+import {Modal} from "../models/modal";
 import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FollowService} from "../service/follow.service";
 import {isUserAuthenticated} from "../utils";
 import {Image} from "../models/image";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-likes-modal',
@@ -26,16 +27,19 @@ import {Image} from "../models/image";
 export class LikesModalComponent implements OnChanges {
   @ViewChild('scrollContainer') scrollContainer: ElementRef;
   @Input() isModalOpen = false;
-  @Input() imageDetails: [number, number];
+  @Input() title:string
+  @Input() pageDetails: [number, number];
   @Output() closeEvent = new EventEmitter<boolean>();
   @Output() followEvent = new EventEmitter<boolean>();
-  obsArray: BehaviorSubject<LikesModal[]> = new BehaviorSubject<LikesModal[]>([]);
+  @Output() followingChangeEvent=new EventEmitter<any>();
+  @Output() followersChangeEvent=new EventEmitter<boolean>()
+  obsArray: BehaviorSubject<Modal[]> = new BehaviorSubject<Modal[]>([]);
   likesModal$: Observable<any> = this.obsArray.asObservable();
   currentPage = 1;
   pageSize = 6;
   currentUserId: number;
 
-  constructor(private imageService: ImageService, private alertService: TuiAlertService, private followService: FollowService) {
+  constructor(private imageService: ImageService, private route:Router,private alertService: TuiAlertService, private followService: FollowService) {
   }
 
   ngOnChanges() {
@@ -44,6 +48,8 @@ export class LikesModalComponent implements OnChanges {
       this.currentUserId = parseInt(userId);
     }
     this.getLikes()
+    console.log("this"+this.pageDetails[0])
+
   }
 
   closeModal() {
@@ -58,8 +64,10 @@ export class LikesModalComponent implements OnChanges {
 
   onScroll() {
     this.currentPage += 1;
-    forkJoin([this.likesModal$.pipe(take(1)), this.imageService.getImageLikes(this.imageDetails[0], this.currentPage, this.pageSize, this.currentUserId)])
-      .subscribe((data: Array<Array<LikesModal>>) => {
+    forkJoin([this.likesModal$.pipe(take(1)), this.imageService.getImageLikes(this.pageDetails[0], this.currentPage, this.pageSize, this.currentUserId,this.title)])
+      .subscribe((data: Array<Array<Modal>>) => {
+        console.log("type"+this.title)
+        console.log(this.currentPage)
         const newArr = [...data[0], ...data[1]];
         this.obsArray.next(newArr);
       });
@@ -67,7 +75,10 @@ export class LikesModalComponent implements OnChanges {
 
   getLikes() {
     this.obsArray.next([]);
-    this.imageService.getImageLikes(this.imageDetails[0], this.currentPage, this.pageSize, this.currentUserId).subscribe(data => {
+    this.imageService.getImageLikes(this.pageDetails[0], this.currentPage, this.pageSize, this.currentUserId,this.title).subscribe(data => {
+    console.log("typelike "+this.title)
+      console.log(this.currentPage)
+
       this.obsArray.next(data);
     });
   }
@@ -118,24 +129,33 @@ export class LikesModalComponent implements OnChanges {
     return isUserAuthenticated()
   }
 
-  onFollowChange(likedModalList:LikesModal[], followingId: number) {
-    const likedModal = likedModalList.find(item => item.likedImage.userId ===followingId);
+  onFollowChange(likedModalList:Modal[], followingId: number) {
+    const likedModal = likedModalList.find(item => item.following.id===followingId);
 
     if (this.isUserAuthenticated() && likedModal) {
-      if (likedModal.following) {
+      if (likedModal.isFollowing) {
         this.removeFollow(followingId)
-        likedModal.following=false
+
+        likedModal.isFollowing=false
       } else {
         this.addFollow(followingId)
-        likedModal.following=true
+        likedModal.isFollowing=true
       }
-      if(followingId===this.imageDetails[1]) {
-        this.followEvent.emit(likedModal.following)
+      this.followingChangeEvent.emit();
+      if(followingId===this.pageDetails[1]) {
+        this.followEvent.emit(likedModal.isFollowing)
       }
     } else {
       console.log("Trebe sa te loghezi")
       //ToDo
       // this.router.navigate(['/auth/login'])
     }
+  }
+
+  onUserClick(id:number) {
+    console.log("Cfeee")
+    this.closeModal();
+    this.route.navigate(['user/'+id])
+
   }
 }

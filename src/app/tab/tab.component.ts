@@ -20,6 +20,7 @@ import {isUserAuthenticated} from "../utils";
 import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {LikeService} from "../service/like.service";
 import {Like} from "../models/like";
+import {User} from "../models/user";
 
 
 @Component({
@@ -28,7 +29,8 @@ import {Like} from "../models/like";
   styleUrls: ['./tab.component.scss']
 })
 export class TabComponent {
-  @Input('tabTitle') tabTitle: string;
+  @Input('tabTitle') tabTitle: string='Photos';
+
   @Input() subTitle: string;
   @Input() title: string;
   @Input() active = false
@@ -55,7 +57,8 @@ export class TabComponent {
 
 
   onLikeChange(image: Image) {
-    if (this.isUserAuthenticated()) {
+    console.log(this.tabTitle)
+    if (this.isUserAuthenticated() ) {
       if (image.likes.some(item => item.userId === this.currentUserId)) {
         this.removeLike(image)
       } else {
@@ -72,14 +75,14 @@ export class TabComponent {
     this.likeService.removeLike(image.id)
       .pipe(
         tap(()=> {
+            if (this.tabTitle === 'Liked') {
+              const index = this.images.findIndex(item => item.id === image.id);
 
-          const index = this.images.findIndex(item => item.id === image.id);
-
-          if (index !== -1) {
-            this.images.splice(index, 1);
+              if (index !== -1) {
+                this.images.splice(index, 1);
+              }
+            }
           }
-          }
-
         )
       )
       .subscribe({
@@ -111,8 +114,10 @@ export class TabComponent {
     this.likeService.addLikeToImage(image.id)
       .subscribe({
         next: () => {
-          image.likes.push(new Like(image.id, this.currentUserId));
+          // if (this.tabTitle === 'Liked') {
 
+            image.likes.push(new Like(image.id, this.currentUserId));
+          // }
 
           this.alertService.open('Objective added to wishlist!', {
             label: 'Done!',

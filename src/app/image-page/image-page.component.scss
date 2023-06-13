@@ -178,30 +178,6 @@ width: 120px;
   display: flex;
 }
 
-.input-container .cancel-button {
-  background-color: transparent;
-  color: $app-category-button;
-  &:hover {
-    color: $app-button-color-hover;
-  }
-
-}
-
-.input-container .post-button {
-  background-color: #337ab7;
-  color: white;
-  margin-right: 32px;
-  &:disabled{
-    background-color: $gray-button!important;
-  }
-  &:hover{
-    background-color: $app-button-color-hover;;
-  }
-
-}
-
-/* Stilurile pentru secțiunea de comentarii */
-
 
 .comment {
   display: flex;

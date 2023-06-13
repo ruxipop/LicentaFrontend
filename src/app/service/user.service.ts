@@ -20,7 +20,6 @@ export class UserService {
 
 
   getImageByUserId(userId:number,pageNb: number, pageSize: number) {
-    console.log("posted images")
     let params = new HttpParams()
       .set("id",userId)
       .set('pageNb', pageNb.toString())
@@ -30,7 +29,6 @@ export class UserService {
   }
 
   getImagesLikedByUserId(userId:number,pageNb: number, pageSize: number) {
-    console.log("liked images")
     let params = new HttpParams()
       .set("id",userId)
       .set('pageNb', pageNb.toString())

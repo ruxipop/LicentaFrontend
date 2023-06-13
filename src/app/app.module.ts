@@ -16,10 +16,18 @@ import {RouterModule} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import {TuiTabBarModule} from '@taiga-ui/addon-mobile';
 import {
-  TuiActionModule, TuiArrowModule,
-  TuiBreadcrumbsModule, TuiFieldErrorPipeModule,
+  TuiActionModule,
+  TuiArrowModule,
+  TuiBreadcrumbsModule, TuiComboBoxModule,
+  TuiDataListWrapperModule,
+  TuiFieldErrorPipeModule, TuiFilterByInputPipeModule,
   TuiInputModule,
-  TuiInputSliderModule, TuiIslandModule, TuiRadioBlockModule, TuiRatingModule, TuiTextAreaModule,
+  TuiInputSliderModule,
+  TuiIslandModule,
+  TuiRadioBlockModule,
+  TuiRatingModule,
+  TuiStringifyContentPipeModule,
+  TuiTextAreaModule,
   TuiToggleModule
 } from "@taiga-ui/kit";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -31,7 +39,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSelectModule} from "@angular/material/select";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {UploadImageComponent} from './upload-image/upload-image.component';
@@ -66,6 +74,15 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
 import {TuiValueChangesModule} from "@taiga-ui/cdk";
+import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import { ChatComponent } from './chat/chat.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { MatSelectCountryModule } from "@angular-material-extensions/select-country";
+import { TrimPipe } from './models/trim.pipe';
+import { GroupByPipe } from './models/group-by.pipe';
+import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
+import { GalleryEditComponent } from './gallery-edit/gallery-edit.component';
+import { GalleryPageComponent } from './gallery-page/gallery-page.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +107,13 @@ import {TuiValueChangesModule} from "@taiga-ui/cdk";
     UserProfileComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    ChatComponent,
+    EditProfileComponent,
+    TrimPipe,
+    GroupByPipe,
+    GalleryModalComponent,
+    GalleryEditComponent,
+    GalleryPageComponent,
 
   ],
   imports: [
@@ -168,12 +192,22 @@ import {TuiValueChangesModule} from "@taiga-ui/cdk";
     TuiDataListModule,
     TuiHostedDropdownModule,
     TuiCalendarModule,
-    TuiButtonModule
+    TuiButtonModule,
+    MatSelectCountryModule.forRoot('en'),
+    TuiDataListWrapperModule,
+    TuiStringifyContentPipeModule,
+    TuiFilterByInputPipeModule,
+    TuiComboBoxModule,
+    // you can use 'br' | 'de' | 'en' | 'es' | 'fr' | 'hr' | 'hu' | 'it' | 'nl' | 'pt' --> MatSelectCountrySupportedLanguages
 
 
   ],
   providers: [
-    // { provide: APP_BASE_HREF, useValue: '/' },
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:AuthInterceptor,
+      multi:true
+    }
 
   ],
   bootstrap: [AppComponent]

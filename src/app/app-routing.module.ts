@@ -21,6 +21,10 @@ import {UserProfileComponent} from "./user-profile/user-profile.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {ResetPassword} from "./models/password";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {ChatComponent} from "./chat/chat.component";
+import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {GalleryEditComponent} from "./gallery-edit/gallery-edit.component";
+import {GalleryPageComponent} from "./gallery-page/gallery-page.component";
 
 
 
@@ -35,6 +39,11 @@ const routes: Routes = [
   {path:'edit-page',component:EditPageComponent},
   {path: 'user/:id', component:  UserProfileComponent},
   {path: 'user2/:id', component:  UserProfileComponent},
+  {path:'chat',component:ChatComponent},
+  {path:"edit",component:EditProfileComponent},
+  {path:"gallery/:id",component:GalleryPageComponent},
+  {path:"gallery-edit",component:GalleryEditComponent},
+  {path:"gallery-edit/:id",component:GalleryEditComponent},
   {
     path:'discover',
     component:DiscoverPageComponent,
