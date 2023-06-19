@@ -2,6 +2,8 @@ import {ChangeDetectionStrategy, Component, ElementRef, HostListener} from '@ang
 import {Router} from "@angular/router";
 import {TuiAlertService} from "@taiga-ui/core";
 import {isAuthenticated, isUserAuthenticated} from "../utils";
+import {ChatService} from "../service/chat.service";
+import {NotificationType} from "../models/notificationType";
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +13,24 @@ import {isAuthenticated, isUserAuthenticated} from "../utils";
 
 })
 export class NavbarComponent {
+  isUploadModalOpen=false;
 
   isMenuOpen = false;
+  handleCloseModal() {
+    document.body.style.overflow = 'initial';
 
+    this.isUploadModalOpen = false;
+
+  }
+  openModal() {
+    document.body.style.overflow = 'hidden';
+
+    this.isUploadModalOpen = true;
+
+  }
   value: any;
   constructor(private elementRef:ElementRef,
+    private chatService:ChatService,
     private router:Router,
 
   ) { }
@@ -99,5 +114,9 @@ export class NavbarComponent {
 
   goToPage(chat: string) {
     this.router.navigate(["/"+chat])
+  }
+
+  goToNotificationPage() {
+    this.router.navigate(["notification/"+localStorage.getItem("id")])
   }
 }

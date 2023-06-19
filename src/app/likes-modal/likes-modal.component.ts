@@ -1,23 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild} from '@angular/core';
 import {BehaviorSubject, forkJoin, Observable, take} from "rxjs";
 import {ImageService} from "../service/image.service";
-import {Follow} from "../models/follow";
-import {User} from "../models/user";
 import {Modal} from "../models/modal";
-import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FollowService} from "../service/follow.service";
 import {isUserAuthenticated} from "../utils";
-import {Image} from "../models/image";
 import {Router} from "@angular/router";
+import {AlertService} from "../service/alert.service";
+import {NotificationType} from "../models/notificationType";
+import {ChatService} from "../service/chat.service";
 
 @Component({
   selector: 'app-likes-modal',
@@ -39,7 +30,7 @@ export class LikesModalComponent implements OnChanges {
   pageSize = 6;
   currentUserId: number;
 
-  constructor(private imageService: ImageService, private route:Router,private alertService: TuiAlertService, private followService: FollowService) {
+  constructor(private imageService: ImageService, private chatService:ChatService,private route:Router,private alertService:AlertService, private followService: FollowService) {
   }
 
   ngOnChanges() {
@@ -48,7 +39,6 @@ export class LikesModalComponent implements OnChanges {
       this.currentUserId = parseInt(userId);
     }
     this.getLikes()
-    console.log("this"+this.pageDetails[0])
 
   }
 
@@ -66,8 +56,6 @@ export class LikesModalComponent implements OnChanges {
     this.currentPage += 1;
     forkJoin([this.likesModal$.pipe(take(1)), this.imageService.getImageLikes(this.pageDetails[0], this.currentPage, this.pageSize, this.currentUserId,this.title)])
       .subscribe((data: Array<Array<Modal>>) => {
-        console.log("type"+this.title)
-        console.log(this.currentPage)
         const newArr = [...data[0], ...data[1]];
         this.obsArray.next(newArr);
       });
@@ -76,9 +64,6 @@ export class LikesModalComponent implements OnChanges {
   getLikes() {
     this.obsArray.next([]);
     this.imageService.getImageLikes(this.pageDetails[0], this.currentPage, this.pageSize, this.currentUserId,this.title).subscribe(data => {
-    console.log("typelike "+this.title)
-      console.log(this.currentPage)
-
       this.obsArray.next(data);
     });
   }
@@ -88,18 +73,10 @@ export class LikesModalComponent implements OnChanges {
       .subscribe({
         next: () => {
 
-          this.alertService.open('Follow removed!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message: error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -109,18 +86,11 @@ export class LikesModalComponent implements OnChanges {
     this.followService.addFollow(followingId)
       .subscribe({
         next: () => {
-          this.alertService.open('Follow removed!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
+
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message: error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -140,20 +110,19 @@ export class LikesModalComponent implements OnChanges {
       } else {
         this.addFollow(followingId)
         likedModal.isFollowing=true
+        this.chatService.sendNotification(followingId.toString(),"follow",NotificationType.Follow)
       }
       this.followingChangeEvent.emit();
       if(followingId===this.pageDetails[1]) {
         this.followEvent.emit(likedModal.isFollowing)
       }
     } else {
-      console.log("Trebe sa te loghezi")
-      //ToDo
-      // this.router.navigate(['/auth/login'])
+      const notification = { id:1,label:"Oops...",message:"You need to login first!", type: "error" };
+      this.alertService.addNotification(notification)
     }
   }
 
   onUserClick(id:number) {
-    console.log("Cfeee")
     this.closeModal();
     this.route.navigate(['user/'+id])
 

@@ -9,8 +9,6 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {NgxMasonryOptions} from "ngx-masonry";
-import {Image} from "../models/image";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ImageService} from "../service/image.service";
 import {BehaviorSubject, forkJoin, fromEvent, map, Observable, Subscription, take, tap} from "rxjs";
@@ -21,6 +19,8 @@ import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {LikeService} from "../service/like.service";
 import {Like} from "../models/like";
 import {User} from "../models/user";
+import {Picture} from "../models/picture";
+import {AlertService} from "../service/alert.service";
 
 
 @Component({
@@ -28,7 +28,7 @@ import {User} from "../models/user";
   templateUrl: './tab.component.html',
   styleUrls: ['./tab.component.scss']
 })
-export class TabComponent {
+export class TabComponent implements OnChanges{
   @Input('tabTitle') tabTitle: string='Photos';
 
   @Input() subTitle: string;
@@ -37,12 +37,12 @@ export class TabComponent {
   @Input('routeLink') routerLink: string
   currentUserId: number;
   @Output() removeEvent = new EventEmitter<number>();
-  @Input() images: Image[] = []
-
-
+  @Input() images: any[] = []
+  isGalleryModalOpen=false;
+  selectedImage:Picture;
   constructor(private imageService: ImageService,
               private router: Router,
-              private alertService: TuiAlertService,
+              private alertService: AlertService,
               private likeService: LikeService) {
     const userId = localStorage.getItem("id");
     if (userId) {
@@ -50,13 +50,18 @@ export class TabComponent {
     }
 
   }
+@Input()
+  selectedTab:string;
 
   isUserAuthenticated() {
     return isUserAuthenticated();
   }
 
+ngOnChanges() {
+    console.log("Sa sc" +this.selectedTab)
+}
 
-  onLikeChange(image: Image) {
+  onLikeChange(image: Picture) {
     console.log(this.tabTitle)
     if (this.isUserAuthenticated() ) {
       if (image.likes.some(item => item.userId === this.currentUserId)) {
@@ -71,7 +76,7 @@ export class TabComponent {
     }
   }
 
-  private removeLike(image: Image) {
+  private removeLike(image: Picture) {
     this.likeService.removeLike(image.id)
       .pipe(
         tap(()=> {
@@ -93,24 +98,17 @@ export class TabComponent {
             image.likes.splice(index, 1);
           }
 
-          this.alertService.open('Liked Remove!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
+
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message:error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
 
 
-  addLike(image: Image) {
+  addLike(image: Picture) {
     this.likeService.addLikeToImage(image.id)
       .subscribe({
         next: () => {
@@ -119,29 +117,40 @@ export class TabComponent {
             image.likes.push(new Like(image.id, this.currentUserId));
           // }
 
-          this.alertService.open('Objective added to wishlist!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
+
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message:error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
 
-  isInLikesList(image: Image) {
+  isInLikesList(image: Picture) {
 
     return image.likes.some(item => item.userId === this.currentUserId);
   }
 
-  onImageClick(image: Image) {
+  onImageClick(image: Picture) {
     console.log(image.likes)
     this.router.navigate([`/image/${image.id}`]).then();
+  }
+
+  handleCloseModal() {
+    document.body.style.overflow = 'initial';
+    this.isGalleryModalOpen= false;
+  }
+
+  openGalleryModal(image:Picture) {
+    document.body.style.overflow = 'hidden';
+    this.selectedImage=image;
+    this.isGalleryModalOpen=true;
+  }
+
+
+  goToPage(type: string|null,galleryId:number|null) {
+
+    type=='create'?this.router.navigate(["create-gallery"]):this.router.navigate(["gallery/"+galleryId])
+
   }
 }

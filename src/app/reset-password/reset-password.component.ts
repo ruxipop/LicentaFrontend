@@ -6,6 +6,7 @@ import {ConfirmedValidator} from "../validators/confirmPasswordValidator";
 import {finalize, first} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ResetPassword} from "../models/password";
+import {AlertService} from "../service/alert.service";
 
 @Component({
   selector: 'app-reset-password',
@@ -20,7 +21,7 @@ export class ResetPasswordComponent  implements OnInit{
   token: string | null = ''
   constructor(
     private formBuilder: FormBuilder,
-    private alertService: TuiAlertService,
+    private alertService:AlertService,
     private authService: AuthenticationService,
     private router:Router,
     private route: ActivatedRoute,
@@ -45,13 +46,10 @@ export class ResetPasswordComponent  implements OnInit{
           next: () => {
           },
           error: (error) => {
-            for (let key in error.error) {
-              this.alertService.open("The link has expired or is invalid.", {
-                status: TuiNotification.Error,
-                autoClose: true,
-              }).subscribe();
-              this.router.navigate(['auth/login'])
-            }
+            const notification = { id:1,label:"Oops...",message: "The link has expired or is invalid.", type: "error" };
+            this.alertService.addNotification(notification)
+            // this.router.navigate(['auth/login'])
+
           }
         }
       )
@@ -67,19 +65,14 @@ export class ResetPasswordComponent  implements OnInit{
       finalize(() => (this.isLoading = false))
     ).subscribe({
         next: () => {
-          this.alertService.open('Password changed successfully! You can log in with your new credentials.', {
-            label: 'Hooray!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Hooray!",message:'Password changed successfully! You can log in with your new credentials.', type: "error" };
+          this.alertService.addNotification(notification)
           this.router.navigate(['auth/login']);
         },
         error: (error) => {
           for (let key in error.error) {
-            this.alertService.open(error.error[key], {
-              status: TuiNotification.Error,
-              autoClose: true,
-            }).subscribe();
+          const notification = { id:1,label:"Oops!",message:error.error[key], type: "error" };
+          this.alertService.addNotification(notification)
           }
         }
       }

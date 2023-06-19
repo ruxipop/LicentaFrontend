@@ -25,6 +25,10 @@ import {ChatComponent} from "./chat/chat.component";
 import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {GalleryEditComponent} from "./gallery-edit/gallery-edit.component";
 import {GalleryPageComponent} from "./gallery-page/gallery-page.component";
+import {NotificationPageComponent} from "./notification-page/notification-page.component";
+import {UploadModalComponent} from "./upload-modal/upload-modal.component";
+import {ModalSelectPhotoComponent} from "./modal-select-photo/modal-select-photo.component";
+import {GalleryModalComponent} from "./gallery-modal/gallery-modal.component";
 
 
 
@@ -40,10 +44,14 @@ const routes: Routes = [
   {path: 'user/:id', component:  UserProfileComponent},
   {path: 'user2/:id', component:  UserProfileComponent},
   {path:'chat',component:ChatComponent},
-  {path:"edit",component:EditProfileComponent},
+  {path:"edit/:id",component:EditProfileComponent},
   {path:"gallery/:id",component:GalleryPageComponent},
-  {path:"gallery-edit",component:GalleryEditComponent},
+  {path:"create-gallery",component:GalleryEditComponent},
   {path:"gallery-edit/:id",component:GalleryEditComponent},
+  {path:"notification/:id",component:NotificationPageComponent},
+  {path:"upload",component:UploadImageComponent},
+  {path:"upload2",component:UploadModalComponent},
+  {path:"ce",component:Test2Component},
   {
     path:'discover',
     component:DiscoverPageComponent,

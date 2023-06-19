@@ -3,15 +3,17 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './navbar/navbar.component';
+
 import {
   TuiAlertModule,
-  TuiAlertService, TuiButtonModule, TuiCalendarModule, TuiDataListModule, TuiDialogModule,
+  TuiButtonModule, TuiCalendarModule, TuiDataListModule, TuiDialogModule,
   TuiDropdownModule, TuiErrorModule,
   TuiGroupModule, TuiHintModule, TuiHostedDropdownModule, TuiLinkModule, TuiLoaderModule, TuiNotificationModule,
   TuiRootModule,
   TuiSvgModule,
   TuiTextfieldControllerModule, TuiTooltipModule
 } from "@taiga-ui/core";
+import { TuiValueChangesModule } from '@taiga-ui/cdk';
 import {RouterModule} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import {TuiTabBarModule} from '@taiga-ui/addon-mobile';
@@ -23,7 +25,7 @@ import {
   TuiFieldErrorPipeModule, TuiFilterByInputPipeModule,
   TuiInputModule,
   TuiInputSliderModule,
-  TuiIslandModule,
+  TuiIslandModule, TuiMarkerIconModule,
   TuiRadioBlockModule,
   TuiRatingModule,
   TuiStringifyContentPipeModule,
@@ -58,7 +60,7 @@ import {TabComponent} from './tab/tab.component';
 import {DiscoverPageComponent} from './discover-page/discover-page.component';
 import {DropdownComponent} from './dropdown/dropdown.component';
 import {APP_BASE_HREF, NgOptimizedImage} from "@angular/common";
-import {NgxMasonryModule} from "ngx-masonry";
+// import {NgxMasonryModule} from "ngx-masonry";
 import {InfiniteScrollModule, NgxInfiniteScrollService} from "ngx-infinite-scroll";
 import {TestComponent} from './test/test.component';
 import {Test2Component} from './test2/test2.component';
@@ -68,12 +70,10 @@ import {initializeFirestore, provideFirestore} from '@angular/fire/firestore';
 import {initializeAppCheck, provideAppCheck, ReCaptchaV3Provider} from '@angular/fire/app-check';
 import {getApp, initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {ImagePageComponent} from './image-page/image-page.component';
-import {MatDialogModule} from "@angular/material/dialog";
 import {LikesModalComponent} from './likes-modal/likes-modal.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
-import {TuiValueChangesModule} from "@taiga-ui/cdk";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import { ChatComponent } from './chat/chat.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
@@ -83,6 +83,13 @@ import { GroupByPipe } from './models/group-by.pipe';
 import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
 import { GalleryEditComponent } from './gallery-edit/gallery-edit.component';
 import { GalleryPageComponent } from './gallery-page/gallery-page.component';
+import { NotificationPageComponent } from './notification-page/notification-page.component';
+import { UploadModalComponent } from './upload-modal/upload-modal.component';
+import { ModalSelectPhotoComponent } from './modal-select-photo/modal-select-photo.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { CustomDialogComponent } from './custom-dialog/custom-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -114,21 +121,30 @@ import { GalleryPageComponent } from './gallery-page/gallery-page.component';
     GalleryModalComponent,
     GalleryEditComponent,
     GalleryPageComponent,
+    NotificationPageComponent,
+    UploadModalComponent,
+    ModalSelectPhotoComponent,
+    CustomDialogComponent,
+    ConfirmDialogComponent,
+
 
   ],
   imports: [
     BrowserModule,
-    TuiRootModule,
-    AppRoutingModule,
     TuiDropdownModule,
     TuiTabBarModule,
     TuiInputModule,
     FormsModule,
     TuiTextfieldControllerModule,
     BrowserAnimationsModule,
+    TuiRootModule,
+    TuiAlertModule,
+    TuiDialogModule,
+    AppRoutingModule,
     FlexLayoutModule,
     TuiGroupModule,
     TuiSvgModule,
+    TuiValueChangesModule,
     TuiHintModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -141,68 +157,42 @@ import { GalleryPageComponent } from './gallery-page/gallery-page.component';
     ImageCropperModule,
     NgxFileDropModule,
     TuiInputColorModule,
-    TuiInputModule,
     ColorPickerModule,
-    TuiInputSliderModule,
     MatSliderModule,
-    TuiToggleModule,
     NgOptimizedImage,
-    NgxMasonryModule,
     InfiniteScrollModule,
-    MatDialogModule,
-    TuiDialogModule,
-    TuiAlertModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    FlexLayoutModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonToggleModule,
-    MatIconModule,
-    MatButtonModule,
-    TuiRootModule,
-    TuiAlertModule,
+
     TuiNotificationModule,
     TuiActionModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    RouterModule,
-    TuiBreadcrumbsModule,
-    TuiLinkModule,
-    FlexLayoutModule,
-    TuiHintModule,
-    TuiTooltipModule,
-    TuiSvgModule,
-    TuiIslandModule,
-    TuiTextAreaModule,
     TuiRatingModule,
-    TuiDialogModule,
-    TuiInputModule,
-    TuiErrorModule,
-    TuiFieldErrorPipeModule,
-    TuiRadioBlockModule,
-    TuiValueChangesModule,
     TuiLoaderModule,
-    MatDialogModule,
     TuiArrowModule,
     TuiDataListModule,
     TuiHostedDropdownModule,
     TuiCalendarModule,
     TuiButtonModule,
-    MatSelectCountryModule.forRoot('en'),
+    RouterModule,
+    TuiBreadcrumbsModule,
+    TuiLinkModule,
+    TuiTooltipModule,
+    TuiMarkerIconModule,
+    TuiIslandModule,
+    TuiTextAreaModule,
+    TuiErrorModule,
+    TuiFieldErrorPipeModule,
+    TuiRadioBlockModule,
+    TuiValueChangesModule,
     TuiDataListWrapperModule,
     TuiStringifyContentPipeModule,
     TuiFilterByInputPipeModule,
     TuiComboBoxModule,
-    // you can use 'br' | 'de' | 'en' | 'es' | 'fr' | 'hr' | 'hu' | 'it' | 'nl' | 'pt' --> MatSelectCountrySupportedLanguages
-
+    MatDialogModule,
+    MatSelectCountryModule.forRoot('en'),
 
   ],
+
   providers: [
+
     {
       provide:HTTP_INTERCEPTORS,
       useClass:AuthInterceptor,

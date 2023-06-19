@@ -1,0 +1,27 @@
+<div class="container-dialog">
+  <div class="dialog-wrapper">
+    <div class="dialog-content">
+      <tui-svg src="tuiIconAlertCircleLarge"></tui-svg>
+      <h2>Delete {{data.message}}</h2>
+
+      <section>
+        <div>
+          <p>Are you sure you want to delete this {{data.message}}?</p>
+        </div>
+
+        <div class="actions">
+          <button class="cancel-button" (click)="onCancelClick()">
+            Cancel
+          </button>
+          <button class="form-submit-button" (click)="onDeleteClick()">
+            Delete
+          </button>
+
+
+        </div>
+      </section>
+    </div>
+
+
+  </div>
+</div>

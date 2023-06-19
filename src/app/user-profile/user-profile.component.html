@@ -12,7 +12,7 @@
       </ng-container>
       <ng-template #profileIcon>
         <div class="profile-icon">
-          <tui-svg src="tuiIconUserLarge" class="icon"></tui-svg>
+          <tui-svg src="tuiIconUserLarge"   style="margin-left: 1.3rem; pointer-events: none" class="icon"></tui-svg>
         </div>
       </ng-template>
     </div>
@@ -26,7 +26,7 @@
           d="M 24 0.75 C 24 0.49367 23.8691 0.255093 23.6529 0.117398 C 23.4366 -0.0202958 23.1651 -0.0380342 22.9328 0.0703641 L 0.432842 10.5703 C 0.154609 10.7002 -0.0163823 10.9865 0.00124378 11.293 C 0.0188698 11.5996 0.221553 11.8644 0.512835 11.9615 L 8.99999 14.7905 V 23.25 C 8.99999 23.5638 9.19542 23.8445 9.48978 23.9534 C 9.78414 24.0623 10.1152 23.9764 10.3194 23.7381 L 15.9912 17.121 L 23.0128 19.4615 C 23.2415 19.5377 23.4929 19.4994 23.6885 19.3584 C 23.8841 19.2174 24 18.9911 24 18.75 V 0.75 Z M 22.5 17.7094 L 15.9872 15.5385 L 11.1384 13.9222 L 22.5 2.56069 V 17.7094 Z M 19.7095 3.22989 L 9.54745 13.3919 L 2.77277 11.1337 L 19.7095 3.22989 Z M 10.5 21.2225 V 15.2905 L 14.4546 16.6088 L 10.5 21.2225 Z"
           fill="rgb(34,34,34)" fill-rule="evenodd" clip-rule="evenodd" stroke="black" stroke-width="0.1"/>
       </svg>
-      <tui-svg  class="icon" style="margin-right: -0.5rem" *ngIf="this.loggedUser==this.userID"
+      <tui-svg  (click)="goToEditPage()" class="icon" style="margin-right: -0.5rem" *ngIf="this.loggedUser==this.userID"
                 src="tuiIconEdit2Large"></tui-svg>
 
         <tui-svg src="tuiIconLinkLarge" class="icon"></tui-svg>
@@ -41,7 +41,6 @@
         <div class="profile-location">
           <tui-svg
             src="tuiIconMapPinLarge"
-            class=" icon"
           ></tui-svg>
           <p class="location-text">satu mare</p>
         </div>
@@ -77,15 +76,14 @@
 </div>
   <div class="profile-tabs" >
 
-
     <app-tabs  (messageToParent)="handleMessage($event)" [displayDropdown]="false" *ngIf="images$ | async as images">
-      <app-tab  [tabTitle]="'Photos'" [images]="images">
+      <app-tab  [tabTitle]="'Photos'" [images]="images" [selectedTab]="this.type">
 
       </app-tab>
-      <app-tab [tabTitle]="'Galleries'">
+      <app-tab [tabTitle]="'Galleries'" [images]="images" [selectedTab]="this.type" >
 
       </app-tab >
-      <app-tab   *ngIf="this.loggedUser==this.userID" (removeEvent)="removeElement($event)" [tabTitle]="'Liked'" [images]="images">
+      <app-tab  [selectedTab]="this.type"  *ngIf="this.loggedUser==this.userID" (removeEvent)="removeElement($event)" [tabTitle]="'Liked'" [images]="images">
 
       </app-tab>
     </app-tabs>

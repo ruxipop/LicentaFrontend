@@ -10,6 +10,11 @@ import {Router} from "@angular/router";
 import {ChatService} from "../service/chat.service";
 import {MessageRequest} from "../models/message";
 import {SealService} from "../service/seal.service";
+import {MatDialog} from "@angular/material/dialog";
+import {CustomDialogComponent} from "../custom-dialog/custom-dialog.component";
+import {Overlay} from "@angular/cdk/overlay";
+import {ComponentPortal} from "@angular/cdk/portal";
+import {AlertService} from "../service/alert.service";
 
 @Component({
   selector: 'app-login',
@@ -34,13 +39,13 @@ ngOnInit() {
               private sealService:SealService,
               private chatService:ChatService,
               private alertService: TuiAlertService,
+              private alertService1:AlertService,
               private router: Router) {
     this.form = formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required])
     });
   }
-
 
   login() {
     if (this.form.valid) {
@@ -61,22 +66,15 @@ ngOnInit() {
             localStorage.setItem('role', result.role);
             localStorage.setItem('password',result.password)
             this.chatService.startConnection(localStorage.getItem("id")!)
-
-
             this.sealService.setSecretKey(result.username,this.form.controls['password'].value)
-            // @ts-ignore
-            // this.router.navigate(['discover'])
-            //   .then(() => {
-            //     window.location.reload();
-            //   });
+            this.router.navigate(['discover'])
+              .then(() => {
+                window.location.reload();
+              });
           },
           error: (error: HttpErrorResponse) => {
-            console.log("aici ajuns" + error.error.error)
-            this.alertService.open("error.error.error", {
-              label: 'Oops...',
-              status: TuiNotification.Error,
-              autoClose: true,
-            }).subscribe();
+            const notification = { id:1,label:"Oops...", message: error.error.error, type: "info" };
+            this.alertService1.addNotification(notification)
           }
         })
 

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "FrontendLic": {
+    "travel-points-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -37,18 +37,16 @@
       "prefix": "app",
       "architect": {
         "build": {
-
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-
-            "outputPath": "dist/frontend-lic",
+            "outputPath": "dist/travel-points-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
-
             "polyfills": [
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -61,10 +59,11 @@
             "styles": [
               "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
               "node_modules/@taiga-ui/core/styles/taiga-ui-fonts.less",
-              "node_modules/@taiga-ui/styles/taiga-ui-global.less",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/apexcharts/dist/apexcharts.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -85,7 +84,6 @@
             "development": {
               "buildOptimizer": false,
               "optimization": false,
-
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
@@ -98,10 +96,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "FrontendLic:build:production"
+              "browserTarget": "travel-points-frontend:build:production"
             },
             "development": {
-              "browserTarget": "FrontendLic:build:development"
+              "browserTarget": "travel-points-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -109,8 +107,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-
-            "browserTarget": "FrontendLic:build"
+            "browserTarget": "travel-points-frontend:build"
           }
         },
         "test": {
@@ -121,6 +118,7 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -128,12 +126,15 @@
             "styles": [
               "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
               "node_modules/@taiga-ui/core/styles/taiga-ui-fonts.less",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "285b4448-7872-4ee1-86ea-63d6a6971c01"
   }
 }

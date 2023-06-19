@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {Image} from "../models/image";
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {User} from "../models/user";
+import {UpdateUserDto} from "../models/updateUserDto";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,10 @@ export class UserService {
     return this.http.get<User>(`${environment.apiUrl}/api/User/${id}`);
   }
 
+  updateUser(user:UpdateUserDto){
+    return this.http.put<any>(`${environment.apiUrl}/api/User/update`, user);
+
+  }
 
   getImageByUserId(userId:number,pageNb: number, pageSize: number) {
     let params = new HttpParams()

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {AngularFireStorageModule} from "angularfire2/storage";
 import {isAuthenticated} from "./utils";
 import {ChatService} from "./service/chat.service";
 import {SealService} from "./service/seal.service";

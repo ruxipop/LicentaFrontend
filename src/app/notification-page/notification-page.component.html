@@ -1,0 +1,74 @@
+<div class="container" *ngIf="notifications$|async as notifications">
+  <div class="container-wrapper">
+    <div class="title">
+
+      <h4 class="title-style">
+        <span>Notifications</span>
+      </h4>
+
+      <div class="modal-close-button" (click)="deleteAllNotification()">
+        <div class="close-modal">
+
+          <tui-svg
+            src="tuiIconTrashLarge"
+            class=" icon"
+          ></tui-svg>
+        </div>
+      </div>
+    </div>
+    <div class="wrapper" (scroll)="onScroll()">
+      <div  class="not-item "style="justify-content: center;display: flex;flex-direction: column ;height: 90%" *ngIf="notifications.length==0">
+        <tui-svg style="font-size: 48px;margin-top:2rem;margin-bottom: 1rem"
+                 src="tuiIconBellLarge"
+
+        ></tui-svg>
+        <p  style="font-weight: bold"> You don't have any notification!</p>
+
+
+      </div>
+
+
+      <div  class="not-item" *ngFor="let notification of notifications">
+        <div class="item-wrapper">
+
+          <div class="photo">
+            <tui-svg style="margin-left: -10px"
+                     (click)="deleteNotification(notifications,notification.notification.id)"
+                     src="tuiIconCloseLarge"
+                     class="delete-icon"
+            ></tui-svg>
+            <img src="assets/imgs/rux.jpg">
+
+          </div>
+          <div class="not-contain">
+            <div class="not-message">
+              <p>
+                {{notification.notification.sender.username}}
+                <span> {{typeOfNotification(notification.notification.type)}}</span>
+              </p>
+
+              <div class="date-message">
+                <p>
+                  {{calculateTime(notification.notification.timestamp)}}
+                </p>
+              </div>
+            </div>
+
+            <button class="form-submit-button " *ngIf="notification.isFollowing!=null"
+                    (click)="onFollowChange(notifications ,notification.notification.senderId)"
+
+                    [ngClass]="{'unfollow-button':  notification.isFollowing}">
+              <span>    {{ notification.isFollowing ? 'Unfollow' : 'Follow' }}</span>
+            </button>
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

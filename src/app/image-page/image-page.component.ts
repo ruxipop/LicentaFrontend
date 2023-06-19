@@ -1,30 +1,21 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  Input,
-  OnInit,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Observable, Subject, tap} from "rxjs";
-import {Image} from "../models/image";
 import {ImageService} from "../service/image.service";
 import {CommentService} from "../service/comment.service";
 import {Comment} from "../models/comment";
 import {CategoryImage} from "../models/categoryImage";
 import {isAuthenticated, isUserAuthenticated} from "../utils";
 import {LikeService} from "../service/like.service";
-import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {HttpErrorResponse} from "@angular/common/http";
-import {UserService} from "../service/user.service";
 import {FollowService} from "../service/follow.service";
 import {Follow} from "../models/follow";
 import {User} from "../models/user"
 import {Like} from "../models/like";
+import {Picture} from "../models/picture";
+import {AlertService} from "../service/alert.service";
+import {NotificationType} from "../models/notificationType";
+import {ChatService} from "../service/chat.service";
 
 @Component({
   selector: 'app-image-page',
@@ -34,12 +25,12 @@ import {Like} from "../models/like";
 export class ImagePageComponent implements OnInit, AfterViewInit {
   @ViewChild('imagesContainer') imagesContainer!: ElementRef;
   id: number;
-  image$: Observable<Image>
+  image$: Observable<Picture>
   value: string = ' ';
   isInputFocused: boolean = false;
   isFullscreen = false;
   imageType$: Observable<any>
-  authorImages$: Image[];
+  authorImages$: Picture[];
   comments$: Observable<Comment[]>
   currentUserId: number;
   isLiked: boolean = false;
@@ -91,9 +82,9 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
           console.log(data)
         })
 
-        this.imageService.getImagesByAuthorID(image.autor.id).subscribe(authorImages => {
-          this.authorImages$ = authorImages;
-        });
+        // this.imageService.getImagesByAuthorID(image.autor.id).subscribe(authorImages => {
+        //   this.authorImages$ = authorImages;
+        // });
       })
     );
     this.imageType$ = this.imageService.getImageType(this.id);
@@ -148,8 +139,9 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
               private route: ActivatedRoute,
               private imageService: ImageService,
               private followService: FollowService,
-              @Inject(TuiAlertService) private alertService: TuiAlertService,
+           private alertService: AlertService,
               private likeService: LikeService,
+              private chatService:ChatService,
               private commentService: CommentService) {
 
 
@@ -206,7 +198,6 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     document.body.style.overflow = 'hidden';
 
     this.openLikesModal = true;
-    console.log(this.openLikesModal)
   }
 
   protected readonly CategoryImage = CategoryImage;
@@ -225,7 +216,7 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
   }
 
 
-  onLikeChange(image:Image) {
+  onLikeChange(image:Picture) {
     if (this.isUserAuthenticated()) {
       console.log(this.isLiked)
       if (this.isLiked) {
@@ -239,12 +230,13 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       } else {
 
         this.addLike()
+        this.sendNotification("like",NotificationType.Like, image.autorId.toString())
+
         image.likes.push(new Like(image.id,this.currentUserId))
       }
     } else {
-      console.log("Trebe sa te loghezi")
-      //ToDo
-      // this.router.navigate(['/auth/login'])
+      const notification = { id:1,label:"Oops...",message: "You need to login first!", type: "error" };
+      this.alertService.addNotification(notification)
     }
   }
 
@@ -257,18 +249,11 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: () => {
           this.isLiked = false;
-          this.alertService.open('Liked Remove!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
+
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message: error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -279,19 +264,10 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: () => {
           this.isLiked = true;
-
-          this.alertService.open('Objective added to wishlist!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message: error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -301,18 +277,10 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: () => {
           this.isFollowing = false;
-          this.alertService.open('Follow removed!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message: error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -323,18 +291,10 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: () => {
           this.isFollowing = true;
-          this.alertService.open('Follow removed!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message: error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -348,11 +308,12 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
         this.removeFollow(following.id)
       } else {
         this.addFollow(following.id)
+        this.sendNotification("follow",NotificationType.Follow, following.id.toString())
+
       }
     } else {
-      console.log("Trebe sa te loghezi")
-      //ToDo
-      // this.router.navigate(['/auth/login'])
+      const notification = { id:1,label:"Oops...",message: "You need to login first!", type: "error" };
+      this.alertService.addNotification(notification)
     }
   }
 
@@ -364,7 +325,13 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
   }
 
   changeFollowStatus($event: boolean) {
-    console.log("ceee")
-    this.isFollowing=$event;
+    this.isFollowing = $event;
+  }
+
+
+  sendNotification(message:string,type:NotificationType,receiverId:string){
+    this.chatService.sendNotification(receiverId,message,type);
   }
 }
+
+

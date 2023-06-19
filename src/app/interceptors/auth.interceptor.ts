@@ -8,7 +8,7 @@ import {
 import {BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError} from 'rxjs';
 import {environment} from "../../environments/environment";
 import {AuthenticationService} from "../service/authentication.service";
-import {auth} from "firebase";
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

@@ -7,6 +7,9 @@ import {AppComponent} from "../app.component";
 import {isAuthenticated} from "../utils";
 import {SealService} from "./seal.service";
 import {TransferDataService} from "./transfer-data.service";
+import {NotificationType} from "../models/notificationType";
+import {Notification} from "../models/notification";
+import {AlertService} from "./alert.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +19,9 @@ export class ChatService implements OnDestroy {
   private connection: signalR.HubConnection;
 
 
-  constructor(private sealService: SealService,private dataTransfer:TransferDataService) {
+  constructor(private sealService: SealService,private dataTransfer:TransferDataService,private alertService:AlertService) {
 
   }
-
 
   startConnection(username: string) {
     this.connection = new signalR.HubConnectionBuilder()
@@ -32,19 +34,31 @@ export class ChatService implements OnDestroy {
     this.connection.start()
       .then(() => {
         console.log('Conexiunea cu SignalR a fost stabilită.');
-        this.receiveNotification((message) => {
-
+        this.receiveChat((message) => {
           this.dataTransfer.sendResponseMessage(message);
+        });
+        this.receiveNotification((notification:Notification) => {
+          this.alertService.addNotification({ id:1,label:"New...",message:"You have a new notification", type: "info" })
         });
       })
       .catch((err: Error) => console.error('Eroare la stabilirea conexiunii cu SignalR: ' + err));
   }
 
-  sendNotification(sendId: string, receiverId: string, message: string): void {
+  sendChat(sendId: string, receiverId: string, message: string): void {
 
     if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
       const encryptedMessage = this.sealService.encryptMessage(message);
-      this.connection.invoke('SendNotification', receiverId, sendId, encryptedMessage)
+      this.connection.invoke('SendChat', receiverId, sendId, encryptedMessage)
+        .catch((err: Error) => console.error('Eroare la trimiterea mesajului: ' + err));
+    } else {
+      console.error('Conexiunea nu este stabilită.');
+    }
+  }
+
+  sendNotification( receiverId: string, message: string,type:NotificationType): void {
+
+    if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
+      this.connection.invoke('SendNotification', receiverId, localStorage.getItem("id"), message,type)
         .catch((err: Error) => console.error('Eroare la trimiterea notificării: ' + err));
     } else {
       console.error('Conexiunea nu este stabilită.');
@@ -52,11 +66,15 @@ export class ChatService implements OnDestroy {
   }
 
 
-  receiveNotification(callback: (message: any) => void): void {
-    console.log("se intampla")
-    this.connection.on('ReceiveNotification', callback);
+
+
+  receiveChat(callback: (message: any) => void): void {
+    this.connection.on('ReceiveChat', callback);
   }
 
+  receiveNotification(callback: (message: Notification) => void): void {
+    this.connection.on('ReceiveNotification', callback);
+  }
   ngOnDestroy() {
 
     this.connection.stop()

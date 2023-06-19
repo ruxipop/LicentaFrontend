@@ -14,13 +14,15 @@ export class EditPageComponent {
   public selectedColor: string;
 
   public setSelectedColor(color: string): void {
- this.dataService.sendColor(color)
+    this.dataService.sendColor(color)
   }
 
-  public setThicknessColor(thickness:number){
+  public setThicknessColor(thickness: number) {
     this.dataService.sendThickenss(thickness)
   }
-  txtFormat:TextFormat;
+
+  txtFormat: TextFormat;
+
   constructor(private dataService: TransferDataService) {
     this.dataService.data$2.subscribe((data) => {
       switch (true) {
@@ -28,7 +30,7 @@ export class EditPageComponent {
           // this.onCli();
           break;
         case (data instanceof TextFormat):
-         this.dataService.sendData3(data)
+          this.dataService.sendData3(data)
           break;
         default:
           // Alte cazuri
@@ -40,25 +42,29 @@ export class EditPageComponent {
   }
 
 
-  sendData(data:TextFormat) {
+  sendData(data: TextFormat) {
     this.dataService.sendData(data);
   }
-  setButtonDraw(type:SubMenuType){
+
+  setButtonDraw(type: SubMenuType) {
     this.dataService.sendSubMenuType(type)
 
   }
-textFormat:TextFormat;
-  setTextFormat(value:TextFormat){
-    this.textFormat=value;
-    console.log("nebUUU"+this.textFormat)
+
+  textFormat: TextFormat;
+
+  setTextFormat(value: TextFormat) {
+    this.textFormat = value;
+    console.log("nebUUU" + this.textFormat)
     this.sendData(this.textFormat)
   }
-  addButton=false;
-  setButtonAdd(event: [boolean, TextFormat]){
 
-this.dataService.sendAddButton(event)
+  addButton = false;
+
+  setButtonAdd(event: [boolean, TextFormat]) {
+
+    this.dataService.sendAddButton(event)
   }
-
 
 
   selectIcon(icon: any): void {
@@ -70,7 +76,7 @@ this.dataService.sendAddButton(event)
     //   this.selectedIcon = icon;
     // }
     this.selectedIcon = icon;
-    console.log("icon "+icon)
+    console.log("icon " + icon)
     // this.dataService.sendResetFilters(true)
     this.dataService.sendSubMenuType(icon)
 

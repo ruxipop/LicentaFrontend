@@ -15,5 +15,5 @@ export function isUser(): boolean {
 }
 
 export function isUserAuthenticated():boolean{
-  return localStorage.getItem('accessToken') !== null && localStorage.getItem("role")==='USER';
+  return localStorage.getItem('accessToken') !== null && localStorage.getItem("role")==='user';
 }

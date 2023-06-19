@@ -15,8 +15,7 @@
   }
 
   .grid > figure {
-    filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.16)) drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.08));
-    margin: 0.7rem;
+    margin: 0.3rem;
     overflow: hidden;
     cursor: pointer;
     background-color: white;
@@ -163,7 +162,7 @@
   }
 
   .form-submit-button {
-    width: 30% !important;
+    width: auto !important;
 
   }
 
@@ -209,16 +208,23 @@
 }
 
 .gallery-cover {
+  background-color: rgb(215, 216, 219);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 350px;
   height: 200px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  background-size: cover;
 }
 
 .gallery-cover img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  //object-fit: cover;
 }
 
 .lock {
@@ -243,7 +249,7 @@
 
 .gallery-info {
   padding-left: 10px;
-
+  //background-color: rgb(215, 216, 219);
   width: 90%;
 }
 
@@ -256,16 +262,17 @@ tui-svg {
 
 .form-submit-button {
   height: 50px !important;
-  width: 70% !important;
+  width: auto !important;
 }
 
 
 .container-button {
 
-  svg{
+  svg {
     width: 24px;
     height: 24px;
   }
+
   p {
     margin-bottom: -5px !important;
   }
@@ -277,4 +284,82 @@ tui-svg {
   margin-top: 20%;
 }
 
+
+.gallery-empty {
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+
+
+  tui-svg {
+    margin-bottom: 1rem;
+    font-size: 25px!important;
+
+
+  }
+
+}
+
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.gallery-item {
+  cursor: pointer;
+  height: auto;
+  margin: 10px;
+  background-color: white;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.16)) drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.08));
+
+}
+
+.image-wrapper {
+
+
+  position: relative;
+  padding-bottom: 100%;
+}
+
+.gallery-item__image {
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+/* Media queries pentru a ajusta dimensiunea elementelor */
+@media (min-width: 768px) {
+  .gallery-item {
+    flex-basis: calc(25% - 20px); /* 25% din lățimea containerului minus marginile */
+  }
+}
+
+@media (max-width: 767px) {
+  .gallery-item {
+    flex-basis: calc(50% - 20px); /* 50% din lățimea containerului minus marginile */
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-item {
+    flex-basis: 100%; /* Ocupă întreaga lățime a containerului pe ecrane mai mici */
+  }
+}
+.gallery-item__button {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
 

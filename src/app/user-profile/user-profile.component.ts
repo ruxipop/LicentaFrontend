@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BehaviorSubject, forkJoin, Observable, take, tap} from "rxjs";
 import {ImageService} from "../service/image.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../models/user";
 import {UserService} from "../service/user.service";
 import {FollowService} from "../service/follow.service";
@@ -10,6 +10,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {isUserAuthenticated} from "../utils";
 import {ChatService} from "../service/chat.service";
 import {SealService} from "../service/seal.service";
+import {AlertService} from "../service/alert.service";
+import {GalleryService} from "../service/gallery.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -31,8 +33,9 @@ export class UserProfileComponent implements OnInit{
 FollowersNb:number;
 FollowingNb:number;
   isUserFollowing:boolean=false;
-  constructor(private route: ActivatedRoute,   private sealService:SealService,
-              private userService:UserService,private followService:FollowService,private alertService:TuiAlertService) {
+  constructor(private route: ActivatedRoute,   private sealService:SealService,private router:Router,
+              private galleryService:GalleryService,
+              private userService:UserService,private followService:FollowService,private alertService:AlertService) {
 
   }
 
@@ -104,6 +107,8 @@ FollowingNb:number;
   }
 
   onScroll() {
+    console.log("------------------------------------------------------")
+    console.log("scroll")
     this.currentPage += 1;
     if (this.type === 'Photos') {
     forkJoin([this.images$.pipe(take(1)),this.userService.getImageByUserId(this.userID,this.currentPage, this.pageSize) ])
@@ -118,10 +123,18 @@ FollowingNb:number;
           this.obsArray.next(newArr);
         });
     }
+    else if(this.type==='Galleries') {
+      forkJoin([this.images$.pipe(take(1)), this.galleryService.getAllGalleries(this.userID,this.currentPage,this.pageSize,' ') ])
+        .subscribe((data: Array<Array<any>>) => {
+          const newArr = [...data[0], ...data[1]];
+          this.obsArray.next(newArr);
+        });
+    }
 
   }
 
   getImages() {
+    console.log("sal" +this.currentPage)
     this.obsArray.next([]);
 
     if (this.type === 'Photos') {
@@ -134,6 +147,10 @@ FollowingNb:number;
         .subscribe(data => {
           this.obsArray.next(data);
         });
+    }else if(this.type==='Galleries'){
+      this.galleryService.getAllGalleries(this.userID,this.currentPage,this.pageSize,' ').subscribe(data=>{
+        this.obsArray.next(data)
+      })
     }
   }
 
@@ -160,18 +177,11 @@ FollowingNb:number;
       .subscribe({
         next: () => {
           this.isUserFollowing = false;
-          this.alertService.open('Follow removed!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
+
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message:error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -182,18 +192,11 @@ FollowingNb:number;
       .subscribe({
         next: () => {
           this.isUserFollowing=true;
-          this.alertService.open('Follow removed!', {
-            label: 'Done!',
-            status: TuiNotification.Success,
-            autoClose: true,
-          }).subscribe();
+
         },
         error: (error: HttpErrorResponse) => {
-          this.alertService.open(error.error, {
-            label: 'Oops...',
-            status: TuiNotification.Error,
-            autoClose: true,
-          }).subscribe();
+          const notification = { id:1,label:"Oops...",message:error.error, type: "error" };
+          this.alertService.addNotification(notification)
         }
       })
   }
@@ -216,5 +219,9 @@ FollowingNb:number;
       //ToDo
       // this.router.navigate(['/auth/login'])
     }
+  }
+
+  goToEditPage() {
+    this.router.navigate(["edit/"+this.userID])
   }
 }

@@ -9,6 +9,8 @@ export class User {
   profilePhoto:string |null
   location:Location;
   username:string;
+  description:string;
+
   constructor(id: number, email: string, password: string, name:string,role:string,username:string) {
     this.id = id;
     this.email = email;

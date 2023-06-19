@@ -4,7 +4,6 @@ import {BehaviorSubject, forkJoin, Observable, Subscription, take} from "rxjs";
 import {ImageService} from "../service/image.service";
 import {Router} from "@angular/router";
 import {TransferDataService} from "../service/transfer-data.service";
-import {Image} from "../models/image";
 
 @Component({
   selector: 'app-discover-page',

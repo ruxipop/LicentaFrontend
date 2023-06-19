@@ -2,22 +2,26 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 @import 'variables';
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 * {
   font-family: 'DM Sans';
 }
 
-body{
-margin:0;
+body {
+  margin: 0;
 }
 
 .modal-container {
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.16)) drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.08));
+align-items: center;
   display: flex;
+  z-index: 9000;
   -webkit-box-pack: center;
   justify-content: center;
   -webkit-box-align: center;
   position: fixed;
   background-color: rgb(34, 34, 34, 0.4);
-  z-index: 5;
   height: 100%;
   width: 100%;
   top: 0;
@@ -34,7 +38,6 @@ margin:0;
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-
 
 
     .modal-box {
@@ -91,13 +94,13 @@ margin:0;
                     font-weight: bold;
                   }
 
-                  .follow-style{
+                  .follow-style {
                     font-size: 14px;
                     line-height: 20px;
                     letter-spacing: 0;
                     text-transform: none;
                     margin: 0;
-                    color: rgb(109,115,120);
+                    color: rgb(109, 115, 120);
                   }
                 }
               }
@@ -124,7 +127,8 @@ margin:0;
         }
       }
     }
-    }
+  }
+
   .box-title {
     max-width: 100%;
     display: flex;
@@ -156,6 +160,7 @@ margin:0;
     z-index: 6;
 
   }
+
   .modal-close-button {
     position: absolute;
     left: 16px;
@@ -174,8 +179,9 @@ margin:0;
   font-size: 16px;
   cursor: pointer;
   margin-bottom: 10px;
-  &:disabled{
-    background-color: $gray-button!important;
+
+  &:disabled {
+    background-color: $gray-button !important;
     cursor: unset;
 
   }
@@ -184,7 +190,6 @@ margin:0;
 .form-submit-button:hover {
   background-color: $app-button-color-hover;
 }
-
 
 
 .background-image-form::before {
@@ -225,7 +230,7 @@ margin:0;
 }
 
 
-.form-field{
+.form-field {
   height: 35px;
   width: 100%;
   padding: 10px;
@@ -257,7 +262,6 @@ margin:0;
 }
 
 
-
 .regular-checkbox {
   cursor: pointer;
   -webkit-appearance: none;
@@ -285,8 +289,6 @@ margin:0;
   left: 3px;
   color: $app-category-button;
 }
-
-
 
 
 .actions {
@@ -331,15 +333,18 @@ margin:0;
   li {
     margin: 0.5rem 0 0 0 !important;
   }
+
   a {
     color: black;
     font-size: 17px;
     text-decoration: none;
     cursor: pointer;
-    &:hover{
+
+    &:hover {
       color: $app-button-color-hover;
     }
   }
+
   display: none;
   position: absolute;
   top: 100%;
@@ -390,4 +395,188 @@ margin:0;
 
 .icon:hover::before {
   background-color: lightgray
+}
+
+
+.upload-modal-container {
+  word-break: break-word;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.16)) drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.08));
+  position: fixed;
+  max-width: 100%;
+  background-color: rgb(34, 34, 34, 0.4);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: block;
+  z-index: 2000;
+
+  .upload-modal-container-content {
+    flex-direction: column;
+    display: flex;
+    width: calc(100% - 80px);
+    background-color: rgb(247, 248, 250);
+    border-radius: 8px;
+    height: calc(100% - 80px);
+    margin-top: 1rem;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    overflow: hidden;
+
+    .display-container {
+      overflow: auto;
+      flex-wrap: wrap;
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+    }
+
+    .upload-content {
+
+      word-break: break-word;
+      max-width: 100%;
+      flex: 1 1 0;
+      position: relative;
+
+      .upload-content-wrapper {
+
+        img {
+          max-width: calc(100% - 20px);
+          max-height: calc(100% - 20px);
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        tui-svg {
+          font-size: 40px !important;
+        }
+
+        h3 {
+          font-size: 24px;
+        }
+
+        word-break: break-word;
+        max-width: 100%;
+        -webkit-box-align: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: white;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        border: 2px dashed rgb(215, 216, 219);
+        border-radius: 20px;
+        padding: 120px 0 48px;
+        position: relative;
+        margin: 64px;
+      }
+    }
+
+    .upload-modal-header {
+
+      word-break: break-word;
+      max-width: 100%;
+      background-color: white;
+      box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 6px;
+      position: relative;
+      z-index: 1;
+
+      .upload-modal-header-wrapper {
+        padding: 20px 32px;
+        word-break: break-word;
+        max-width: 100%;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        align-items: center;
+        display: flex;
+
+        .exit-button {
+          word-break: break-word;
+          max-width: 100%;
+          position: relative;
+
+        }
+
+        .upload-modal-logo {
+          cursor: unset;
+
+          word-break: break-word;
+          max-width: 100%;
+          -webkit-box-align: center;
+          align-items: center;
+          display: flex;
+
+          h4 {
+            cursor: unset;
+            word-break: break-word;
+            max-width: 100%;
+            -webkit-box-pack: center;
+            justify-content: center;
+            flex-direction: column;
+            display: flex;
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid::after {
+  content: '';
+  flex-grow: 999999999;
+}
+
+.grid > figure {
+  margin: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: white;
+  position: relative;
+}
+
+.grid > figure > i {
+  display: block;
+}
+
+.grid > figure > img {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  vertical-align: bottom;
+}
+
+.grid > figure {
+  position: relative;
+}
+
+
+
+.title {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  word-break: break-word;
+  width: 100%;
+  height: 53px;
+  flex: 0 0 52px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 6px;
 }

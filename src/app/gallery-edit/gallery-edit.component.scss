@@ -149,16 +149,17 @@
   }
 }
 
-.title {
+.title-gallery {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   margin-bottom: 3rem;
+  h3 {
+    font-size: 30px;
+    text-align: center;
+    margin: 0; /* Optional: Poți înlătura marginile implicite */
+  }
+
 }
 
-.title h3 {
-  font-size: 30px;
-  text-align: center;
-  margin: 0; /* Optional: Poți înlătura marginile implicite */
-}

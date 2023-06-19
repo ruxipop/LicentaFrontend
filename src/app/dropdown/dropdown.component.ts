@@ -62,6 +62,8 @@ export class DropdownComponent implements OnInit {
       this.selectAll = false;
       this.selectedItems = [];
     }
+
+    //filter sa nu mai fie aia in ea item.is!=option
     const index = this.selectedItems.findIndex(item => item === option);
     if (index > -1) {
       this.categoryDeselectedEmitter.emit(option)

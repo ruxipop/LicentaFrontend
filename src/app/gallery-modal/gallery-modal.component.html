@@ -1,7 +1,7 @@
 <div class="modal-container" *ngIf="isModalOpen">
   <div class="modal-wrapper">
     <div class="modal-box">
-      <div class="box-title">
+      <div class="title">
         <div class="modal-close-button">
           <div class="close-modal">
             <tui-svg (click)="closeModal()"
@@ -16,7 +16,7 @@
       </div>
 
 
-      <div class="gallery-list">
+      <div class="gallery-list" #scrollContainer (scroll)="onScroll()" *ngIf="galleries$ | async as galleries">
         <div class="modal-button" *ngIf="!createNewGallery">
           <div class="add-button " (click)="openNewGalleyDialog()">
             <button>
@@ -32,24 +32,24 @@
             Create new Gallery
           </p>
 
-          <form>
+          <form [formGroup]="form">
             <div class="element-input-wrapper">
               <label for="title-input">Title</label>
-              <input type="text" id="title-input" name="title" [(ngModel)]="newGalleryName">
+              <input type="text" id="title-input" name="title" formControlName="nameGallery">
             </div>
 
             <div class="check-box-wrapper">
-              <input class="regular-checkbox" type="checkbox"
-                   >
+              <input class="regular-checkbox" type="checkbox"  formControlName="isChecked"
+              >
               <span>Private</span>
             </div>
           </form>
 
           <div class="actions">
             <button (click)="cancelCreate()" class="cancel-button">Cancel</button>
-            <button [disabled]="newGalleryName.trim().length === 0 || value === ' '" (click)="postComment()"
+            <button [disabled]="this.form.invalid" (click)="createGallery()"
                     class="post-button">
-               Create and add
+              Create and add
             </button>
           </div>
         </div>
@@ -63,7 +63,7 @@
             tuiTextfieldIconLeft="tuiIconSearchLarge"
 
             (input)="searchMethod()"
-            [(ngModel)]="value">
+            [(ngModel)]="searchValue">
 
             Search
             <input tuiTextfield/>
@@ -71,22 +71,22 @@
 
         </div>
         <div class="infinite-scroll">
-          <div class="item">
-            <img src="assets/imgs/rux.jpg">
+          <div class="item" *ngFor="let gallery of galleries" (click)="changeGallery(gallery)">
+            <img *ngIf="gallery.images.length>0" [src]="gallery.images[0].imageUrl">
+
+            <div class="gallery-photo" *ngIf="gallery.images.length==0">
+              <tui-svg
+                  src="tuiIconCameraOffLarge"></tui-svg>
+            </div>
             <p>
-              imgs
-            </p>
-          </div>
-          <div class="item">
-            <img src="assets/imgs/rux.jpg">
-            <p>
-              imgs
+              {{gallery.name}}
             </p>
 
-            <tui-svg
-              src="tuiIconLock"></tui-svg>
-            <tui-svg style="margin-left: auto;margin-right: 0;flex: 0 0 32px;color: rgb(8,112,209)"
-              src="tuiIconCheckLarge"></tui-svg>
+            <tui-svg *ngIf="gallery.isPrivate"
+                     src="tuiIconLock"></tui-svg>
+            <tui-svg *ngIf="checkImage(gallery.images)"
+                     style="margin-left: auto;margin-right: 0;flex: 0 0 32px;color: rgb(8,112,209)"
+                     src="tuiIconCheckLarge"></tui-svg>
           </div>
 
 

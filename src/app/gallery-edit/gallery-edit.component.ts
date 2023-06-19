@@ -19,7 +19,7 @@ galleryId = 1;
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
     this.galleryId = Number(routeParams.get('id'));
-    if (this.galleryId != 0) {
+    if (this.galleryId != undefined) {
       this.fetchGallery();
     }
   }
@@ -45,18 +45,12 @@ galleryId = 1;
     let userId=parseInt(localStorage.getItem("id")!);
 
     let gallery=new Gallery(this.galleryId,userId,this.galleryName,this.galleryDescription,this.isPrivate);
-    console.log("this" +this.galleryName)
     this.galleryId!=0?
     this.galleryService.updateGallery(gallery).subscribe(() => {
       this.router.navigate(["/gallery/" + this.galleryId])
     }) :  this.galleryService.createGallery(gallery).subscribe((data) => {
         this.router.navigate(["/gallery/" + data.id])
     });
-
-
-
-
-
   }
 
   goToPreviousPage() {

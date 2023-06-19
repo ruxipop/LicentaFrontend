@@ -1,5 +1,6 @@
 .gallery-container {
   position: relative;
+  margin-top: 7rem;
   .header{
     display: flex;
     flex-direction: column;
@@ -11,7 +12,7 @@
       justify-content: flex-end;
       align-items: flex-start;
       display: flex;
-      margin-bottom: 15px;
+      margin-bottom: -3rem;
     }
     .gallery-details{
       word-break: break-word;
@@ -19,6 +20,22 @@
       align-items: center;
       flex-direction: column;
       display: flex;
+
+      .gallery-visibility{
+        margin-top: -2rem;
+        word-break: break-word;
+        max-width: 100%;
+        -webkit-box-align: center;
+        align-items: center;
+        display: flex;
+        margin-bottom: 5px;
+        flex-direction: row;
+        p{
+          font-size: 14px!important;
+          margin-left: 5px;
+        }
+
+      }
 
       h4{
         font-size: 21px;

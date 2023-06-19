@@ -1,11 +1,11 @@
 import {User} from "./user";
-import {Image} from "./image";
+import {Picture} from "./picture";
 
 export class Gallery{
   id:number;
   name:string;
   description:string;
-  images:Image[];
+  images:Picture[];
   user:User;
   isPrivate:boolean;
   userId?:number;

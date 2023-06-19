@@ -37,9 +37,11 @@ export class TabsComponent implements AfterContentInit {
     } else {
       let activeTabs = this.tabs.filter((tab) => tab.active);
       if (activeTabs.length === 0) {
-        this.selectTab(this.tabs.first);
+        setTimeout(()=>
+        this.selectTab(this.tabs.first));
       }
     }
+console.log("aici")
   }
 
   selectTab(tab: TabComponent) {

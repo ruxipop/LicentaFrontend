@@ -164,7 +164,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     console.log(this.message)
-    this.chatService.sendNotification(this.senderId, this.receiver, this.message);
+    this.chatService.sendChat(this.senderId, this.receiver, this.message);
     const encrypted = this.sealService.encryptSenderMessage(this.message, this.senderId, this.receiver, localStorage.getItem("password")!);
     const mess = new MessageResponse(parseInt(this.senderId), parseInt(this.receiver), encrypted, new Date())
     mess.sent = true;

@@ -79,11 +79,11 @@
              class=" icon"
     ></tui-svg>
     <tui-svg *ngIf="isLoggedIn()"
-             src="tuiIconBellLarge"
+             src="tuiIconBellLarge" (click)="goToNotificationPage()"
              class=" icon"
     ></tui-svg>
 
-    <button  *ngIf="isLoggedIn()" class="button sign-up">
+    <button (click)="openModal()"  *ngIf="isLoggedIn()" class="button sign-up">
       <tui-svg style="margin-right: 10px"
                src="tuiIconArrowUpLarge"
       ></tui-svg>
@@ -92,3 +92,4 @@
   </div>
 </nav>
 
+<app-upload-modal (closeEvent)="handleCloseModal()"  [isModalOpen]="isUploadModalOpen"></app-upload-modal>

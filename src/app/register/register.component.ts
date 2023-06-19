@@ -5,9 +5,9 @@ import {finalize, first} from "rxjs";
 import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {AuthenticationService} from "../service/authentication.service";
 import {ConfirmedValidator} from "../validators/confirmPasswordValidator";
-import {AngularFireStorageModule} from "angularfire2/storage";
 import {FileService} from "../service/file.service";
 import {SealService} from "../service/seal.service";
+import {AlertService} from "../service/alert.service";
 
 @Component({
   selector: 'app-register',
@@ -25,7 +25,7 @@ export class RegisterComponent {
   constructor(
     private sealService:SealService,
     private formBuilder: FormBuilder,
-    private alertService: TuiAlertService,
+    private alertService: AlertService,
     private authService: AuthenticationService
   ) {
     this.form = formBuilder.group(
@@ -64,18 +64,14 @@ export class RegisterComponent {
           next: () => {
             this.sealService.generatePublicKey(user.username);
             this.sealService.generateSecretKry(user.password,user.username)
-            this.alertService.open('Account created successfully! You can log in with your new credentials.', {
-              label: 'Hooray!',
-              status: TuiNotification.Success,
-              autoClose: true,
-            }).subscribe();
+            const notification = { id:1,label:"Hooray...", message: 'Account created successfully! You can log in with your new credentials.', type: "success" };
+            this.alertService.addNotification(notification)
+
           },
           error: (error: any) => {
             for (let key in error.error) {
-              this.alertService.open(error.error[key], {
-                status: TuiNotification.Error,
-                autoClose: true,
-              }).subscribe();
+              const notification = { id:1,label:"Hooray...", message:error.error[key], type: "error" };
+              this.alertService.addNotification(notification)
             }
           }
         })

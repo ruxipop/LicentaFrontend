@@ -1,0 +1,24 @@
+<div class="alert-container">
+  <div class="alert" *ngFor="let notification of notifications" [ngClass]="{'notification-item': true, 'slide-right': notification.id === notificationToRemoveId, 'success': notification.type === 'success', 'info': notification.type === 'info', 'error': notification.type === 'error'}">
+
+    <div class="content">
+      <div class="check-icon">
+        <label>
+          <div class="flex-container">
+            <div class="check-icon-container">
+              <tui-svg [src]="getIconSrc(notification.type)"></tui-svg>
+            </div>
+            <div class="text-container">
+              <span class="title-text">{{notification.label}}</span>
+              <span class="message">{{ notification.message }}</span>
+            </div>
+          </div>
+        </label>
+      </div>
+      <div class="closebtn" (click)="removeNotification(notification.id)">
+        <tui-svg src="tuiIconClose"></tui-svg>
+      </div>
+    </div>
+
+  </div>
+</div>

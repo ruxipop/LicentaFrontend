@@ -1,0 +1,52 @@
+<div class="upload-modal-container" *ngIf="openModal">
+  <div class="upload-modal-container-content">
+    <div class="upload-modal-header">
+      <div class="upload-modal-header-wrapper">
+        <div class="upload-modal-logo">
+<!--          <input type="file" (change)="onFileSelected($event)">-->
+<!--          <button (click)="uploadFile()">Upload</button>-->
+
+          <input type="file" #fileInput style="display: none" (change)="handleFileInput($event)" accept="image/*">
+          <button class="form-submit-button"  (click)="openFileInput()">Add Photo</button>        </div>
+        <h3 style="margin-right: 4rem"> Select cover photo</h3>
+        <div class="exit-button">
+          <tui-svg style="font-size:20px" src="tuiIconCloseLarge" class="icon"></tui-svg>
+        </div>
+      </div>
+    </div>
+<!--    <div class="photos-container">-->
+<!--      <div class="no-photo">-->
+<!--        <tui-svg  src="tuiIconImageLarge" class="photo-icon" ></tui-svg>-->
+<!--        <h4>You haven't uploaded any photos yet</h4>-->
+<!--        <p>Upload a photo to use it</p>-->
+<!--        <button class="form-submit-button" (click)="openUploadPhotoModal()"> Upload photo</button>-->
+
+<!--      </div>-->
+<!--    </div>-->
+
+
+  <div  class="photos-container"#scrollContainer (scroll)="onScroll()">
+
+  <div class="grid" *ngIf="images$ | async as images">
+      <figure   *ngFor="let image of images"
+               [style.flex-grow]="image.width * 100 / image.height"
+               [style.flex-basis]="image.width * 240 / image.height + 'px'" data-title="ddd">
+        <i [style.padding-bottom]="image.height / image.width * 100 + '%'"></i>
+        <img (click)="selectImage(image.imageUrl)"   [src]="image.imageUrl" alt="placeholder"/>
+      </figure>
+
+    </div>
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<app-upload-modal (closeEvent)="handleCloseModal()" [isModalOpen]="openUploadNewPhoto"></app-upload-modal>

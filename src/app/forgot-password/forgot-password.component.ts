@@ -5,6 +5,7 @@ import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {NavigationExtras, Router} from "@angular/router";
 import {ForgotPassword} from "../models/password";
 import {finalize, first} from "rxjs";
+import {AlertService} from "../service/alert.service";
 
 @Component({
   selector: 'app-forgot-password',
@@ -17,7 +18,7 @@ export class ForgotPasswordComponent {
   form: FormGroup;
   constructor(private authService: AuthenticationService,
               private formBuilder: FormBuilder,
-              private alertService: TuiAlertService,
+              private alertService: AlertService,
               private router: Router) {
     this.form = formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -28,26 +29,21 @@ export class ForgotPasswordComponent {
   sendEmailResetPass() {
 
     if (this.form.valid) {
-      console.log("aloo")
       this.isLoading = true;
       this.authService.sendEmailResetPass(new ForgotPassword(this.form.controls['email'].value)).pipe(
         first(),
         finalize(() => (this.isLoading = false))
       ).subscribe({
           next: () => {
-            this.alertService.open('Email sent successfully! Check your email!', {
-              label: 'Hooray!',
-              status: TuiNotification.Success,
-              autoClose: true,
-            }).subscribe();
+            const notification = { id:1,label:"Hooray...", message:'Email sent successfully! Check your email!', type: "success" };
+            this.alertService.addNotification(notification)
+
             this.form.controls['email'].reset();
           },
           error: (error) => {
             for (let key in error.error) {
-              this.alertService.open(error.error[key], {
-                status: TuiNotification.Error,
-                autoClose: true,
-              }).subscribe();
+              const notification = { id:1,label:"Oops...", message:error.error[key], type: "error" };
+              this.alertService.addNotification(notification)
             }
           }
         }
