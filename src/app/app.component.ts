@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {isAuthenticated} from "./utils";
-import {ChatService} from "./service/chat.service";
-import {SealService} from "./service/seal.service";
-import {FileService} from "./service/file.service";
+import {ChatService} from "./services/chat.service";
+import {SealService} from "./services/seal.service";
+import {FileService} from "./services/file.service";
 import {HttpClient} from "@angular/common/http";
 
 @Component({

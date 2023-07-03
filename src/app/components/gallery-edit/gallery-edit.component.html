@@ -1,0 +1,67 @@
+
+<div class="container">
+  <div class="box">
+    <div class="title-gallery"><h3>{{ galleryId === 0 ? 'Create Gallery' : 'Edit Gallery'}}</h3></div>
+    <form>
+      <div class="element-input-wrapper">
+        <label for="title-input">{{galleryId === 0 ? 'Title*' :'Title'}}</label>
+        <input type="text" id="title-input" name="title" [(ngModel)]="this.galleryName" maxLength="50">
+        <p>{{ currentCharacterCount(this.galleryName) }}/50</p>
+
+      </div>
+
+      <div class="description">
+        <div class="description-container">
+          <label>
+            Description
+          </label>
+
+          <textarea maxlength="250" name="textareaValue" [(ngModel)]="this.galleryDescription"></textarea>
+          <p>{{ currentCharacterCount(this.galleryDescription) }}/250</p>
+
+
+        </div>
+        <p>
+          Visibility
+        </p>
+        <div class="radio-button">
+          <div class="radio-button-wrapper">
+<span role="radio" (click)="changeVisibility()">
+   <div class="radio-fill" *ngIf="!isPrivate">
+   </div>
+
+
+</span>
+            <tui-svg class="public-radio" src="tuiIconEye"></tui-svg>
+
+            <label>
+              Visible to everyone
+            </label>
+          </div>
+          <div class="radio-button-wrapper">
+<span role="radio" (click)="changeVisibility()">
+   <div class="radio-fill" *ngIf="isPrivate">
+   </div>
+
+
+</span>
+            <tui-svg class="public-radio" src="tuiIconLock"></tui-svg>
+
+            <label>
+              Only visible to me
+            </label>
+          </div>
+
+
+        </div>
+        <div class="actions">
+          <button class="cancel-button" (click)="cancelUpdate()">Cancel</button>
+          <button class="post-button" [disabled]="this.galleryName==''" (click)="updateGallery()">{{ galleryId === 0 ? 'Create' : 'Edit'}}</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+

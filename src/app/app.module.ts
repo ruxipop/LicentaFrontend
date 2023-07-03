@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {NavbarComponent} from './navbar/navbar.component';
+import {NavbarComponent} from './components/navbar/navbar.component';
 
 import {
   TuiAlertModule,
@@ -22,19 +22,19 @@ import {
   TuiArrowModule,
   TuiBreadcrumbsModule, TuiComboBoxModule,
   TuiDataListWrapperModule,
-  TuiFieldErrorPipeModule, TuiFilterByInputPipeModule,
+  TuiFieldErrorPipeModule, TuiFilterByInputPipeModule, TuiInputDateRangeModule,
   TuiInputModule,
   TuiInputSliderModule,
   TuiIslandModule, TuiMarkerIconModule,
   TuiRadioBlockModule,
-  TuiRatingModule,
+  TuiRatingModule, TuiSelectModule,
   TuiStringifyContentPipeModule,
   TuiTextAreaModule,
   TuiToggleModule
 } from "@taiga-ui/kit";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
+import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -44,51 +44,65 @@ import {MatSelectModule} from "@angular/material/select";
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {UploadImageComponent} from './upload-image/upload-image.component';
+import {UploadImageComponent} from './components/upload-image/upload-image.component';
 import {ImageCropperModule} from "ngx-image-cropper";
 import {NgxFileDropModule} from "ngx-file-drop";
-import {EditBarComponent} from './edit-bar/edit-bar.component';
-import {EditPageComponent} from './edit-page/edit-page.component';
-import {FiltersComponent} from './filters/filters.component';
-import {DrawingMenuComponent} from './drawing-menu/drawing-menu.component';
+import {EditBarComponent} from './components/edit-bar/edit-bar.component';
+import {EditPageComponent} from './components/edit-page/edit-page.component';
+import {FiltersComponent} from './components/filters/filters.component';
+import {DrawingMenuComponent} from './components/drawing-menu/drawing-menu.component';
 import {TuiInputColorModule} from "@taiga-ui/addon-editor";
 import {ColorPickerModule} from "ngx-color-picker";
-import {TextMenuComponent} from './text-menu/text-menu.component';
+import {TextMenuComponent} from './components/text-menu/text-menu.component';
 import {MatSliderModule} from "@angular/material/slider";
-import {TabsComponent} from './tabs/tabs.component';
-import {TabComponent} from './tab/tab.component';
-import {DiscoverPageComponent} from './discover-page/discover-page.component';
-import {DropdownComponent} from './dropdown/dropdown.component';
+import {TabsComponent} from './components/tabs/tabs.component';
+import {TabComponent} from './components/tab/tab.component';
+import {DiscoverPageComponent} from './components/discover-page/discover-page.component';
+import {DropdownComponent} from './components/dropdown/dropdown.component';
 import {APP_BASE_HREF, NgOptimizedImage} from "@angular/common";
 // import {NgxMasonryModule} from "ngx-masonry";
 import {InfiniteScrollModule, NgxInfiniteScrollService} from "ngx-infinite-scroll";
-import {TestComponent} from './test/test.component';
 import {Test2Component} from './test2/test2.component';
 import {environment} from "../environments/environment";
 
 import {initializeFirestore, provideFirestore} from '@angular/fire/firestore';
 import {initializeAppCheck, provideAppCheck, ReCaptchaV3Provider} from '@angular/fire/app-check';
 import {getApp, initializeApp, provideFirebaseApp} from '@angular/fire/app';
-import {ImagePageComponent} from './image-page/image-page.component';
-import {LikesModalComponent} from './likes-modal/likes-modal.component';
-import {UserProfileComponent} from './user-profile/user-profile.component';
-import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
-import {ResetPasswordComponent} from './reset-password/reset-password.component';
+import {ImagePageComponent} from './components/image-page/image-page.component';
+import {LikesModalComponent} from './components/likes-modal/likes-modal.component';
+import {UserProfileComponent} from './components/user-profile/user-profile.component';
+import {ForgotPasswordComponent} from './components/forgot-password/forgot-password.component';
+import {ResetPasswordComponent} from './components/reset-password/reset-password.component';
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
-import { ChatComponent } from './chat/chat.component';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { MatSelectCountryModule } from "@angular-material-extensions/select-country";
 import { TrimPipe } from './models/trim.pipe';
 import { GroupByPipe } from './models/group-by.pipe';
-import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
-import { GalleryEditComponent } from './gallery-edit/gallery-edit.component';
-import { GalleryPageComponent } from './gallery-page/gallery-page.component';
-import { NotificationPageComponent } from './notification-page/notification-page.component';
-import { UploadModalComponent } from './upload-modal/upload-modal.component';
-import { ModalSelectPhotoComponent } from './modal-select-photo/modal-select-photo.component';
+import { GalleryModalComponent } from './components/gallery-modal/gallery-modal.component';
+import { GalleryEditComponent } from './components/gallery-edit/gallery-edit.component';
+import { GalleryPageComponent } from './components/gallery-page/gallery-page.component';
+import { NotificationPageComponent } from './components/notification-page/notification-page.component';
+import { UploadModalComponent } from './components/upload-modal/upload-modal.component';
+import { ModalSelectPhotoComponent } from './components/modal-select-photo/modal-select-photo.component';
 import {MatDialogModule} from "@angular/material/dialog";
-import { CustomDialogComponent } from './custom-dialog/custom-dialog.component';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { CustomDialogComponent } from './components/custom-dialog/custom-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { VotedImagesComponent } from './components/voted-images/voted-images.component';
+import { StatisticsPageComponent } from './components/statistics-page/statistics-page.component';
+import {
+  TuiAxesModule, TuiBarChartModule,
+  TuiLineChartModule,
+  TuiLineDaysChartModule,
+  TuiPieChartModule,
+  TuiRingChartModule
+} from "@taiga-ui/addon-charts";
+import {NgApexchartsModule} from "ng-apexcharts";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import { CropMenuComponent } from './components/crop-menu/crop-menu.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -107,7 +121,6 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     TabComponent,
     DiscoverPageComponent,
     DropdownComponent,
-    TestComponent,
     Test2Component,
     ImagePageComponent,
     LikesModalComponent,
@@ -126,6 +139,11 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     ModalSelectPhotoComponent,
     CustomDialogComponent,
     ConfirmDialogComponent,
+    VotedImagesComponent,
+    StatisticsPageComponent,
+    CropMenuComponent,
+    HomePageComponent,
+    FooterComponent,
 
 
   ],
@@ -137,6 +155,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     FormsModule,
     TuiTextfieldControllerModule,
     BrowserAnimationsModule,
+    MatNativeDateModule,
     TuiRootModule,
     TuiAlertModule,
     TuiDialogModule,
@@ -188,6 +207,21 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     TuiComboBoxModule,
     MatDialogModule,
     MatSelectCountryModule.forRoot('en'),
+    TuiLineDaysChartModule,
+    TuiAxesModule,
+    TuiInputDateRangeModule,
+    NgApexchartsModule,
+
+    FormsModule,
+    ReactiveFormsModule,
+    TuiInputDateRangeModule,
+    MatDatepickerModule,
+    TuiLineChartModule,
+    TuiRingChartModule,
+    TuiPieChartModule,
+    TuiBarChartModule,
+    TuiSelectModule,
+    TuiToggleModule,
 
   ],
 

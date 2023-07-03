@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="rotate_flip">
+    <label>Rotate & flip</label>
+  <div class="button-group">
+    <button (click)="rotateLeft()">
+      <tui-svg src="tuiIconRotateCcw"></tui-svg>
+    </button>
+
+    <button (click)="rotateRight()">
+      <tui-svg src="tuiIconRotateCw"></tui-svg>
+    </button>
+  <button (click)="flipHorizontal()">
+<img src="https://pixlr.com/img/icon/flip-horizontal.svg">
+  </button>
+
+  <button (click)="flipVertical()">
+    <img src="https://pixlr.com/img/icon/flip-vertical.svg">
+  </button>
+  </div>
+
+  </div>
+
+  <div class="crop">
+    <label>Crop</label>
+    <div class="button-group">
+      <button (click)="addRectCrop()">
+        <tui-svg src="tuiIconCrop"></tui-svg>
+      </button>
+    </div>
+
+  </div>
+<div class="wrapper">
+  <div class="button-group" *ngIf="isCropOpen">
+  <button class="btn cancel-btn" (click)="closeCrop()">Cancel</button>
+  <button class="btn apply-btn" (click)="applyCrop()">Apply</button>
+  </div>
+</div>
+</div>

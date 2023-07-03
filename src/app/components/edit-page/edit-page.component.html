@@ -1,0 +1,8 @@
+<div class="container" [ngClass]="{'sub-menu-open': selectedIcon!== 'none'}">
+  <app-edit-bar (textFormat)="setTextFormat($event)" (addNewTextBotton)="setButtonAdd($event)" (thicknessSelected)="setThicknessColor($event)" (colorSelected)="setSelectedColor($event)" (buttonChanges)="setButtonDraw($event)" [selectedIcon]="selectedIcon" (selectIcon)="selectIcon($event)"></app-edit-bar>
+  <div class="content">
+    <app-upload-image [addButton]="addButton" ></app-upload-image>
+  </div>
+</div>
+
+

@@ -1,0 +1,71 @@
+@import '../../../variables';
+
+.container {
+  background-color: white;
+  padding: 1rem 50px 0.1px 50px;
+  z-index: 1;
+
+  .tab-list {
+    margin-bottom: 50px;
+    margin-left: -2.5rem;
+  }
+
+  .tab-list li {
+    display: inline-block;
+    margin-right: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: $app-category-text;
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .tab-list li.active {
+    font-weight: bold;
+    padding-bottom: 2px;
+    color: $app-category-button;
+    box-shadow: rgb(8, 112, 209) 0px -3px 0px -1px inset;
+  }
+
+  .tab-list li:hover {
+    font-weight: bold;
+    box-shadow: rgb(8, 112, 209) 0px -3px 0px -1px inset;
+    padding-bottom: 2px;
+    color: $app-category-button;
+  }
+
+  .tab-title {
+
+    h2 {
+      font-size: 36px;
+      color: rgb(34, 34, 34);
+    }
+
+    p {
+      margin-top: -20px;
+      color: $app-category-text;
+      font-size: 18px;
+    }
+
+    margin-bottom :-10px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+  }
+
+  .dropdown-container {
+    float: right;
+  }
+
+  .custom-style {
+    justify-content: center;
+    display: flex;
+  }
+
+}
+
+
+
+
+
+

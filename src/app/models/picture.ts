@@ -13,13 +13,13 @@ export class Picture{
   taked:Date;
   location:Location;
   imageUrl:string;
-  isHovered:boolean
   comments:Comment[]
   likes:Like[]
   width:number;
   height:number;
   autorId:number
   category:CategoryImage;
+
   constructor(
     width: number,
     category: CategoryImage,
@@ -31,7 +31,7 @@ export class Picture{
     taked: Date,
     location: Location,
     imageUrl: string,
-    autorId:number,
+    author:number,
 
 
   ) {
@@ -44,9 +44,8 @@ export class Picture{
     this.taked = taked;
     this.location = location;
     this.imageUrl = imageUrl;
-    this.isHovered = false;
     this.category = category;
-    this.autorId=autorId
+    this.autorId=author
   }
 
 

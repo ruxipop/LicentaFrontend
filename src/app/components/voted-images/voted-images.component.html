@@ -1,0 +1,10 @@
+
+<div infiniteScroll (scrolled)="onScroll()" *ngIf="editors$ | async as editors">
+  <div class="container-voted-page">
+  <app-tabs [displayDropdown]="false" >
+    <div class="border"></div>
+  <app-tab (removeEvent)="removeElement($event)"  [selectedTab]="'Voted'" [subTitle]="nbVotes.toString() + ' photos'" [title]="'My Votes'" [tabTitle]="'All'" [images]="editors" >
+  </app-tab>
+  </app-tabs>
+</div>
+</div>

@@ -1,0 +1,68 @@
+@import '../../../variables';
+
+
+.background-image-form::before {
+  background-image: url("../../../assets/imgs/var2.jpg") !important;
+}
+
+.login-form label {
+  color: black;
+  opacity: 0.5;
+  display: block;
+  margin-bottom: 5px;
+}
+
+h2 {
+  margin-top: 50%;
+  margin-bottom: 20%;
+}
+
+
+a {
+  text-decoration: none;
+  margin-left: 5px;
+  color: $app-primary-hover;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.login-link {
+  margin-top: 10px;
+  text-align: center;
+
+}
+
+.forgot-password {
+  margin-top: -5px;
+  margin-right: -10px;
+  text-align: right;
+  font-size: 14px;
+
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  .icon {
+    margin-top: -24px;
+    color:$color-icon;
+  }
+}
+
+.error {
+  font-size: 12px;
+}
+
+.login-form input[type="password"] {
+  margin-top: -25px;
+}
+
+.error-password {
+  margin-top: -23px;
+}
+
+

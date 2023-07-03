@@ -1,0 +1,90 @@
+<body>
+<div class="profile-container">
+  <div class="background" [ngClass]="{ 'exist-background': backgroundImage!='' }">
+    <img *ngIf="backgroundImage!=''" [src]="backgroundImage">
+    <div class="icon-overlay" (click)="openModalPhoto('background')">
+      <tui-svg src="tuiIconEdit2Large" class="icon-edit"></tui-svg>
+    </div>
+  </div>
+
+  <div class="user-info">
+    <div class="profile-picture">
+
+      <img *ngIf="profileImage!=''" [src]="profileImage">
+      <div *ngIf="profileImage==''" class="profile-icon">
+        <tui-svg src="tuiIconUserLarge" class="icon-edit"></tui-svg>
+      </div>
+      <div class="edit-icon" (click)="openModalPhoto('profile')">
+        <tui-svg src="tuiIconEdit2" class="icon-edit"></tui-svg>
+      </div>
+    </div>
+
+    <div class="form-wrapper">
+      <form #myForm="ngForm">
+        <div class="form-row" style="margin-top: 30px">
+          <div class="form-column">
+            <label for="username">Username*</label>
+            <input type="text" id="username" name="username" [(ngModel)]="this.username"
+                   maxlength="50">
+            <p>{{ currentCharacterCount(this.username) }}/50</p>
+          </div>
+          <div class="form-column">
+            <label for="name">Name*</label>
+            <input type="text" id="name" name="name" [(ngModel)]="this.name"      maxlength="50">
+            <p>{{ currentCharacterCount(this.name) }}/50</p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-column">
+            <div class="select-container">
+              <label>Country</label>
+              <div class="select-wrapper form-column form-column-field">
+
+                <select name="country" id="country" [(ngModel)]="this.country"
+                        onfocus="this.size=10;" onblur="this.size=1;" onchange="this.size=1; this.blur();">
+                  <option value="">None</option>
+                  <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-column">
+
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" [(ngModel)]="this.city"
+                   maxlength="50">
+            <p>{{ currentCharacterCount(this.city) }}/50</p>
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 30px">
+          <div class="form-column">
+            <label for="description">Bio</label>
+            <textarea id="description" name="description" [(ngModel)]="this.description"  rows="5"
+                      placeholder="About me..." maxlength="250">
+
+            </textarea>
+            <p>{{ currentCharacterCount(this.description) }}/250</p>
+
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="cancel-button" (click)="cancelUpdate()">Cancel</button>
+
+          <div class="button-upload">
+            <button [disabled]="isButtonDisabled()" (click)="updateUser()" class="form-submit-button" [ngClass]="{ 'loading': loading }">
+              <span *ngIf="!loading">Upload</span>
+              <span *ngIf="loading" class="spinner"></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+
+
+<app-modal-select-photo (closeEvent)="handleCloseModal()" (selectedPhoto)="handleSelectedPhoto($event)" [userId]="getUserAuthenticatedId()"
+                        [openModal]="openChoosePhoto"></app-modal-select-photo>

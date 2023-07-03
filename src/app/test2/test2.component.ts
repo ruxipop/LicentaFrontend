@@ -2,10 +2,10 @@ import {ChangeDetectionStrategy, Component, Inject, OnInit, TemplateRef, ViewChi
 import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
-import {CustomDialogComponent} from "../custom-dialog/custom-dialog.component";
-import {AlertService} from "../service/alert.service";
-import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
-import {ImageService} from "../service/image.service";
+import {CustomDialogComponent} from "../components/custom-dialog/custom-dialog.component";
+import {AlertService} from "../services/alert.service";
+import {ConfirmDialogComponent} from "../components/confirm-dialog/confirm-dialog.component";
+import {ImageService} from "../services/image.service";
 import {Observable} from "rxjs";
 import {Picture} from "../models/picture";
 

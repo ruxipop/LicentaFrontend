@@ -8,5 +8,6 @@ export enum SubMenuType {
   drawShape='drawShape',
   text = 'text',
   filter = 'filter',
+  crop='crop',
   none = 'none'
 }

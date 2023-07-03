@@ -1,0 +1,36 @@
+<div class="upload-modal-container" *ngIf="openModal">
+  <div class="upload-modal-container-content">
+    <div class="upload-modal-header">
+      <div class="upload-modal-header-wrapper">
+        <div class="upload-modal-logo">
+          <input type="file" #fileInput style="display: none" (change)="handleFileInput($event)" accept="image/*">
+          <div class="button-upload">
+            <button (click)="openFileInput()" class="form-submit-button" [ngClass]="{ 'loading': loading }">
+              <span *ngIf="!loading">Add Photo</span>
+              <span *ngIf="loading" class="spinner"></span>
+            </button>
+          </div>
+        </div>
+        <h3 style="margin-right: 4rem"> Select cover photo</h3>
+        <div class="exit-button" (click)="closeModal()">
+          <tui-svg style="font-size:20px" src="tuiIconCloseLarge" class="icon"></tui-svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="photos-container" #scrollContainer (scroll)="onScroll()">
+      <div class="grid" *ngIf="images$ | async as images">
+        <figure *ngFor="let image of images"
+                [style.flex-grow]="image.width * 100 / image.height"
+                [style.flex-basis]="image.width * 240 / image.height + 'px'" data-title="ddd">
+          <i [style.padding-bottom]="image.height / image.width * 100 + '%'"></i>
+          <img (click)="selectImage(image.imageUrl)" [src]="image.imageUrl" alt="placeholder"/>
+        </figure>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-upload-modal (closeEvent)="handleCloseModal()" [isModalOpen]="openUploadNewPhoto"></app-upload-modal>

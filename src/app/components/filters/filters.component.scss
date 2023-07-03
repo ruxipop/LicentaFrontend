@@ -1,0 +1,38 @@
+.container {
+  height: 100vh !important;
+
+
+}
+
+.toggle-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.toggle-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+label {
+  margin-right: 10px!important;
+}
+
+.toggle-wrapper {
+  flex: 1;
+}
+
+
+label {
+  margin-right: 10px;
+  margin-bottom: 0.5rem !important;
+}
+
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem !important;
+}

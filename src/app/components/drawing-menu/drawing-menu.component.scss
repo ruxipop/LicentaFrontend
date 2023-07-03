@@ -1,0 +1,226 @@
+.container {
+  height: 20vh !important;
+}
+
+.content-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+}
+
+
+
+
+
+.line-thickness {
+  margin-top: 10px;
+}
+
+
+.toggle {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+
+  margin-top: 3rem !important;
+}
+
+.menu-brush {
+  margin-left: 0.5rem;
+
+  margin-top: 3rem !important;
+  width: 90%;
+
+  //
+}
+
+.menu-shape {
+  gap: 10px;
+  //display: flex;
+  margin-top: 0.5rem !important;
+
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+  width: 90%;
+  margin-left: 0.5rem;
+}
+
+.color-input, .outline-inputs {
+  ////display: flex;
+  //margin-left: 20px;
+
+}
+
+.outline-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Stilizare aspect checkbox */
+input[type="checkbox"] {
+  /* Ascunde aspectul implicit al checkbox-ului */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Dimensiuni */
+  width: 20px;
+  height: 20px;
+  /* Stilizare fundal */
+  background-color: #ffffff;
+  border: 1px solid #999999;
+  /* Stilizare verificare */
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+input[type="color"] {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  margin-right: 65% !important;
+  margin-top: -0.2rem !important;
+  appearance: none;
+
+  &:disabled {
+    pointer-events: none;
+  }
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+/* Stilizare aspect checkbox selectat */
+input[type="checkbox"]:checked {
+  background-color: #999999;
+}
+
+/* Stilizare indicator verificare */
+input[type="checkbox"]:after {
+  content: "\2713";
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  /* Afișează indicatorul verificare doar pentru checkbox-urile selectate */
+  display: none;
+}
+
+/* Stilizare indicator verificare pentru checkbox selectat */
+input[type="checkbox"]:checked:after {
+  display: block;
+}
+
+.shape-component {
+  position: absolute;
+  top: 100%; /* Afișează componenta sub butoanele din button-group */
+  left: 0;
+  z-index: 1; /* Asigură că componenta este afișată peste celelalte elemente */
+  /* Adăugați alte stiluri dorite pentru componentă */
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  z-index: 1;
+}
+
+.menu.show {
+  display: block;
+}
+
+.menu button {
+  display: block;
+  margin-top: 10px;
+}
+
+
+
+
+.check-align {
+  display: flex;
+  flex-direction: row;
+}
+
+.icon-button {
+  border: none!important;
+  background: none!important;
+  padding: 0!important;
+  color: black!important;
+  cursor: pointer!important;
+
+  &:disabled {
+    pointer-events: none!important;
+    color:gray!important;
+
+  }
+
+}
+
+.icon-button tui-svg {
+  font-size: 30px !important;
+  transition: box-shadow 0.3s;
+}
+
+.icon-button:hover tui-svg {
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+
+.icons-col {
+  margin-top: 2rem !important;
+  gap: 2rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-align {
+  display: flex;
+  gap: 3rem;
+  flex-direction: row;
+}
+
+.slider-container {
+  margin-left: 0.5rem !important;
+  width: 90%;
+  margin-top: 1rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+.value {
+  text-align: right;
+  flex: 1;
+}
+
+input[type="range"] {
+  width: 100%;
+}

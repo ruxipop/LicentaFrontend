@@ -53,12 +53,14 @@
     "ngx-select-dropdown": "^3.3.0",
     "ngx-select-ex": "^8.0.1",
     "node-seal": "^5.1.1",
-    "rxjs": "~7.8.0",
+    "rxjs": "~7.5.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "tslib": "^2.3.0",
     "url": "^0.11.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.12.0",
+    "firebase": "^9.9.1",
+    "@angular/fire": "^7.4.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.3",

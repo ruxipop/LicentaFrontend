@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="button-group">
+    <button (click)="clickButton(this.drawTypes.drawBrush)">
+      <tui-svg src="tuiIconEdit3Large"></tui-svg>
+    </button>
+    <button (click)="clickButton(this.drawTypes.drawShape)">
+      <tui-svg src="tuiIconOctagon"></tui-svg>
+    </button>
+  </div>
+  <div class="content-wrapper">
+    <div class="menu-brush" *ngIf="this.menuType===this.drawTypes.drawBrush">
+
+
+      <div class="color-picker">
+        <label>Color:</label>
+
+        <input type="color" [(ngModel)]="selectedColor" (input)="selectColor()"/>
+      </div>
+      <input class="custom-range"
+             id="fontSizeSlider1"
+             type="range"
+             min="1"
+             max="100"
+             step="0.1"
+             [(ngModel)]="selectedThickness"
+             (input)="onThicknessChange()"
+      />
+    </div>
+
+    <div *ngIf="this.menuType===this.drawTypes.drawShape">
+      <div class="menu-shape">
+        <div class="toggle">
+          <div class="color-input">
+
+            <input type="color" id="fillColor" [ngModel]="fillToggle ? fillColor : 'rgba(0, 0, 0, 0)'" (ngModelChange)="fillColor = $event" [disabled]="!fillToggle" name="fillColor" />
+          </div>
+          <div class="check-align">
+          <label for="fillToggle">Fill</label>
+          <input type="checkbox" id="fillToggle" [(ngModel)]="fillToggle"/>
+          </div>
+        </div>
+
+        <div class="toggle">
+          <div class="color-input">
+
+                        <input type="color" id="outlineColor" [(ngModel)]="outlineColor" name="outlineColor"/>
+          </div>
+          <div class="check-align">
+
+          <label for="outlineToggle">Stroke</label>
+
+          <input type="checkbox" id="outlineToggle" [(ngModel)]="outlineToggle"/>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="slider-container">
+        <div class="label-container">
+          <label for="fontSizeSlider" class="label">Size:</label>
+          <span contenteditable="true" class="value" #labelElement >
+      15
+    </span>
+        </div>
+
+        <input id="fontSizeSlider" type="range" min="5" max="400" class="custom-range" step="0.1"   [(ngModel)]="outlineThickness">
+      </div>
+
+
+      <div class="icons-col">
+      <div class="icon-align">
+        <button (click)="createTriangle()" class="icon-button" [disabled]="!fillToggle && !outlineToggle">
+          <tui-svg src="tuiIconTriangleLarge" ></tui-svg>
+        </button>
+        <button (click)="createRect()"  class="icon-button" [disabled]="!fillToggle && !outlineToggle">
+          <tui-svg src="tuiIconSquareLarge"></tui-svg>
+        </button>
+        <button (click)="createCircle()"  class="icon-button" [disabled]="!fillToggle && !outlineToggle">
+          <tui-svg src="tuiIconCircleLarge"></tui-svg>
+        </button>
+      </div>
+      <div class="icon-align">
+        <button (click)="createStar()"  class="icon-button" [disabled]="!fillToggle && !outlineToggle">
+          <tui-svg src="tuiIconStarLarge"></tui-svg>
+        </button>
+        <button (click)="createHeart()" class="icon-button" [disabled]="!fillToggle && !outlineToggle">
+          <tui-svg src="tuiIconHeartLarge"></tui-svg>
+        </button>
+        <button (click)="createHexagon()"  class="icon-button" [disabled]="!fillToggle && !outlineToggle">
+          <tui-svg src="tuiIconHexagonLarge"></tui-svg>
+        </button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

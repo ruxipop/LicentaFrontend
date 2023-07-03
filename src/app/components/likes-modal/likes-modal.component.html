@@ -1,0 +1,56 @@
+<div class="modal-container" *ngIf="isModalOpen">
+  <div class="modal-wrapper">
+    <div class="modal-box" *ngIf="likesModal$ | async as likesModal">
+      <div class="box-title">
+        <div class="modal-close-button">
+          <div class="close-modal">
+            <tui-svg (click)="closeModal()"
+                     src="tuiIconCloseLarge"
+                     class=" icon"
+            ></tui-svg>
+          </div>
+        </div>
+        <h4 class="title-style">
+          <span>{{this.title}}</span>
+        </h4>
+      </div>
+      <div class="likes-modal" #scrollContainer (scroll)="onScroll()">
+        <div class="modal-content">
+          <div class="infinite-scroll-component">
+            <div class="style-box" *ngFor="let modal of likesModal">
+              <div class="user-info" >
+                <a>
+                    <ng-container *ngIf="modal.following.profilePhoto; else profileIcon">
+                      <img [src]="modal.following.profilePhoto">
+                    </ng-container>
+                    <ng-template #profileIcon>
+                      <div class="profile-icon">
+                        <tui-svg src="tuiIconUserLarge" ></tui-svg>
+                      </div>
+                    </ng-template>
+
+                </a>
+                <div  class="user-name">
+                  <a>
+                    <p (click)="onUserClick(modal.following.id)" class="name-style"> username</p>
+                  </a>
+                  <p class="follow-style">
+                    <span>{{modal.following.name}}</span>
+                  </p>
+                </div>
+
+              </div>
+
+              <button class="form-submit-button" [disabled]="modal.following.id==this.currentUserId" (click)="onFollowChange(likesModal ,modal.following.id)"
+
+                      [ngClass]="{'unfollow-button':  modal.isFollowing }">
+                <span>    {{ modal.isFollowing ? 'Unfollow' : 'Follow' }}</span>
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

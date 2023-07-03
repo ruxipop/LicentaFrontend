@@ -14,7 +14,7 @@ body {
 
 .modal-container {
   filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.16)) drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.08));
-align-items: center;
+  align-items: center;
   display: flex;
   z-index: 9000;
   -webkit-box-pack: center;
@@ -172,7 +172,7 @@ align-items: center;
   margin-top: 5%;
   width: 110%;
   padding: 12px;
-  background-color: $app-button-color;
+  background-color: $app-primary-hover;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -182,13 +182,16 @@ align-items: center;
 
   &:disabled {
     background-color: $gray-button !important;
+    //border: 1px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
     cursor: unset;
 
   }
 }
 
 .form-submit-button:hover {
-  background-color: $app-button-color-hover;
+  background-color: $app-hover-submit-button;
 }
 
 
@@ -330,6 +333,10 @@ align-items: center;
 }
 
 .dropdown-menu {
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ccc;
+
   li {
     margin: 0.5rem 0 0 0 !important;
   }
@@ -410,7 +417,7 @@ align-items: center;
   height: 100%;
   overflow: hidden;
   display: block;
-  z-index: 2000;
+  z-index: 1000;
 
   .upload-modal-container-content {
     flex-direction: column;
@@ -494,6 +501,13 @@ align-items: center;
         -webkit-box-align: center;
         align-items: center;
         display: flex;
+        @media screen and (max-width: 800px) {
+          flex-direction: column !important;
+          h3 {
+            margin-right: 0 !important;
+          }
+        }
+
 
         .exit-button {
           word-break: break-word;
@@ -562,7 +576,6 @@ align-items: center;
 }
 
 
-
 .title {
   max-width: 100%;
   display: flex;
@@ -579,4 +592,96 @@ align-items: center;
   flex: 0 0 52px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 6px;
+}
+
+
+.hover-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+  box-shadow: none;
+  color: white;
+  height: 50px;
+  opacity: 0;
+  transition: opacity 0.2s ease 0s, max-height 0.2s ease 0s, transform 0.3s ease;
+  transform: translateY(100%);
+
+}
+
+.hover-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  display: none;
+  pointer-events: none;
+  z-index: -10001;
+}
+
+.hover-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+  box-shadow: none;
+  padding: 8px;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: opacity 0.2s ease 0s, max-height 0.2s ease 0s, transform 0.3s ease;
+  transform: translateY(-100%);
+}
+
+.spinner {
+  border: 4px solid rgba(250, 247, 247, 0.42);
+  border-left-color: #a8b0dc;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  pointer-events: none;
+}
+
+.loading:hover {
+  cursor: default;
+}
+
+
+.button-upload {
+  position: relative;
+}
+
+.button-upload .form-submit-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-upload .form-submit-button span {
+  display: inline-block;
+  vertical-align: middle;
 }

@@ -2,16 +2,19 @@ import {User} from "./user";
 
 export class Comment{
   id: number;
- user:User;
+ user?:User;
  commentText:string;
  createdAt:Date;
+ userId:number;
+ imageId:number;
 
 
 
-  constructor(id: number,user:User,commentText:string,createdAt:Date) {
+  constructor(id: number,userId:number,imageId:number,commentText:string,createdAt:Date) {
     this.id = id;
-    this.user=user;
+    this.userId=userId;
     this.commentText=commentText;
     this.createdAt=createdAt;
+    this.imageId=imageId;
   }
 }

@@ -1,0 +1,61 @@
+<div class="container">
+  <button (click)="addNewText()" class="icon-button"> Add text
+  </button>
+
+
+
+  <div class="slider-container">
+    <div class="label-container">
+      <label for="fontSizeSlider" class="label">Size:</label>
+      <span contenteditable="true" class="value" #labelElement (input)="onFontSizeLabelChange(labelElement.innerText)">
+      {{ fontSize }}
+    </span>
+    </div>
+
+    <input id="fontSizeSlider" type="range" min="5" max="400" class="custom-range" step="0.1" [(ngModel)]="fontSize" (input)="onFontSizeChange()">
+  </div>
+
+
+
+  <div class="dropdown">
+    <label for="fontSelect">Font:</label>
+    <select id="fontSelect" [(ngModel)]="selectedFont" [style.font-family]="selectedFont"  (change)="onFontChange(fontSelect.value)" #fontSelect class="custom-select">
+      <option *ngFor="let font of fontList" [style.font-family]="font" [value]="font" [ngClass]="{ 'selected': font === fontList[0] }">{{ font }}</option>
+    </select>
+
+  </div>
+
+
+  <div class="button-group">
+    <label style="margin-left: -82%!important;">Style:</label>
+
+    <div class="buttons-font-style">
+    <div>
+
+      <button (click)="toggleBold()">
+        <tui-svg src="tuiIconBoldLarge"></tui-svg>
+      </button>
+    </div>
+    <div>
+      <button (click)="toggleItalic()" >
+        <tui-svg src="tuiIconItalicLarge"></tui-svg>
+      </button>
+    </div>
+    <div>
+      <button (click)="toggleUnderline()">
+        <tui-svg src="tuiIconUnderlineLarge"></tui-svg>
+      </button>
+    </div>
+    </div>
+
+  </div>
+
+  <div class="color-picker">
+    <label for="colorPicker">Color:</label>
+    <input type="color" id="colorPicker" [value]="selectedColor" (input)="onColorChange($event)">
+  </div>
+
+
+
+
+</div>

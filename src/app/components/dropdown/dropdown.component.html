@@ -1,0 +1,31 @@
+<div class="dropdown" [class.open]="isDropdownOpen" *ngIf="categories$ |async as categories ">
+  <button class="dropdown-toggle" [ngClass]="{ 'button-pressed': isDropdownOpen }" type="button"
+          (click)="toggleDropdown(categories)">
+    Categories
+    <span *ngIf="selectedItems.length > 0" class="selected-count">({{ selectedItems.length }})</span>
+    <span class="arrow" [class.up]="isDropdownOpen"></span>
+  </button>
+  <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
+    <div class="dropdown-header">
+      <input class="regular-checkbox" type="checkbox" [checked]="this.selectAll" [disabled]="selectAll"
+             (change)="toggleSelectAll()">
+      All categories
+    </div>
+    <div class="dropdown-columns">
+      <div class="dropdown-column">
+        <div *ngFor="let option of splitOptionLeft(categories)">
+          <input class="regular-checkbox" type="checkbox" [checked]="isSelected(option)"
+                 (change)="toggleSelection(option)">
+          {{ formatOption(option) }}
+        </div>
+      </div>
+      <div class="dropdown-column">
+        <div *ngFor="let option of splitOptionRight(categories)">
+          <input class="regular-checkbox" type="checkbox" [checked]="isSelected(option)"
+                 (change)="toggleSelection(option)">
+          {{ formatOption(option) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

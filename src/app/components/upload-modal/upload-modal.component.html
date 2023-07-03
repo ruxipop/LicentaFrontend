@@ -1,0 +1,115 @@
+<div class="upload-modal-container" *ngIf="isModalOpen">
+  <div class="upload-modal-container-content">
+    <div class="upload-modal-header">
+      <div class="upload-modal-header-wrapper">
+        <div class="upload-modal-logo">
+          <tui-svg  src="tuiIconUploadCloudLarge" class="upload-icon"></tui-svg>
+          <h4>Upload</h4>
+        </div>
+
+
+        <div class="exit-button">
+          <tui-svg style="font-size:20px" (click)="openConfirmDialog()"
+                   src="tuiIconCloseLarge"
+                   class="icon"
+          ></tui-svg>
+        </div>
+
+      </div>
+      <button #dummyButton style="display: none;"></button>
+
+
+
+    </div>
+    <div class="display-container">
+      <div class="upload-content">
+
+
+        <div class="upload-content-wrapper">
+          <tui-svg *ngIf="!selectedImage" src="tuiIconUploadCloudLarge"></tui-svg>
+          <h3 *ngIf="!selectedImage">Drag files to upload </h3>
+          <img *ngIf="selectedImage" [src]="selectedImage" alt="Imagine selectată"/>
+          <input type="file" #fileInput style="display: none" (change)="handleFileInput($event)" accept="image/*">
+          <button class="form-submit-button" *ngIf="!selectedImage" (click)="openFileInput()">Add Photo</button>
+
+        </div>
+        <button  *ngIf="selectedImage"  class="delete-button" (click)="deletePhoto()">Delete Photo</button>
+      </div>
+      <div class="create-form" *ngIf="selectedImage">
+        <form *ngIf="categories$ | async as categories ">
+          <div class="form-group">
+            <label for="title">Title*</label>
+            <input type="text" id="title" [(ngModel)]="title" name="title" required
+                   required maxlength="100">
+            <p>{{ currentCharacterCount(title) }}/100</p>
+
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" [(ngModel)]="description" name="description"
+                      required maxlength="250"></textarea>
+            <p>{{ currentCharacterCount(description) }}/250</p>
+
+          </div>
+
+          <div class="form-group">
+            <div class="select-container" style="z-index: 3!important;">
+            <label for="category">Category*</label>
+            <div class="select-wrapper form-column form-column-field">
+
+              <select name="category" id="category" [(ngModel)]="category"
+                      onfocus="this.size=10;" onblur="this.size=1;" onchange="this.size=1; this.blur();">
+                <option value="" disabled selected>Select category</option>
+                <option *ngFor="let category of categories let i=index"  [value]="i">{{category}}</option>
+              </select>
+            </div>
+          </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 22px">
+            <div class="select-container">
+            <label >Country*</label>
+            <div class="select-wrapper form-column form-column-field">
+
+              <select name="country" id="country"  [(ngModel)]="country"
+                      onfocus="this.size=10;" onblur="this.size=1;" onchange="this.size=1; this.blur();">
+                <option value="" disabled selected>Select country</option>
+                <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+              </select>
+            </div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 22px">
+            <label >City*</label>
+            <input type="text" [(ngModel)]="city" name="textValue" required
+                   maxlength="50">
+            <p>{{ currentCharacterCount(city) }}/50</p>
+
+
+          </div>
+
+          <div class="form-group">
+            <label >Shoot date*</label>
+            <input  type="date" [max]="getCurrentDate()" [(ngModel)]="selectedDate" name="selectedDate" required
+                   pattern="\d{4}-\d{2}-\d{2}">
+
+          </div>
+
+          <div class="button-upload">
+            <button [disabled]="isButtonDisabled()" (click)="uploadPhoto()" class="form-submit-button" [ngClass]="{ 'loading': loading }">
+              <span *ngIf="!loading">Upload</span>
+              <span *ngIf="loading" class="spinner"></span>
+            </button>
+          </div>
+
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>

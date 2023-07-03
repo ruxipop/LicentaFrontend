@@ -1,0 +1,73 @@
+.container {
+  height: 30vh !important;
+}
+
+
+.wrapper {
+  position: absolute;
+  top: 80%;
+  left: 0;
+  width: 100%;
+}
+
+.button-group {
+
+  gap: 10px !important;
+
+  &:last-child {
+    margin-top: 1rem !important;
+  }
+
+}
+
+.crop {
+  margin-top: 1rem !important;
+
+  tui-svg {
+    margin-right: 0.7rem !important;
+  }
+}
+
+.crop-buttons-group {
+
+
+}
+
+.btn {
+  font-family: Arial, sans-serif;
+  padding: 10px 20px !important;
+  margin-right: 10px !important;
+  border-radius: 5px !important;
+  color: white !important;
+  cursor: pointer !important;
+
+}
+
+.cancel-btn {
+  background-color: transparent !important;
+  border: 2px solid #888888 !important;
+  color: #888888 !important;
+
+  &:hover {
+    background-color: #e5e5e5 !important;
+  }
+}
+
+.apply-btn {
+  background-color: #888888 !important;
+  border: 2px solid #888888 !important;
+  color: #FFFFFF !important;
+
+  &:hover {
+    background-color: #666666 !important;
+  }
+}
+
+.btn:last-child {
+  margin-right: 0 !important;
+}
+
+.static-class {
+  position: relative;
+  display: flex;
+}

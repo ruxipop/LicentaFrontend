@@ -1,0 +1,785 @@
+@import '../../../variables';
+
+#container {
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+
+
+}
+
+.icon-profile{
+
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  font-size: 17px;
+  background-color: $app-category-text;
+  color:white;
+  border: 1px solid white;
+
+}
+
+.image-container {
+  margin-top: 8rem;
+
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(40, 40, 40);
+  height: 600px;
+  //margin: 0;
+  //margin-bottom: 20px;
+
+  padding: 20px 0;
+
+}
+
+.image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: fill;
+}
+
+
+.image-container.fullscreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+
+}
+
+
+.content-container {
+  background-color: rgb(247, 248, 250);
+  width: 100%;
+  max-width: 100%;
+  word-break: break-word;
+
+
+  .container-c {
+    margin: 0 auto;
+    width: 100%;
+
+    .container-inner {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 5rem 0 5rem;
+      //margin:0 -8px
+    }
+  }
+;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+
+.left-container {
+  margin-bottom: 20px;
+  background-color: white !important;
+  align-items: flex-start;
+  width: 50%;
+  padding: 10px;
+  flex-direction: column !important;
+  display: flex;
+  //margin-left: 50px;
+  margin-top: 2rem;
+  flex-grow: 2;
+  margin-right: 30px;
+  //box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+
+}
+
+.right-container {
+  margin-top: 2rem;
+
+  width: 23%;
+  //overflow-y: auto;
+  height: 900px; /* Setează înălțimea dorită */
+  flex-grow: 1;
+  margin-bottom: 20px;
+  background-color: white;
+  //box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.input-container {
+  position: relative;
+  padding: 10px;
+}
+
+.input-container .profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  float: left;
+  align-items: center;
+  margin-left: 5px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.input-container .profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Stilurile existente */
+
+.input-container {
+  position: relative;
+  padding: 10px;
+}
+
+.input-container .profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  float: left;
+}
+
+.input-container .input-wrapper {
+  overflow: hidden;
+  padding: 10px 20px 0 20px;
+  //padding-left: 50px;
+}
+
+.input-container input {
+  width: 80%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.input-container .actions {
+  position: absolute;
+  right: 0;
+  //display: none;
+}
+
+.input-container .actions button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  margin-top: 6px;
+  width: 120px;
+
+
+}
+
+.input-container .input:focus + .actions {
+  display: flex;
+}
+
+
+.comment {
+  display: flex;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+
+}
+
+
+.comments-section {
+  padding: 15px;
+  border-radius: 5px;
+  max-height: 780px;
+
+
+}
+
+.comments-section ul {
+  max-height: 780px;
+  overflow-y: auto;
+}
+
+.comments-section h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+
+.comment-profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-top: 0.4rem;
+  margin-right: 10px;
+  background-size: cover;
+  background-position: center;
+}
+
+.comment-profile-picture img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.comment-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.comment-username {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.comment-text {
+  margin-top: -5px;
+  word-break: break-word; /* Updated property */
+}
+
+
+.fullscreen-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3); /* Setează fundalul transparent și închis */
+  transition: background-color 0.3s ease;
+  display: none; /* Ascunde cercul inițial */
+  pointer-events: none; /* Nu permite interacțiunea cu cercul ascuns */
+  z-index: -10001; /* Asigură că cercul apare deasupra imaginii */
+}
+
+.fullscreen-button:hover::before {
+  display: block; /* Afișează cercul la hover */
+}
+
+.fullscreen-button::before tui-svg {
+  width: 20px;
+  fill: white;
+  height: 20px;
+}
+
+.fullscreen-button:hover::before {
+  background-color: rgba(255, 255, 255, 0.3); /* Mărește opacitatea culorii cercului alb transparent */
+}
+
+
+.fullscreen-button {
+  z-index: 5;
+  position: absolute;
+  top: 9rem;
+  right: 100px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+.icon {
+  margin-right: 20px;
+  z-index: 5;
+  margin-left: 10px;
+
+  font-size: 18px;
+  cursor: pointer;
+
+}
+
+.red {
+  color: red;
+  fill: red;
+}
+
+.icon::before {
+  content: '';
+  position: absolute;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  display: none;
+  pointer-events: none; /* Nu permite interacțiunea cu cercul ascuns */
+  z-index: -10001; /* Asigură că cercul apare deasupra imaginii */
+}
+
+.icon:hover::before {
+  display: block; /* Afișează cercul la hover */
+}
+
+.icon::before tui-svg {
+  width: 20px;
+  fill: white;
+  height: 20px;
+}
+
+.icon:hover::before {
+  background-color: lightgray /* Mărește opacitatea culorii cercului alb transparent */
+}
+
+.user-container {
+  margin-left: 1rem;
+
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.user-avatar {
+  justify-content: center;
+  width: 64px;
+  align-items: center;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  margin-right: 10px;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-title {
+  font-weight: bold;
+  cursor: text;
+  font-size: 24px;
+
+  color: rgb(34, 34, 34);
+  line-height: 28px;
+
+}
+
+.user-subtitle {
+  font-size: 16px;
+  color: gray;
+  cursor: pointer;
+}
+
+
+.user-info .line-2 {
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+}
+
+
+.follow-button {
+  margin-left: 5px;
+  color: blue;
+}
+
+.dot {
+  margin-left: 5px;
+}
+
+
+.info-container {
+  margin-top: 20px;
+  margin-left: 30px;
+
+  .location {
+    div {
+      text-decoration: dotted underline;
+      text-underline-offset: 4px;
+
+
+    }
+
+    display: flex;
+    justify-content: space-between;
+
+  }
+
+  display: flex;
+  justify-content: space-between;
+
+  flex-direction: row;
+
+  .outer-span {
+    margin-left: 15px;
+    font-weight: bold;
+  }
+
+  .inner-span {
+    font-weight: normal !important;
+    color: rgb(34, 34, 34);
+  }
+
+  tui-svg {
+    font-size: 12px;
+    margin-right: 10px;
+  }
+
+}
+
+
+.type-container {
+  margin-top: 20px;
+  margin-left: 30px;
+  display: flex;
+  justify-content: space-between;
+
+  flex-direction: row;
+
+  .label {
+    font-size: 20px;
+    color: rgb(34, 34, 34);
+    margin-right: 40px;
+  }
+
+  .value {
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+  .info-com {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+  }
+
+  tui-svg {
+    margin-top: 5px;
+    font-size: 15px;
+  }
+
+
+  .info-likes {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-type {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.info-description {
+  word-break: break-word; /* Updated property */
+
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+
+.carousel-container {
+  margin-top: 4rem;
+  z-index: 4;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  span {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: -0.5rem !important;
+    //font-family: "Helvetica Neue", HelveticaNeue, Helvetica, FreeSans, Arial, sansserif;
+  }
+}
+
+.carousel-wrapper {
+  width: 100%;
+  margin-top: -1.5rem !important;
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 10px;
+}
+
+.carousel-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-images {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.carousel-image {
+  flex: 0 0 auto;
+  width: 300px;
+  height: auto;
+  margin-right: 10px;
+  background-color: white;
+  scroll-snap-align: start;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: rgba(0, 0, 0, 1);
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-button-previous {
+  left: 20px;
+}
+
+.carousel-button-next {
+  right: 20px;
+}
+
+.carousel-button::before {
+  content: '';
+  width: 0;
+
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+.carousel-button-previous::before {
+  border-right: 8px solid rgba(0, 0, 0, 0.5);
+  margin-right: 2px;
+}
+
+.carousel-button-next::before {
+  border-left: 8px solid rgba(0, 0, 0, 0.5);
+  margin-left: 2px;
+}
+
+.card {
+  align-items: flex-start;
+  width: 380px;
+  margin-right: 10px;
+  height: 300px;
+  background-color: white;
+  transition: box-shadow 0.3s ease;
+  margin-top: 2rem;
+  border: 1px solid rgb(238, 239, 255);
+  margin-bottom: 2rem;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  width: 380px;
+  height: 700px;
+  display: flex;
+
+  position: relative;
+
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+
+.card-body {
+  flex: 1;
+  padding: 10px;
+}
+
+.card-title {
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: rgb(34, 34, 34);
+}
+
+
+.comments-section.collapsed {
+  margin-top: 50px;
+}
+
+
+.open-modal {
+  flex-direction: row;
+  margin-top: 2rem;
+  margin-left: 30px;
+  word-break: break-word;
+  max-width: 100%;
+  margin-bottom: 16px;
+
+  .span-button {
+    position: relative;
+    text-decoration: none;
+    transition: color 0.1s ease 0s;
+    font-weight: normal;
+    cursor: pointer;
+    font-size: 20px;
+    color: rgb(34, 34, 34);
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+
+    &:hover {
+      color: blue;
+    }
+  }
+}
+
+
+.no-scroll {
+  position: fixed;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+
+.unfollow-button {
+  color: gray;
+}
+
+
+.no-comment {
+  display: flex;
+  justify-content: center;
+
+  tui-svg {
+    top: 80%;
+    position: absolute;
+    font-size: 48px;
+  }
+
+  p {
+    position: absolute;
+    top: 120%;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
+
+.container-inner {
+  @media screen and (max-width: 1250px) {
+    padding: 0 4rem 0 4rem !important;
+
+  }
+  @media screen and (max-width: 1050px) {
+    padding: 0 3rem 0 3rem !important;
+  }
+  @media screen and (max-width: 1000px) {
+    padding: 0 2rem 0 2rem !important;
+  }
+  @media screen and (max-width: 970px) {
+    padding: 0 1rem 0 1rem !important;
+  }
+  @media screen and (max-width: 937px) {
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+  }
+}
+
+
+@media screen and (max-width: 937px) {
+
+  .left-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .right-container {
+    width: 100%;
+    margin-top: 0;
+    padding: 0;
+    height: 600px;
+  }
+}
+
+.autor-name {
+  margin-top: -1.5rem !important;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-size: 14px !important;
+  color: rgb(8, 112, 209) !important;
+
+  p, span {
+    margin-top: 0.2rem !important;
+  }
+
+  .user-avatar {
+    color: black !important;
+    width: 25px !important;
+    height: 25px !important;
+
+    tui-svg {
+      font-size: 12px !important;
+    }
+  }
+
+  &:hover {
+    color: rgb(13, 71, 124) !important;
+  }
+
+  span {
+    color: black !important;
+    pointer-events: none;
+    font-size: 14px !important;
+
+  }
+
+}

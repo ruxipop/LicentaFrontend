@@ -1,0 +1,130 @@
+<div class="carousel-home-page">
+  <img src="../../../assets/imgs/car1.jpg" alt="Slide 1">
+  <img src="../../../assets/imgs/car2.jpg" alt="Slide 2">
+  <img src="../../../assets/imgs/car3.jpg" alt="Slide 3">
+  <img src="../../../assets/imgs/car4.jpg" alt="Slide 4">
+
+
+  <div class="carousel-container">
+    <div class="carousel-container-content">
+      <div class="carousel-text">
+        <h1>
+
+          <span>
+            Join the Vizo community to find your inspiration
+
+
+
+          </span>
+
+        </h1>
+
+        <p>
+          Explore and share extraordinary photographs from around the globe.
+        </p>
+        <button (click)="goToRegisterPage()" class="form-submit-button"> Sign up</button>
+      </div>
+    </div>
+
+    <div class="carousel-photo"></div>
+
+  </div>
+</div>
+
+<div class="container-why">
+  <div class="container-why-wrapper">
+    <h1>Why Vizo ?</h1>
+    <p>These are just a few of the reasons why you would choose us over others</p>
+  </div>
+</div>
+
+<div class="container-reason">
+  <div class="container-reason-content">
+    <div class="reason-wrapper">
+      <div class="reason-item">
+        <tui-svg
+          src="tuiIconCameraLarge"
+        ></tui-svg>
+        <h3>Photos
+        </h3>
+        <div class="description">
+          <p>
+            Exploring our collection, you will discover impressive high-quality images, carefully selected to inspire
+            and
+            impress. </p>
+        </div>
+      </div>
+
+      <div class="reason-item" style="margin-left: 1rem!important;margin-right: 1rem!important;">
+        <tui-svg
+          src="tuiIconActivityLarge"
+        ></tui-svg>
+        <h3>Community
+        </h3>
+        <div class="description"><p>
+          Engage with our active community: a global network of passionate individuals, bound by their shared love for
+          photography. </p>
+        </div>
+      </div>
+      <div class="reason-item">
+        <tui-svg
+          src="tuiIconAwardLarge"
+        ></tui-svg>
+        <h3>Appreciation
+        </h3>
+        <div class="description"><p>
+          Achieve recognition: your photographs will be rated by some of the best editors in the field. </p>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+<div class="container-wrapper">
+  <div class="container ">
+    <div class="left-container">
+      <h3>
+        Do you have any questions?</h3>
+      <p>
+        Leave us a message
+      </p>
+    </div>
+    <div class="right-container">
+      <form>
+
+
+        <div class="form-group">
+          <label for="lastName">Name*</label>
+          <input type="text" id="lastName" name="lastName" [(ngModel)]="name" required>
+          <p>{{ currentCharacterCount(name) }}/50</p>
+
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email*</label>
+          <input type="email" id="email" name="email" [(ngModel)]="email" required>
+          <p>{{ currentCharacterCount(email) }}/50</p>
+
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message*</label>
+          <textarea id="message" name="message" [(ngModel)]="message" required></textarea>
+          <p>{{ currentCharacterCount(message) }}/250</p>
+
+        </div>
+
+        <div class="form-group text-right ">
+          <button [disabled]="isButtonDisable()" class="form-submit-button" type="submit">Send email</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <app-footer></app-footer>
+</div>

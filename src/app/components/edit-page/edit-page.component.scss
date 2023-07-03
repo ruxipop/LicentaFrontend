@@ -1,0 +1,27 @@
+.container {
+  position: relative; /* Asigurați-vă că containerul are poziționare relativă */
+  margin-top: 30px;
+  display: flex;
+  &.sub-menu-open .content {
+    left: 50%; /* Ajustați valoarea left pentru a muta componenta mai la dreapta */
+  }
+}
+
+
+
+
+.content {
+  margin-top: 27%;
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+app-edit-bar {
+  position: relative;
+  z-index: 2;
+}

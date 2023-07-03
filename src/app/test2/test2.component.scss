@@ -32,21 +32,20 @@
   padding: 10px;
 }
 
-/* Media queries pentru a ajusta dimensiunea elementelor */
 @media (min-width: 768px) {
   .gallery-item {
-    flex-basis: calc(25% - 20px); /* 25% din lățimea containerului minus marginile */
+    flex-basis: calc(25% - 20px);
   }
 }
 
 @media (max-width: 767px) {
   .gallery-item {
-    flex-basis: calc(50% - 20px); /* 50% din lățimea containerului minus marginile */
+    flex-basis: calc(50% - 20px);
   }
 }
 
 @media (max-width: 480px) {
   .gallery-item {
-    flex-basis: 100%; /* Ocupă întreaga lățime a containerului pe ecrane mai mici */
+    flex-basis: 100%;
   }
 }

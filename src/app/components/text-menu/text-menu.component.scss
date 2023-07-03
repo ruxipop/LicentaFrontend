@@ -1,0 +1,110 @@
+.container {
+  height: 50vh !important;
+
+}
+
+label {
+  margin-right: 10px;
+}
+
+.dropdown {
+  label {
+    margin-top: 0.2rem !important;
+  }
+
+  margin-top: 2rem !important;
+
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  .custom-select {
+    height: 30px;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+  }
+
+  .custom-select:focus {
+    cursor: pointer;
+    outline: none;
+
+    border-color: #5b9dd9;
+    box-shadow: 0 0 3px rgba(91, 157, 217, 0.5);
+  }
+
+  .custom-select option.selected {
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #e6f0ff;
+  }
+
+}
+
+
+.button-group {
+
+
+  flex-direction: column !important;
+  align-items: center !important;
+  margin-top: 2rem !important;
+}
+
+
+.buttons-font-style {
+  display: flex;
+  color: black;
+  margin-bottom: 10px;
+  margin-top: 10px;
+
+}
+
+
+input[type="color"] {
+  width: 32px;
+  height: 32px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.control {
+  margin-top: 10px;
+}
+
+.slider-container {
+  width: 90%;
+  margin-top: 1rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+.value {
+  text-align: right;
+  flex: 1;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+
+
+

@@ -1,0 +1,48 @@
+
+
+<div class="container">
+  <form [formGroup]="testForm">
+    <div class="toggle-item">
+      <label for="toggle1">Invert</label>
+      <div class="toggle-wrapper">
+        <tui-toggle id="toggle1" formControlName="Invert"></tui-toggle>
+      </div>
+    </div>
+
+    <div class="toggle-item">
+      <label for="toggle2">Grayscale</label>
+      <div class="toggle-wrapper">
+        <tui-toggle id="toggle2" formControlName="Grayscale"></tui-toggle>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="filter">
+    <label>Blur</label>
+    <input class="custom-range" type="range" id="blurSlider" min="0" max="1" step="0.1" [(ngModel)]="blurIntensity" (ngModelChange)="applyBlurFilter()">
+  </div>
+  <div class="filter">
+    <label>Saturation</label>
+
+    <input class="custom-range" type="range" id="satSlider" min="0" max="1" step="0.1" [(ngModel)]="saturationValue" (ngModelChange)="applySaturationFilter()">
+  </div>
+  <div class="filter">
+    <label>Noise</label>
+
+    <input class="custom-range" type="range" id="noiseSlider" min="0" max="100" step="0.1" [(ngModel)]="noiseValue" (ngModelChange)="applyNoiseFilter()">
+  </div>
+
+  <div class="filter">
+    <label>Pixelate</label>
+
+    <input  class="custom-range" type="range" id="pixelateSlider" min="1" max="100" step="0.1" [(ngModel)]="pixelateValue" (ngModelChange)="applyPixelateFilter()">
+  </div>
+
+
+  <div class="filter">
+    <label>Hue</label>
+
+    <input  class="custom-range" type="range" id="lider" min="0" max="100" step="0.1" [(ngModel)]="hueValue" (ngModelChange)="applyHueFilter()">
+  </div>
+</div>

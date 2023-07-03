@@ -1,0 +1,113 @@
+<nav>
+  <div class="logo">Vizo</div>
+  <div (click)="toggleMenu()" class="menu-toggle">☰</div>
+  <div *ngIf="isMenuOpen" class="dialog-overlay" style="z-index:9000">
+    <div class="dialog-content">
+      <button (click)="closeDialog()" class="close-button">X</button>
+      <div class="logo">Vizo</div>
+      <div class="logo-bar"></div>
+      <div class="buttons-container">
+        <div class="destination-buttons">
+          <a href="/discover">Discover</a>
+          <a href="/editor">Editor</a>
+        </div>
+        <div class="auth-buttons2" *ngIf="!isLoggedIn()">
+          <a href="auth/login" style="margin-right:-5px" class="text-button">Log in </a>
+          <span>/</span>
+          <a href="auth/register" style="margin-left:-5px" class="text-button">Sign up</a>
+        </div>
+        <a href="auth/login" *ngIf="isLoggedIn()" (click)="logOut()">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="principal-buttons">
+    <a style="margin-left:1rem" href="/discover">Discover</a>
+    <a href="/editor"> Editor</a>
+  </div>
+  <nav tuiTabBar class="tabs">
+    <ng-container *ngFor="let item of items">
+      <ng-container *ngIf="item.text === 'Home' || item.text=='Discover'">
+        <a [href]="item.url" tuiTabBarItem [icon]="item.icon" type="button">
+          {{item.text}}
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf=" isLoggedIn() && item.text === 'Chat'">
+        <a [href]="item.url" tuiTabBarItem [icon]="item.icon" type="button">
+          {{item.text}}
+        </a>
+      </ng-container>
+      <ng-container *ngIf="item.text == 'Upload' && isLoggedIn()">
+        <a (click)="openModal()" tuiTabBarItem [icon]="item.icon" type="button">
+          {{item.text}}
+        </a>
+      </ng-container>
+      <ng-container *ngIf="item.text === 'Profile'">
+        <ng-container class="dropdown1">
+          <a tuiTabBarItem [icon]="item.icon" type="button" (click)="isLoggedIn()? openUserMenu() : login()">
+            {{item.text}}
+          </a>
+          <div *ngIf="isUserMenuOpen" class="dialog-overlay" style="top:1rem!important;">
+
+            <div class="dialog-content" style="margin-top: 2.5rem;">
+
+              <div class="buttons-container" style="margin-top:-1rem">
+                <div class="destination-buttons">
+
+                  <a [href]="'user-profile/' + this.loggedId">My Profile</a>
+                  <a *ngIf="isAdminAuthenticated()" [href]="'votes-page/' + this.loggedId">My Votes</a>
+                  <a *ngIf="isAdminAuthenticated()" [href]="'statistics-page'"> Statistics</a>
+                  <a *ngIf="isLoggedIn()" [href]="'notifications-page/'+this.loggedId">Notifications</a>
+                  <a  (click)="logOut()">Logout</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </nav>
+  <div class="auth-buttons" [style.margin-right]="!isLoggedIn() ? '-2%!important' : ''">
+    <button (click)="login()" *ngIf="!isLoggedIn()" class="button sign-in">Log in</button>
+    <button (click)="register()" *ngIf="!isLoggedIn()" class="button sign-up">Sign up</button>
+    <ul class="menu">
+      <li class="dropdown">
+        <a class="dropdown-toggle" style="margin-right: -3.3rem!important;" (click)="openUserMenu()">
+          <tui-svg *ngIf="isLoggedIn()"
+                   src="tuiIconUserLarge"
+          ></tui-svg>
+        </a>
+        <ul class="dropdown-menu" style=" margin-left: -5px;" [ngClass]="{ 'show-menu': isUserMenuOpen }">
+          <li><a [href]="'user-profile/' + this.loggedId">My Profile</a></li>
+          <li><a *ngIf="isAdminAuthenticated()"  [href]="'votes-page/' + this.loggedId">My Votes</a></li>
+          <li><a *ngIf="isAdminAuthenticated()" [href]="'statistics-page'"> Statistics</a></li>
+          <li><a (click)="logOut()">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+    <a href="/chat-page" *ngIf="isLoggedIn()">
+      <tui-svg
+
+        src="tuiIconSendLarge"
+        class="icon"
+        style="margin-right: -0.5rem!important;"
+      ></tui-svg>
+    </a>
+    <a [href]="'notifications-page/'+loggedId" *ngIf="isLoggedIn()">
+      <tui-svg
+        src="tuiIconBellLarge"
+        class="icon"
+
+      ></tui-svg>
+    </a>
+    <button (click)="openModal()" *ngIf="isLoggedIn()" class="button sign-up">
+      <tui-svg style="margin-right: 10px"
+               src="tuiIconArrowUpLarge"
+      ></tui-svg>
+      Upload
+    </button>
+  </div>
+</nav>
+
+<app-upload-modal (closeEvent)="handleCloseModal()" [isModalOpen]="isUploadModalOpen"></app-upload-modal>

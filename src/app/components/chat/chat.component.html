@@ -1,0 +1,171 @@
+<div class="chat-page-container" xmlns="http://www.w3.org/1999/html">
+  <ng-container *ngIf="usersInChat$ | async as usersChat">
+
+    <div class="inbox-container">
+      <div class="messenger-header">
+        <div class="title-chat">
+          <h3>Messenger</h3>
+        </div>
+        <a class="new-chat-button" (click)="openNewConv()">
+          <tui-svg
+            src="tuiIconPlusSquareLarge"></tui-svg>
+        </a>
+
+      </div>
+
+      <div class="messenger-list">
+        <a *ngFor="let userChat of usersChat">
+          <div (click)="selectUser(userChat.user)">
+            <div class="messenger-user"
+                 [ngClass]="{'selected-user':  (this.selectedUser) && userChat.user.username==this.selectedUser.username}">
+              <div class="last-message">
+                <div class="user-avatar-wrapper">
+                  <img *ngIf="userChat.user.profilePhoto" [src]="userChat.user.profilePhoto">
+                  <tui-svg *ngIf="!userChat.user.profilePhoto" src="tuiIconUserLarge" class="icon-profile"
+                           style="width: 3rem;height: 3rem"></tui-svg>
+                  <div class="user-avatar-text-wrapper">
+                    <div class="text-header" style="display: flex;">
+                      <div class="user-username">
+                        <p style="font-weight: bold; font-size: 18px; margin: 0;">
+                          {{ userChat.user.name }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <span style="font-size: 14px">{{userChat.user.username}}</span>
+                  </div>
+                </div>
+                <p style=" margin-left: auto;color:gray;font-size:14px"> {{ formatMessageTime(userChat.lastMessage) }}</p>
+              </div>
+
+
+            </div>
+          </div>
+        </a>
+
+
+      </div>
+
+    </div>
+    <div class="chat-container" *ngIf="openNewChat">
+      <div class="messenger-header">
+        <div class="user-chat-wrapper">
+          <p>New Conversation</p>
+        </div>
+
+      </div>
+
+      <div class="input-wrapper">
+        <tui-input
+
+          tuiTextfieldIconLeft="tuiIconSearchLarge"
+
+          (input)="searchMethod()"
+          [(ngModel)]="value">
+
+          Search
+          <input tuiTextfield/>
+        </tui-input>
+      </div>
+
+      <div class="subtext"><span>Following</span></div>
+      <div class="user-list" *ngIf="following$ | async as following" (scroll)="onScroll()">
+        <div class="messenger-user-list" (click)="selectUser(follow.following)"
+             *ngFor="let follow of following">
+          <div class="user-element-wrapper">
+            <div class="user-element">
+              <img *ngIf="follow.following.profilePhoto" [src]="follow.following.profilePhoto">
+              <tui-svg *ngIf="!follow.following.profilePhoto" src="tuiIconUserLarge" class="icon-profile"></tui-svg>
+              <div class="text-wrapper">
+                <div class="text">
+                  <p style="font-weight: bold;font-size: 18px">
+                    {{follow.following.name}}
+                  </p>
+                </div>
+
+                <div class="text">
+                <span style="font-size: 14px">
+                  {{follow.following.username}}
+                </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="chat-container" *ngIf="!openNewChat">
+      <div class="messenger-header">
+        <div class="user-chat-wrapper">
+          <img *ngIf="this.selectedUser.profilePhoto" [src]="this.selectedUser.profilePhoto">
+          <tui-svg *ngIf="!this.selectedUser.profilePhoto" src="tuiIconUserLarge" class="icon-profile"></tui-svg>
+          <div class="user-avatar-text-wrapper">
+            <div class="text-header">
+              <div class="user-username">
+                <p style="margin-left: 0.7rem;">
+                  {{this.selectedUser.name}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ant-dropdown-trigger " (click)="toggleDropdown()">
+
+
+          <span>&#8230;</span>
+          <ul class="dropdown-menu" [ngClass]="{ 'show-menu': isDropdownOpen }">
+            <li><a href="/user-profile/{{ this.selectedUser.id}}">View profile</a></li>
+            <li><a href="#">Report user</a></li>
+            <li><a href="#">Block user</a></li>
+
+          </ul>
+
+
+        </div>
+      </div>
+
+      <div class="chat-conversation" *ngIf="combinedMessages$ | async as combinedMessages">
+        <div class="chat-conv-source" #chatContainer>
+          <ng-container *ngFor="let message of combinedMessages; let i = index">
+
+            <ng-container *ngIf="i === 0 || !areEqualDates(message.timestamp, combinedMessages[i - 1].timestamp)">
+              <div class="message-date">{{ formatDate(message.timestamp) }}</div>
+            </ng-container>
+            <div [ngClass]="{'message-body-me': message.sent, 'message-body-you': !message.sent}">
+              <div [ngClass]="{'message-me': message.sent, 'message-you': !message.sent}">
+                <ng-container *ngIf="message.sent; else otherMessage">
+                  {{ this.decryptSentMessage(message.message) | trim }}
+                </ng-container>
+                <ng-template #otherMessage>
+                  {{ this.decryptReceivedMessage(message.message) | trim }}
+                </ng-template>
+              </div>
+              <p class="message-hour" [ngStyle]="{'text-align': message.sent ? 'right' : 'left'}">
+                {{ formatTime(message.timestamp) }}
+              </p>
+
+
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="chat-input-wrapper">
+          <input type="text" class="message-input" [(ngModel)]="message" placeholder="Say something...">
+          <button class="form-submit-button" [disabled]="message==='' " (click)="sendMessage(usersChat)"> Send
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div>
+
+    </div>
+  </ng-container>
+
+</div>

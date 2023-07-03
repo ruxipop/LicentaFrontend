@@ -1,0 +1,32 @@
+<div class="upload-container">
+  <div class="container" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+
+    <div class="upload-text" *ngIf="!selectedFile">
+      <tui-svg src="tuiIconUploadCloudLarge" class="icon"></tui-svg>
+      <p>Drag files to upload</p>
+    </div>
+
+    <input type="file" #fileInput (change)="onFileSelected($event)"   accept="image/*" style="display: none;">
+    <button class="upload-button" (click)="fileInput.click()"   *ngIf="!selectedFile">Upload Photo</button>
+
+    <canvas #canvas  id="canvas"></canvas>
+
+    <div class="buttons">
+
+        <button class="delete-button" (click)="deleteImage()" [disabled]="!selectedFile">Delete Photo</button>
+        <button class="download-button" (click)="downloadImage()" [disabled]="!selectedFile">Download Photo</button>
+        <button class="download-button" (click)="undo()" [disabled]="!selectedFile">
+          <tui-svg src="tuiIconUndo"></tui-svg>
+        </button>
+        <button class="download-button" (click)="redo()" [disabled]="!selectedFile">
+          <tui-svg src="tuiIconRedo"></tui-svg>
+        </button>
+      <button class="download-button" (click)="deleteSelectedObject()" [disabled]="!selectedFile || !this.selectObject">
+        <tui-svg src="tuiIconTrash"></tui-svg>
+      </button>
+    </div>
+
+  </div>
+
+
+</div>

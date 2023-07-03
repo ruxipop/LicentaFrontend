@@ -1,74 +1,60 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 import {RouterModule, Routes} from "@angular/router";
-import {NavbarComponent} from "./navbar/navbar.component";
-import {LoginComponent} from "./login/login.component";
-import {RegisterComponent} from "./register/register.component";
-import {UploadImageComponent} from "./upload-image/upload-image.component";
-import {EditBarComponent} from "./edit-bar/edit-bar.component";
-import {EditPageComponent} from "./edit-page/edit-page.component";
-import {FiltersComponent} from "./filters/filters.component";
-import {DrawingMenuComponent} from "./drawing-menu/drawing-menu.component";
-import {TextMenuComponent} from "./text-menu/text-menu.component";
-import {TabsComponent} from "./tabs/tabs.component";
-import {DiscoverPageComponent} from "./discover-page/discover-page.component";
-import {TestComponent} from "./test/test.component";
-import {Test2Component} from "./test2/test2.component";
-import {ImagePageComponent} from "./image-page/image-page.component";
-import {LikesModalComponent} from "./likes-modal/likes-modal.component";
-import {UserProfileComponent} from "./user-profile/user-profile.component";
-import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
-import {ResetPassword} from "./models/password";
-import {ResetPasswordComponent} from "./reset-password/reset-password.component";
-import {ChatComponent} from "./chat/chat.component";
-import {EditProfileComponent} from "./edit-profile/edit-profile.component";
-import {GalleryEditComponent} from "./gallery-edit/gallery-edit.component";
-import {GalleryPageComponent} from "./gallery-page/gallery-page.component";
-import {NotificationPageComponent} from "./notification-page/notification-page.component";
-import {UploadModalComponent} from "./upload-modal/upload-modal.component";
-import {ModalSelectPhotoComponent} from "./modal-select-photo/modal-select-photo.component";
-import {GalleryModalComponent} from "./gallery-modal/gallery-modal.component";
-
-
+import {LoginComponent} from "./components/login/login.component";
+import {RegisterComponent} from "./components/register/register.component";
+import {UploadImageComponent} from "./components/upload-image/upload-image.component";
+import {EditBarComponent} from "./components/edit-bar/edit-bar.component";
+import {EditPageComponent} from "./components/edit-page/edit-page.component";
+import {DiscoverPageComponent} from "./components/discover-page/discover-page.component";
+import {ImagePageComponent} from "./components/image-page/image-page.component";
+import {UserProfileComponent} from "./components/user-profile/user-profile.component";
+import {ForgotPasswordComponent} from "./components/forgot-password/forgot-password.component";
+import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
+import {ChatComponent} from "./components/chat/chat.component";
+import {EditProfileComponent} from "./components/edit-profile/edit-profile.component";
+import {GalleryEditComponent} from "./components/gallery-edit/gallery-edit.component";
+import {GalleryPageComponent} from "./components/gallery-page/gallery-page.component";
+import {NotificationPageComponent} from "./components/notification-page/notification-page.component";
+import {VotedImagesComponent} from "./components/voted-images/voted-images.component";
+import {StatisticsPageComponent} from "./components/statistics-page/statistics-page.component";
+import {environment} from "../environments/environment";
+import {BrowserModule} from "@angular/platform-browser";
+import {AngularFireModule} from '@angular/fire/compat';
+import {AngularFireDatabaseModule} from '@angular/fire/compat/database';
+import {AngularFireStorageModule} from '@angular/fire/compat/storage';
+import {HomePageComponent} from "./components/home-page/home-page.component";
+import {AuthGuard} from "./auth/auth.guard";
 
 const routes: Routes = [
-  {path: 'image/:id', component:  ImagePageComponent},
-  {path: 'auth/login', component:  LoginComponent},
-  // {path: 'discover', component: TabsComponent},
-  {path: 'auth/register', component:RegisterComponent},
-  {path: 'auth/forgot-password', component:ForgotPasswordComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: 'discover', component: DiscoverPageComponent},
+  {path: "home", component: HomePageComponent},
+  {path: 'image/:id', component: ImagePageComponent},
+  {path: 'auth/login', component: LoginComponent},
+  {path: 'auth/register', component: RegisterComponent},
+  {path: 'auth/forgot-password', component: ForgotPasswordComponent},
   {path: 'auth/reset-password', component: ResetPasswordComponent},
-  {path:'edit-bar',component:EditBarComponent},
-  {path:'edit-page',component:EditPageComponent},
-  {path: 'user/:id', component:  UserProfileComponent},
-  {path: 'user2/:id', component:  UserProfileComponent},
-  {path:'chat',component:ChatComponent},
-  {path:"edit/:id",component:EditProfileComponent},
-  {path:"gallery/:id",component:GalleryPageComponent},
-  {path:"create-gallery",component:GalleryEditComponent},
-  {path:"gallery-edit/:id",component:GalleryEditComponent},
-  {path:"notification/:id",component:NotificationPageComponent},
-  {path:"upload",component:UploadImageComponent},
-  {path:"upload2",component:UploadModalComponent},
-  {path:"ce",component:Test2Component},
-  {
-    path:'discover',
-    component:DiscoverPageComponent,
-    children:[
-      {path:'popular',component:LoginComponent},
-      {path:'basic',component:DiscoverPageComponent},
-      {path:'editors',component:DiscoverPageComponent},
-      {path:'fresh',component:DiscoverPageComponent}
-
-
-
-    ]
-  }
-  ]
+  {path: 'editor', component: EditPageComponent},
+  {path: "gallery-page/:id", component: GalleryPageComponent},
+  {path: 'user-profile/:id', component: UserProfileComponent},
+  {path: 'chat-page', component: ChatComponent, canActivate: [AuthGuard], data: {roles: ['EDITOR','USER']}},
+  {path: "edit-profile/:id", component: EditProfileComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR','USER']}},
+  {path: "create-gallery", component: GalleryEditComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR','USER']}},
+  {path: "edit-gallery/:id", component: GalleryEditComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR','USER']}},
+  {path: "notifications-page/:id", component: NotificationPageComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR','USER']}},
+  {path: "statistics-page", component: StatisticsPageComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR']}},
+  {path: "votes-page/:id", component: VotedImagesComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR']}},
+]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireStorageModule],
+  providers: [],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

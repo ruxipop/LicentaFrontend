@@ -1,0 +1,15 @@
+<div infiniteScroll (scrolled)="onScroll()">
+<div class="container">
+  <app-tabs [displayDropdown]="true" (emitDeselectedCategory)="handleDeselectCategory($event)" (emitSelectedCategory)="handleCategory($event)" (messageToParent)="handleType($event)" *ngIf="images$ | async as images" >
+    <app-tab [selectedTab]="type" [subTitle]="'See recently added photos with the highest Pulse.'" [title]="'What\'s popular today'" [tabTitle]="'Popular'" [images]="images"  >
+    </app-tab>
+    <app-tab [selectedTab]="type"  [title]="'The newest uploads'"  [subTitle]="'Be one of first to discover the photos just added.'" [tabTitle]="'Fresh'"  [images]="images">
+    </app-tab>
+    <app-tab [selectedTab]="type"  [title]="'Hand-picked by our editors.'" [subTitle]="'Check out photos selected by our Editors.'" [tabTitle]="'Editor\'s Choice'" [images]="images" >
+    </app-tab>
+    <app-tab [selectedTab]="type"  [title]="'Unconventional Beauty'" [subTitle]="'Discovering unique images that defy conventional norms.'" [tabTitle]="'Basic'" [images]="images" >
+    </app-tab>
+  </app-tabs>
+</div>
+</div>
+
