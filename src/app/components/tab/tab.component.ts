@@ -36,13 +36,12 @@ export class TabComponent implements OnChanges {
   loggedUser: number;
   currentUser: number;
   currentUserName: string;
-  protected readonly isAdminAuthenticated = isAdminAuthenticated;
-
   isUploadModalOpen = false;
+  protected readonly isAdminAuthenticated = isAdminAuthenticated;
 
   constructor(private imageService: ImageService,
               private dialog: MatDialog,
-              private chatService:ChatService,
+              private chatService: ChatService,
               private userService: UserService,
               private router: Router,
               private editorService: EditorService,
@@ -67,7 +66,7 @@ export class TabComponent implements OnChanges {
         this.removeLike(image)
       } else {
         this.addLike(image)
-        this.chatService.sendNotification(image.autorId.toString(), NotificationType.Like,image.id.toString());
+        this.chatService.sendNotification(image.autorId.toString(), NotificationType.Like, image.id.toString());
 
       }
     } else {
@@ -95,34 +94,6 @@ export class TabComponent implements OnChanges {
       }
     })
   }
-
-  private removeLike(image: Picture) {
-    this.likeService.removeLike(image.id)
-      .pipe(
-        tap(() => {
-            if (this.tabTitle === 'Liked') {
-              const index = this.images.findIndex(item => item.id === image.id);
-              if (index !== -1) {
-                this.images.splice(index, 1);
-              }
-            }
-          }
-        )
-      )
-      .subscribe({
-        next: () => {
-          const index = image.likes.findIndex(item => item.userId === this.loggedUser);
-          if (index !== -1) {
-            image.likes.splice(index, 1);
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
-          this.alertService.addNotification(notification)
-        }
-      })
-  }
-
 
   addLike(image: Picture) {
     this.likeService.addLikeToImage(image.id)
@@ -223,7 +194,6 @@ export class TabComponent implements OnChanges {
     });
   }
 
-
   gotToDiscoverPage() {
     window.location.href = '/discover'
   }
@@ -232,5 +202,32 @@ export class TabComponent implements OnChanges {
     document.body.style.overflow = 'hidden';
 
     this.isUploadModalOpen = true;
+  }
+
+  private removeLike(image: Picture) {
+    this.likeService.removeLike(image.id)
+      .pipe(
+        tap(() => {
+            if (this.tabTitle === 'Liked') {
+              const index = this.images.findIndex(item => item.id === image.id);
+              if (index !== -1) {
+                this.images.splice(index, 1);
+              }
+            }
+          }
+        )
+      )
+      .subscribe({
+        next: () => {
+          const index = image.likes.findIndex(item => item.userId === this.loggedUser);
+          if (index !== -1) {
+            image.likes.splice(index, 1);
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
+          this.alertService.addNotification(notification)
+        }
+      })
   }
 }

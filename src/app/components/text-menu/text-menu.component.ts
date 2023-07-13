@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 
 import {FormControl} from "@angular/forms";
 import {TextFormat} from "../../models/textFormat";
@@ -20,7 +20,7 @@ export class TextMenuComponent {
   textFormat: TextFormat;
 
   readonly control = new FormControl(6.5);
- fontList = [
+  fontList = [
     'Arial',
     'Verdana',
     'Times New Roman',
@@ -53,17 +53,6 @@ export class TextMenuComponent {
     'Avenir',
     'Merriweather'
   ];
-
-
-  constructor(private dataService: TransferDataService) {
-    this.dataService.data$3.subscribe((data) => {
-      this.selectedColor = data.color;
-      this.selectedFont = data.font
-      this.fontSize=data.size.toFixed(1)
-
-    });
-  }
-
   selectedColor: string = '#000000';
   selectedFont: string = 'Arial';
   isBold: boolean = false;
@@ -71,6 +60,14 @@ export class TextMenuComponent {
   isItalic: boolean = false;
   fontSize: number = 15;
 
+  constructor(private dataService: TransferDataService) {
+    this.dataService.data$3.subscribe((data) => {
+      this.selectedColor = data.color;
+      this.selectedFont = data.font
+      this.fontSize = data.size.toFixed(1)
+
+    });
+  }
 
   addNewText() {
     this.createFont()
@@ -134,7 +131,6 @@ export class TextMenuComponent {
       this.emitText();
     }
   }
-
 
 
 }

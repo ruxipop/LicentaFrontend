@@ -27,10 +27,13 @@ export class EditProfileComponent implements OnInit {
   backgroundImage: string = '';
   profileImage: string = '';
   loading: boolean = false;
+  city: string = ''
+  country: string = ''
+  protected readonly currentCharacterCount = currentCharacterCount;
+  protected readonly getUserAuthenticatedId = getUserAuthenticatedId;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute,private dialog: MatDialog,  private router: Router, private userService: UserService) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private dialog: MatDialog, private router: Router, private userService: UserService) {
   }
-
 
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
@@ -40,9 +43,6 @@ export class EditProfileComponent implements OnInit {
 
 
   }
-
-  city: string = ''
-  country: string = ''
 
   fetchUser() {
     this.userService.getUser(this.userId).subscribe(data => {
@@ -64,19 +64,18 @@ export class EditProfileComponent implements OnInit {
     })
   }
 
-
   updateUser() {
-    this.loading=true
-    let location= (this.country==='' && this.city==='') ? null:new Location(0, this.country, this.city)
-    let user = new UpdateUserDto(this.userId, this.username, this.name,location, this.description, this.backgroundImage, this.profileImage);
-    this.userService.updateUser(user).subscribe(()=>
+    this.loading = true
+
+
+    let location = (this.country === '' && this.city === '') ? null : new Location(0, this.country, this.city)
+
+    let user = new UpdateUserDto(this.userId, this.username, this.name, location, this.description==''? null:this.description, this.backgroundImage==''?null: this.backgroundImage, this.profileImage==''?null:this.profileImage);
+    this.userService.updateUser(user).subscribe(() =>
       setTimeout(() => {
-        this.loading=false;
+        this.loading = false;
         this.goToUserProfile()
       }, 2000)
-
-
-
     )
   }
 
@@ -84,12 +83,11 @@ export class EditProfileComponent implements OnInit {
     return this.username == '' || this.name == ''
   }
 
-
   goToUserProfile() {
-    window.location.href='user-profile/'+this.userId
+    window.location.href = 'user-profile/' + this.userId
   }
 
-  cancelUpdate(){
+  cancelUpdate() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '500px',
       data: {label: 'Leave', message: "Are you sure you want to leave the page?", button: "Leave"}
@@ -101,6 +99,7 @@ export class EditProfileComponent implements OnInit {
       }
     });
   }
+
   handleSelectedPhoto($event: string) {
     if (this.isBackgroundPhoto) {
       console.log("ce")
@@ -126,8 +125,4 @@ export class EditProfileComponent implements OnInit {
     }
     this.openChoosePhoto = true;
   }
-
-
-  protected readonly currentCharacterCount = currentCharacterCount;
-  protected readonly getUserAuthenticatedId = getUserAuthenticatedId;
 }

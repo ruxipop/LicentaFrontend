@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin-left: 2rem!important;
   max-width: 100%;
 }
 
@@ -27,6 +28,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .upload-wrapper input[type="file"] {
   position: absolute;
   top: 0;
@@ -38,11 +40,9 @@
 }
 
 
-
 .upload-buttons {
   margin-top: 10px;
 }
-
 
 
 .delete-button,
@@ -67,9 +67,7 @@
 }
 
 .upload-text {
-  margin-top:25%!important;
-
-  //margin-bottom: 10px;
+  margin-top: 25% !important;
 }
 
 .upload-button {
@@ -95,12 +93,10 @@ p {
 tui-svg {
   font-size: 25px;
 }
+
 .canvas-container {
   cursor: default !important;
 }
-
-
-
 
 
 .buttons {
@@ -110,7 +106,8 @@ tui-svg {
   top: -2.7rem;
   right: 0.5rem;
   gap: 5px;
-  tui-svg{
+
+  tui-svg {
     color: gray;
   }
 }

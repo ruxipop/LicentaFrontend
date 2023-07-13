@@ -1,11 +1,11 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {BehaviorSubject, forkJoin, Observable, take, tap} from "rxjs";
+import {Component, Input, OnInit} from '@angular/core';
+import {BehaviorSubject, forkJoin, Observable, take} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../models/user";
 import {UserService} from "../../services/user.service";
 import {FollowService} from "../../services/follow.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {isAuthenticated, isUserAuthenticated} from "../../utils";
+import {isAuthenticated} from "../../utils";
 import {SealService} from "../../services/seal.service";
 import {AlertService} from "../../services/alert.service";
 import {GalleryService} from "../../services/gallery.service";
@@ -34,12 +34,13 @@ export class UserProfileComponent implements OnInit {
   FollowersNb: number;
   FollowingNb: number;
   isUserFollowing: boolean = false;
+  protected readonly isAuthenticated = isAuthenticated;
 
   constructor(private route: ActivatedRoute,
               private sealService: SealService,
               private router: Router,
               private dialog: MatDialog,
-              private chatService:ChatService,
+              private chatService: ChatService,
               private galleryService: GalleryService,
               private userService: UserService,
               private followService: FollowService,
@@ -47,20 +48,16 @@ export class UserProfileComponent implements OnInit {
 
   }
 
-
   ngOnInit(): void {
     const loggedUser = localStorage.getItem("id");
     if (loggedUser) {
       this.loggedUser = parseInt(loggedUser);
     }
-
-
     this.route.paramMap.subscribe(params => {
       this.userID = Number(params.get('id'))
       this.fetchUser();
       this.fetchFollowNb();
       if (this.userID != this.loggedUser && isAuthenticated()) {
-        console.log('aj aici')
         this.followService.isUserFollowing(this.userID).subscribe((data) => {
           this.isUserFollowing = data
         })
@@ -69,8 +66,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   fetchFollowNb() {
-    console.log(this.userID)
-
     this.followService.getAllFollowingNb(this.userID).subscribe(data => {
         this.FollowingNb = data
       }
@@ -91,25 +86,24 @@ export class UserProfileComponent implements OnInit {
   }
 
   openFollowing() {
-    if(isAuthenticated()){
-    document.body.style.overflow = 'hidden';
+    if (isAuthenticated()) {
+      document.body.style.overflow = 'hidden';
 
-    this.openFollowingModal = true;}
-    else {
+      this.openFollowingModal = true;
+    } else {
       this.openLoginMessage();
     }
   }
 
   openFollowers() {
-    if(isAuthenticated()){
-    document.body.style.overflow = 'hidden';
+    if (isAuthenticated()) {
+      document.body.style.overflow = 'hidden';
 
-    this.openFollowersModal = true;}
-    else {
+      this.openFollowersModal = true;
+    } else {
       this.openLoginMessage();
     }
   }
-
 
   openLoginMessage() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -174,12 +168,10 @@ export class UserProfileComponent implements OnInit {
     } else if (this.type === 'Galleries') {
       this.galleryService.getAllGalleries(this.userID, this.currentPage, this.pageSize, ' ').subscribe(data => {
         this.obsArray.next(data)
-        console.log("da"+data)
 
       })
     }
   }
-
 
   removeElement($event: number) {
 
@@ -199,35 +191,6 @@ export class UserProfileComponent implements OnInit {
 
   }
 
-  private removeFollow() {
-    this.followService.removeFollow(this.userID)
-      .subscribe({
-        next: () => {
-          this.isUserFollowing = false;
-
-        },
-        error: (error: HttpErrorResponse) => {
-          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
-          this.alertService.addNotification(notification)
-        }
-      })
-  }
-
-
-  private addFollow() {
-    this.followService.addFollow(this.userID)
-      .subscribe({
-        next: () => {
-          this.isUserFollowing = true;
-          this.chatService.sendNotification(this.userID.toString(),NotificationType.Follow,null)
-        },
-        error: (error: HttpErrorResponse) => {
-          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
-          this.alertService.addNotification(notification)
-        }
-      })
-  }
-
   onFollowChange() {
     if (isAuthenticated()) {
 
@@ -242,11 +205,9 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-
   goToEditPage() {
     this.router.navigate(["edit-profile/" + this.userID])
   }
-
 
   copyLink() {
     const currentUrl = window.location.href;
@@ -264,5 +225,31 @@ export class UserProfileComponent implements OnInit {
       });
   }
 
-  protected readonly isAuthenticated = isAuthenticated;
+  private removeFollow() {
+    this.followService.removeFollow(this.userID)
+      .subscribe({
+        next: () => {
+          this.isUserFollowing = false;
+
+        },
+        error: (error: HttpErrorResponse) => {
+          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
+          this.alertService.addNotification(notification)
+        }
+      })
+  }
+
+  private addFollow() {
+    this.followService.addFollow(this.userID)
+      .subscribe({
+        next: () => {
+          this.isUserFollowing = true;
+          this.chatService.sendNotification(this.userID.toString(), NotificationType.Follow, null)
+        },
+        error: (error: HttpErrorResponse) => {
+          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
+          this.alertService.addNotification(notification)
+        }
+      })
+  }
 }

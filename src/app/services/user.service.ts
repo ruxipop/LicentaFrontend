@@ -19,6 +19,7 @@ export class UserService {
   }
 
   updateUser(user:UpdateUserDto){
+    console.log("user "+user)
     return this.http.put<any>(`${environment.apiUrl}/api/User/update`, user);
 
   }

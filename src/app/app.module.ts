@@ -103,6 +103,9 @@ import {MatNativeDateModule} from "@angular/material/core";
 import { CropMenuComponent } from './components/crop-menu/crop-menu.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ReportsPageComponent } from './components/reports-page/reports-page.component';
+import { EmailModalComponent } from './components/email-modal/email-modal.component';
+import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 
 
 @NgModule({
@@ -144,6 +147,9 @@ import { FooterComponent } from './components/footer/footer.component';
     CropMenuComponent,
     HomePageComponent,
     FooterComponent,
+    ReportsPageComponent,
+    EmailModalComponent,
+    ReportDialogComponent,
 
 
   ],

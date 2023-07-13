@@ -1,43 +1,49 @@
-<div class="container" *ngIf="image$ |async as image ">
-  <div class="image-container" [ngClass]="{ fullscreen: isFullscreen }">
+<div *ngIf="image$ |async as image " class="container">
+  <div [ngClass]="{ fullscreen: isFullscreen }" class="image-container">
     <tui-svg (click)="toggleFullscreen()"
              [src]="isFullscreen ? 'tuiIconMinimize2Large' : 'tuiIconMaximize2Large'"
              class="fullscreen-button"></tui-svg>
     <img [src]="image.imageUrl" alt="image">
   </div>
 
-  <div class="content-container" >
+  <div class="content-container">
     <div class="container-c">
       <div class="container-inner">
         <div class="left-container">
           <div class="icon-container">
-            <tui-svg (click)="onLikeChange(image)" src="tuiIconHeartLarge" class="icon"
-                     [ngClass]="{'red': isLiked}"></tui-svg>
-            <tui-svg src="tuiIconFolderPlusLarge" (click)="openGalleryModal()" class="icon"></tui-svg>
+            <tui-svg (click)="onLikeChange(image)" [ngClass]="{'red': isLiked}" class="icon"
+                     src="tuiIconHeartLarge"></tui-svg>
+            <tui-svg (click)="openGalleryModal()" class="icon" src="tuiIconFolderPlusLarge"></tui-svg>
+
+            <tui-svg *ngIf="localStorage.getItem('role')==='USER'" (click)="openDialogReport()" class="icon" src="tuiIconFlagLarge"></tui-svg>
+            <tui-svg *ngIf="isAdminAuthenticated && (existReport | async)" (click)="deleteImageViaReport(image)" class="icon" src="tuiIconTrash2Large"></tui-svg>
+
+
           </div>
           <div class="user-container">
 
 
-            <div class="user-avatar "  [ngStyle]="!image.autor.profilePhoto ? { 'border': '1px solid white', 'box-shadow': '0 0 5px 2px rgba(0, 0, 0, 0.1)' } : null">
-              <tui-svg *ngIf="!image.autor.profilePhoto" src="tuiIconUserLarge" class="profile-icon"></tui-svg>
+            <div [ngStyle]="!image.autor.profilePhoto ? { 'border': '1px solid white', 'box-shadow': '0 0 5px 2px rgba(0, 0, 0, 0.1)' } : null"
+                 class="user-avatar ">
+              <tui-svg *ngIf="!image.autor.profilePhoto" class="profile-icon" src="tuiIconUserLarge"></tui-svg>
 
-              <img  *ngIf="image.autor.profilePhoto" [src]="image.autor.profilePhoto" alt="autor">
+              <img *ngIf="image.autor.profilePhoto" [src]="image.autor.profilePhoto" alt="autor">
             </div>
             <div class="user-info">
               <div class="user-title">
                 {{image.title}}</div>
               <div class="line-2">
-                <div class="user-subtitle" (click)="goToUserPage(image.autorId)">by
+                <div (click)="goToUserPage(image.autorId)" class="user-subtitle">by
 
                   {{image.autor.name}}
                 </div>
 
-                <ng-container  *ngIf="image.autor.id!=this.currentUserId">
-                <div class="dot">•</div>
-                <div class="follow-button"  (click)="onFollowChange(image.autor)"
-                     [ngClass]="{'unfollow-button': isFollowing}">
-                  {{ isFollowing ? 'Unfollow' : 'Follow' }}
-                </div>
+                <ng-container *ngIf="image.autor.id!=this.currentUserId">
+                  <div class="dot">•</div>
+                  <div (click)="onFollowChange(image.autor)" [ngClass]="{'unfollow-button': isFollowing}"
+                       class="follow-button">
+                    {{ isFollowing ? 'Unfollow' : 'Follow' }}
+                  </div>
                 </ng-container>
               </div>
             </div>
@@ -65,15 +71,15 @@
               <div class="label">Category</div>
               <div class="value">{{ CategoryImage[image.category].toString() }}</div>
             </div>
-            <div class="info-type" *ngIf="imageType$ |async as typeImage">
+            <div *ngIf="imageType$ |async as typeImage" class="info-type">
               <div
                 class="label">{{typeImage.imageType === 'EditorChoice' ? 'Editor Choice' : typeImage.imageType}}</div>
               <tui-svg [src]="getImageType(typeImage.imageType)"></tui-svg>
             </div>
           </div>
           <div class="open-modal">
-           <span class="span-button"  (click)="image.likes.length !== 0 && openModal()"
-                 [ngClass]="{ 'disabled': image.likes.length === 0 }"><span>
+           <span (click)="image.likes.length !== 0 && openModal()" [ngClass]="{ 'disabled': image.likes.length === 0 }"
+                 class="span-button"><span>
                       {{ image.likes.length }} people liked this photo</span>
                     <tui-svg src="tuiIconArrowRightLarge"></tui-svg>
                         </span>
@@ -81,20 +87,21 @@
 
           <div class="carousel-container">
             <span>Color-Based Recommendations</span>
-            <button class="carousel-button carousel-button-previous" (click)="scrollToPrevious()"></button>
-            <div class="carousel-wrapper" #carouselWrapper>
-              <div class="card" *ngFor="let image of authorImages$">
-                <div class="card-img-top" (click)="goToImagePage(image.id)">
+            <button (click)="scrollToPrevious()" class="carousel-button carousel-button-previous"></button>
+            <div #carouselWrapper class="carousel-wrapper">
+              <div *ngFor="let image of authorImages$" class="card">
+                <div (click)="goToImagePage(image.id)" class="card-img-top">
                   <img [src]="image.imageUrl" alt="Carousel Image">
                 </div>
                 <div class="card-body">
-                  <div class="card-title"  >{{image.title}}</div>
+                  <div class="card-title">{{image.title}}</div>
 
-                  <div class="autor-name" (click)="goToUserPage(image.autorId)">
-                    <div class="user-avatar "  [ngStyle]="!image.autor.profilePhoto ? {  'border': '1px solid white', 'box-shadow': '0 0 5px 2px rgba(0, 0, 0, 0.1)' } : null">
-                      <tui-svg *ngIf="!image.autor.profilePhoto" src="tuiIconUser" class="profile-icon"></tui-svg>
+                  <div (click)="goToUserPage(image.autorId)" class="autor-name">
+                    <div [ngStyle]="!image.autor.profilePhoto ? {  'border': '1px solid white', 'box-shadow': '0 0 5px 2px rgba(0, 0, 0, 0.1)' } : null"
+                         class="user-avatar ">
+                      <tui-svg *ngIf="!image.autor.profilePhoto" class="profile-icon" src="tuiIconUser"></tui-svg>
 
-                      <img  *ngIf="image.autor.profilePhoto" [src]="image.autor.profilePhoto" alt="autor">
+                      <img *ngIf="image.autor.profilePhoto" [src]="image.autor.profilePhoto" alt="autor">
                     </div>
                     <span>by  &nbsp; </span>
                     <p>{{image.autor.username}}
@@ -103,34 +110,35 @@
                 </div>
               </div>
             </div>
-            <button class="carousel-button carousel-button-next" (click)="scrollToNext()"></button>
+            <button (click)="scrollToNext()" class="carousel-button carousel-button-next"></button>
           </div>
         </div>
         <div class="right-container">
           <div class="input-container">
 
-            <div class="profile-picture" *ngIf="currentUser$ | async as user"  >
+            <div *ngIf="currentUser$ | async as user" class="profile-picture">
               <ng-container *ngIf="user.profilePhoto; else profileIcon">
                 <img [src]="user.profilePhoto">
               </ng-container>
               <ng-template #profileIcon>
-                  <tui-svg src="tuiIconUserLarge"   class="icon-profile " style="margin-top: -0.5rem;margin-left:-0.4rem;width: 3rem;height: 3rem"></tui-svg>
+                <tui-svg class="icon-profile " src="tuiIconUserLarge"
+                         style="margin-top: -0.5rem;margin-left:-0.4rem;width: 3rem;height: 3rem"></tui-svg>
 
               </ng-template>
 
             </div>
-            <div class="input-wrapper"  >
-              <tui-input *ngIf="isAuthenticated()"
-                (focusedChange)="onInputFocus()"
-                tuiTextfieldIconLeft="tuiIconMessageCircleLarge"
-                [tuiTextfieldCleaner]="true"
-                [(ngModel)]="value">
+            <div class="input-wrapper">
+              <tui-input (focusedChange)="onInputFocus()"
+                         *ngIf="isAuthenticated()"
+                         [(ngModel)]="value"
+                         [tuiTextfieldCleaner]="true"
+                         tuiTextfieldIconLeft="tuiIconMessageCircleLarge">
                 Add a comment
                 <input tuiTextfield/>
               </tui-input>
-              <div class="actions" *ngIf="isInputFocused" >
+              <div *ngIf="isInputFocused" class="actions">
                 <button (click)="cancelComment()" class="cancel-button">Cancel</button>
-                <button [disabled]="value.trim().length === 0 || value === ' '" (click)="postComment(image)"
+                <button (click)="postComment(image)" [disabled]="value.trim().length === 0 || value === ' '"
                         class="post-button">
                   Post
                 </button>
@@ -138,20 +146,20 @@
 
             </div>
 
-            <div class="comments-section" *ngIf="comments$ | async as comments"
-                 [ngClass]="{'collapsed': isInputFocused}"
+            <div *ngIf="comments$ | async as comments" [ngClass]="{'collapsed': isInputFocused}"
+                 class="comments-section"
                  id="commentsSection">
               <h2>{{comments.length}} Comments</h2>
               <ul>
-                <a  *ngIf="comments.length>0">
-                  <div class="comment" style="margin-left:-2rem!important" *ngFor="let comm of comments">
+                <a *ngIf="comments.length>0">
+                  <div *ngFor="let comm of comments" class="comment" style="margin-left:-2rem!important">
                     <div class="comment-profile-picture">
                       <ng-container *ngIf="comm.user.profilePhoto; else profileIcon">
                         <img [src]="comm.user.profilePhoto">
                       </ng-container>
                       <ng-template #profileIcon>
-                        <div >
-                          <tui-svg src="tuiIconUserLarge"  class="icon-profile" ></tui-svg>
+                        <div>
+                          <tui-svg class="icon-profile" src="tuiIconUserLarge"></tui-svg>
                         </div>
                       </ng-template>
                     </div>
@@ -164,12 +172,12 @@
                       </div>
                     </div>
                     <div style="margin-left: auto;margin-right: 1rem">
-                      {{calculateTime(comm.createdAt,'comm')}}
+                      {{calculateTime(comm.createdAt, 'comm')}}
 
                     </div>
                   </div>
                 </a>
-                <div class="no-comment" *ngIf="comments.length===0">
+                <div *ngIf="comments.length===0" class="no-comment">
                   <tui-svg
                     src="tuiIconMessageCircleLarge"></tui-svg>
                   <p><span>No comments yet</span></p>
@@ -182,8 +190,13 @@
       </div>
     </div>
   </div>
-  <app-likes-modal (followEvent)="changeFollowStatus($event)" [title]="'Likes'" [pageDetails]="[image.id,image.autor.id]"  (closeEvent)="handleCloseModal()" [isModalOpen]="openLikesModal"></app-likes-modal>
-  <app-gallery-modal (closeEvent)="handleCloseModal()" [currentImage]="image" [isModalOpen]="isGalleryModalOpen"></app-gallery-modal>
+  <app-likes-modal (closeEvent)="handleCloseModal()" (followEvent)="changeFollowStatus($event)"
+                   [isModalOpen]="openLikesModal" [pageDetails]="[image.id,image.autor.id]"
+                   [title]="'Likes'"></app-likes-modal>
+  <app-gallery-modal (closeEvent)="handleCloseModal()" [currentImage]="image"
+                     [isModalOpen]="isGalleryModalOpen"></app-gallery-modal>
 
 </div>
+
+
 

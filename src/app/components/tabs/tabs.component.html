@@ -3,17 +3,17 @@
     <div class="tab-title">
       <h2> {{this.currentTab.title}}</h2>
       <p
-         class="subtitle-description">{{this.currentTab.subTitle}}</p>
+        class="subtitle-description">{{this.currentTab.subTitle}}</p>
     </div>
-    <div class="dropdown-container" *ngIf="displayDropdown">
+    <div *ngIf="displayDropdown" class="dropdown-container">
       <app-dropdown (categoryDeselectedEmitter)="handleDeselectCategory($event)"
                     (categorySelectedEmitter)="handleCategory($event)"></app-dropdown>
     </div>
   </ng-container>
 
-  <ul class="tab-list" [ngClass]="{'custom-style': !displayDropdown}"
-      [ngStyle]="{'justify-content': this.tabs.first.selectedTab=='Voted'? 'flex-start':' '}">
-    <li *ngFor="let tab of tabs" [class.active]="tab.active" (click)="selectTab(tab)">
+  <ul [ngClass]="{'custom-style': !displayDropdown}" [ngStyle]="{'justify-content': this.tabs.first.selectedTab=='Voted'? 'flex-start':' '}"
+      class="tab-list">
+    <li (click)="selectTab(tab)" *ngFor="let tab of tabs" [class.active]="tab.active">
       {{ tab.tabTitle}}
     </li>
   </ul>

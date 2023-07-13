@@ -54,14 +54,14 @@ export class StatisticsService {
   }
 
 
-  // getAllImagesNb(){
-  //
-  //   return this.http.get<number>(`${environment.apiUrl}/api/Statistics/allRegisteredUsersNb`);
-  // }
-  // getNewsUsersNb(){
-  //
-  //   return this.http.get<number>(`${environment.apiUrl}/api/Statistics/newlyRegisteredUsersNb`);
-  // }
+  getAllImagesNb(){
+
+    return this.http.get<number>(`${environment.apiUrl}/api/Statistics/allImagesNb`);
+  }
+  getNewsImageNb(){
+
+    return this.http.get<number>(`${environment.apiUrl}/api/Statistics/allNewImagesNb`);
+  }
 
   getAllImages(pageNb: number, pageSize: number){
     let params = new HttpParams()

@@ -3,7 +3,7 @@ export class UpdateUserDto {
   id:number;
   username:string;
   name:string;
-  location:Location;
+  location?:Location;
   description:string;
   backgroundPhoto?:string;
   profilePhoto?:string

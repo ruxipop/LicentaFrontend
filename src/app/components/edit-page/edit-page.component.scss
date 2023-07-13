@@ -1,13 +1,9 @@
 .container {
-  position: relative; /* Asigurați-vă că containerul are poziționare relativă */
+  position: relative;
   margin-top: 30px;
   display: flex;
-  &.sub-menu-open .content {
-    left: 50%; /* Ajustați valoarea left pentru a muta componenta mai la dreapta */
-  }
+
 }
-
-
 
 
 .content {

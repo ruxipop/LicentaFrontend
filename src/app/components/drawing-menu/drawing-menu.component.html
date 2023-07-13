@@ -9,12 +9,14 @@
   </div>
   <div class="content-wrapper">
     <div class="menu-brush" *ngIf="this.menuType===this.drawTypes.drawBrush">
-
-
       <div class="color-picker">
         <label>Color:</label>
-
-        <input type="color" [(ngModel)]="selectedColor" (input)="selectColor()"/>
+        <input type="color" [(ngModel)]="selectedColor" (input)="selectColor()" />
+      </div>
+      <div class="label-container">
+        <label for="fontSizeSlider" class="label">Size:</label>
+        <span contenteditable="true" class="value" #labelElement>       {{ selectedThickness }}
+</span>
       </div>
       <input class="custom-range"
              id="fontSizeSlider1"
@@ -25,7 +27,10 @@
              [(ngModel)]="selectedThickness"
              (input)="onThicknessChange()"
       />
+
     </div>
+
+
 
     <div *ngIf="this.menuType===this.drawTypes.drawShape">
       <div class="menu-shape">
@@ -59,13 +64,12 @@
       <div class="slider-container">
         <div class="label-container">
           <label for="fontSizeSlider" class="label">Size:</label>
-          <span contenteditable="true" class="value" #labelElement >
-      15
-    </span>
+          <span contenteditable="true" class="value" #labelElement>{{ outlineThickness }}</span>
         </div>
 
-        <input id="fontSizeSlider" type="range" min="5" max="400" class="custom-range" step="0.1"   [(ngModel)]="outlineThickness">
+        <input id="fontSizeSlider" type="range" min="5" max="400" class="custom-range" step="0.1" [(ngModel)]="outlineThickness">
       </div>
+
 
 
       <div class="icons-col">

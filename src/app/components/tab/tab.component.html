@@ -1,42 +1,44 @@
-<div class="container " *ngIf="this.tabTitle"
+<div *ngIf="this.tabTitle" [hidden]="!active"
      [ngClass]="{'container-no-likes': images.length===0 && (this.tabTitle==='Liked' || this.tabTitle==='Photos')}"
-     [hidden]="!active">
+     class="container ">
   <div class="horizontal-bar"></div>
   <ng-container *ngIf="selectedTab!=='Galleries'">
     <div class="grid">
       <figure *ngFor="let image of images"
-              [style.flex-grow]="image.image.width * 100 / image.image.height"
-              [style.flex-basis]="image.image.width * 240 / image.image.height + 'px'" data-title="ddd">
+              [style.flex-basis]="image.image.width * 240 / image.image.height + 'px'"
+              [style.flex-grow]="image.image.width * 100 / image.image.height" data-title="ddd">
         <i [style.padding-bottom]="image.image.height / image.image.width * 100 + '%'"></i>
         <img (click)=" onImageClick(image.image)"
              [src]=" image.image.imageUrl " alt="placeholder"/>
         <div class="hover-top">
-          <tui-svg *ngIf="isAdminAuthenticated()" class="hover-button" [ngClass]="{'checked-editor': image.voted}"
-                   (click)=" changeVote(image)"
+          <tui-svg (click)=" changeVote(image)" *ngIf="isAdminAuthenticated()" [ngClass]="{'checked-editor': image.voted}"
+                   class="hover-button"
                    src="tuiIconAwardLarge" style="margin-right: 1rem!important
 "></tui-svg>
-          <tui-svg *ngIf="this.currentUser==this.loggedUser && selectedTab!='Voted' && this.currentUser==image.image.autorId " class="hover-button"
-                   (click)=" deleteImage(image.image.id)"
-                   src="tuiIconTrash2Large" style="margin-right: 1rem!important
+          <tui-svg
+            (click)=" deleteImage(image.image.id)"
+            *ngIf="this.currentUser==this.loggedUser && selectedTab!='Voted' && this.currentUser==image.image.autorId "
+            class="hover-button"
+            src="tuiIconTrash2Large" style="margin-right: 1rem!important
 "></tui-svg>
 
         </div>
         <div class="hover-bottom">
-          <div class="author-wrapper" (click)="goToAuthorPage(image.image.autor.id)">
+          <div (click)="goToAuthorPage(image.image.autor.id)" class="author-wrapper">
             <div>
               <img *ngIf="image.image.autor.profilePhoto" [src]="image.image.autor.profilePhoto">
-              <tui-svg *ngIf="!image.image.autor.profilePhoto" src="tuiIconUserLarge" class="icon-profile"></tui-svg>
+              <tui-svg *ngIf="!image.image.autor.profilePhoto" class="icon-profile" src="tuiIconUserLarge"></tui-svg>
               <p class="author-name">
                 {{image.image.autor.username }}
               </p>
             </div>
           </div>
           <div class="icon-container">
-            <tui-svg class="hover-button" src="tuiIconHeartLarge"
-                     [ngClass]="{'checked': isInLikesList(image.image)}"
-                     (click)="onLikeChange(image.image)"></tui-svg>
-            <tui-svg class="hover-button" src="tuiIconFolderPlusLarge"
-                     (click)="openGalleryModal(image.image)"></tui-svg>
+            <tui-svg (click)="onLikeChange(image.image)" [ngClass]="{'checked': isInLikesList(image.image)}"
+                     class="hover-button"
+                     src="tuiIconHeartLarge"></tui-svg>
+            <tui-svg (click)="openGalleryModal(image.image)" class="hover-button"
+                     src="tuiIconFolderPlusLarge"></tui-svg>
           </div>
         </div>
       </figure>
@@ -44,13 +46,13 @@
   </ng-container>
   <ng-container *ngIf="selectedTab==='Galleries' && this.tabTitle=='Galleries'">
     <div class="gallery">
-      <figure class="gallery-item" *ngIf="this.currentUser===this.loggedUser">
+      <figure *ngIf="this.currentUser===this.loggedUser" class="gallery-item">
         <div class="image-wrapper">
           <div class="gallery-empty gallery-item__image" style=" filter:none!important;">
-            <tui-svg style="margin-top: 2rem"
-                     src="tuiIconFolderPlusLarge"></tui-svg>
+            <tui-svg src="tuiIconFolderPlusLarge"
+                     style="margin-top: 2rem"></tui-svg>
             <span>Create new Gallery</span>
-            <button class="form-submit-button" (click)="goToPage('create',null)"> Create</button>
+            <button (click)="goToPage('create',null)" class="form-submit-button"> Create</button>
 
           </div>
         </div>
@@ -60,14 +62,14 @@
       </figure>
       <ng-container *ngFor="let gallery of images">
 
-        <figure *ngIf="( gallery.user.id===this.loggedUser && gallery.isPrivate) || !gallery.isPrivate"
-                class="gallery-item" (click)="goToPage(null,gallery.id)">
+        <figure (click)="goToPage(null,gallery.id)"
+                *ngIf="( gallery.user.id===this.loggedUser && gallery.isPrivate) || !gallery.isPrivate" class="gallery-item">
 
-          <div class="image-wrapper"
-               [ngStyle]="gallery.images.length===0? {'background-color': 'rgb(215, 216, 219)'} : {}">
-            <img *ngIf="gallery.images.length>0" class="gallery-item__image" [src]="gallery.images[0].imageUrl">
+          <div [ngStyle]="gallery.images.length===0? {'background-color': 'rgb(215, 216, 219)'} : {}"
+               class="image-wrapper">
+            <img *ngIf="gallery.images.length>0" [src]="gallery.images[0].imageUrl" class="gallery-item__image">
 
-            <div class="gallery-empty gallery-item__image" *ngIf="gallery.images.length==0">
+            <div *ngIf="gallery.images.length==0" class="gallery-empty gallery-item__image">
               <tui-svg
                 src="tuiIconCameraOffLarge"></tui-svg>
               <span>Gallery is empty</span>
@@ -80,7 +82,7 @@
             <div class="lock">
               <div
                 class="gallery-description">  {{gallery.images.length > 0 ? gallery.images.length + ' Photos' : '' }}</div>
-              <div class="button-container" *ngIf="gallery.isPrivate">
+              <div *ngIf="gallery.isPrivate" class="button-container">
                 <tui-svg class="icon-lock" src="tuiIconLockLarge"></tui-svg>
                 <span>Only me</span>
               </div>
@@ -90,30 +92,31 @@
       </ng-container>
     </div>
   </ng-container>
-  <div class="no-image"
-       *ngIf=" this.selectedTab==='Photos' && this.tabTitle==='Photos' && images.length===0 && this.loggedUser==this.currentUser ">
+  <div *ngIf=" this.selectedTab==='Photos' && this.tabTitle==='Photos' && images.length===0 && this.loggedUser==this.currentUser "
+       class="no-image">
     <div class="no-image-inner">
-      <tui-svg src="tuiIconUploadLarge" class="icon"></tui-svg>
+      <tui-svg class="icon" src="tuiIconUploadLarge"></tui-svg>
       <h3><span>You haven't posted any photos yet</span></h3>
       <p><span>Get started by uploading and sharing your photos!</span></p>
       <button (click)="openUploadModal()" class="form-submit-button"> Upload photos</button>
     </div>
   </div>
 
-  <div class="no-image"
-       *ngIf=" ((this.selectedTab==='Photos' && this.tabTitle==='Photos') || (this.selectedTab==='Galleries' && this.tabTitle==='Galleries' )) && (images.length===0 || images[0].isPrivate)  && this.loggedUser!=this.currentUser ">
+  <div *ngIf=" ((this.selectedTab==='Photos' && this.tabTitle==='Photos') || (this.selectedTab==='Galleries' && this.tabTitle==='Galleries' )) && (images.length===0 || images[0].isPrivate)  && this.loggedUser!=this.currentUser "
+       class="no-image">
     <div class="no-image-inner">
-      <tui-svg src="tuiIconCameraLarge" class="icon"></tui-svg>
+      <tui-svg class="icon" src="tuiIconCameraLarge"></tui-svg>
       <h3><span>Work in progress</span></h3>
-      <p style="width: 30rem!important;"><span>While <a style="font-weight: bold;color: black"> {{currentUserName}}</a> is busy shooting new photos for their profile, take the opportunity to explore our collection of photographs.</span></p>
-      <button style="margin-top: 0" (click)="gotToDiscoverPage()" class="form-submit-button"> Discover photos</button>
+      <p style="width: 30rem!important;"><span>While <a style="font-weight: bold;color: black"> {{currentUserName}}</a> is busy shooting new photos for their profile, take the opportunity to explore our collection of photographs.</span>
+      </p>
+      <button (click)="gotToDiscoverPage()" class="form-submit-button" style="margin-top: 0"> Discover photos</button>
     </div>
   </div>
 
-  <div class="no-image"
-       *ngIf=" this.selectedTab==='Liked'  && this.tabTitle==='Liked'  && images.length===0 && this.loggedUser==this.currentUser  ">
+  <div *ngIf=" this.selectedTab==='Liked'  && this.tabTitle==='Liked'  && images.length===0 && this.loggedUser==this.currentUser  "
+       class="no-image">
     <div class="no-image-inner">
-      <tui-svg src="tuiIconHeartLarge" class="icon"></tui-svg>
+      <tui-svg class="icon" src="tuiIconHeartLarge"></tui-svg>
       <h3><span>You haven't liked any photos yet</span></h3>
       <p><span> Get started by discovering photos - and don't forget to ❤️ your favorites!</span></p>
       <button (click)="gotToDiscoverPage()" class="form-submit-button"> Discover photos</button>

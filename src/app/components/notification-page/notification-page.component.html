@@ -1,4 +1,4 @@
-<div class="container" *ngIf="notifications$|async as notifications">
+<div *ngIf="notifications$|async as notifications" class="container">
   <div class="container-wrapper">
     <div class="title">
 
@@ -6,44 +6,47 @@
         <span>Notifications</span>
       </h4>
 
-      <div  *ngIf="notifications.length>0" class="modal-close-button" (click)="deleteAllNotification()">
+      <div (click)="deleteAllNotification()" *ngIf="notifications.length>0" class="modal-close-button">
         <div class="close-modal">
 
           <tui-svg
-            src="tuiIconTrashLarge"
             class=" icon"
+            src="tuiIconTrashLarge"
           ></tui-svg>
         </div>
       </div>
     </div>
-    <div class="wrapper" (scroll)="onScroll()">
-      <div  class="not-item "style="justify-content: center;display: flex;flex-direction: column ;height: 90%" *ngIf="notifications.length==0">
-        <tui-svg style="font-size: 48px;margin-top:2rem;margin-bottom: 1rem"
-                 src="tuiIconBellLarge"
+    <div (scroll)="onScroll()" class="wrapper">
+      <div *ngIf="notifications.length==0" class="not-item "
+           style="justify-content: center;display: flex;flex-direction: column ;height: 90%">
+        <tui-svg src="tuiIconBellLarge"
+                 style="font-size: 48px;margin-top:2rem;margin-bottom: 1rem"
 
         ></tui-svg>
-        <p  style="font-weight: bold"> You don't have any notification!</p>
+        <p style="font-weight: bold"> You don't have any notification!</p>
 
 
       </div>
 
 
-      <div  class="not-item" *ngFor="let notification of notifications">
-        <div class="item-wrapper" (click)="goToPage(notification.notification)">
+      <div *ngFor="let notification of notifications" class="not-item">
+        <div (click)="goToPage(notification.notification)" class="item-wrapper">
 
-          <div class="photo" >
-            <tui-svg style="margin-left: -10px"
-                     (click)="deleteNotification(notifications,notification.notification.id)"
-                     src="tuiIconCloseLarge"
+          <div class="photo">
+            <tui-svg (click)="deleteNotification(notifications,notification.notification.id)"
                      class="delete-icon"
+                     src="tuiIconCloseLarge"
+                     style="margin-left: -10px"
             ></tui-svg>
 
 
             <div class="profile">
 
-              <tui-svg *ngIf="!notification.notification.sender.profilePhoto" src="tuiIconUserLarge" class="icon-profile"></tui-svg>
+              <tui-svg *ngIf="!notification.notification.sender.profilePhoto" class="icon-profile"
+                       src="tuiIconUserLarge"></tui-svg>
 
-              <img *ngIf="notification.notification.sender.profilePhoto" [src]="notification.notification.sender.profilePhoto">
+              <img *ngIf="notification.notification.sender.profilePhoto"
+                   [src]="notification.notification.sender.profilePhoto">
             </div>
 
           </div>
@@ -56,15 +59,16 @@
 
               <div class="date-message">
                 <p>
-                  {{calculateTime(notification.notification.timestamp,'not')}}
+                  {{calculateTime(notification.notification.timestamp, 'not')}}
                 </p>
               </div>
             </div>
 
-            <button class="form-submit-button " *ngIf="notification.isFollowing!=null && notification.notification.type==NotificationType.Follow"
-                    (click)="onFollowChange(notifications ,notification.notification.senderId,$event)"
+            <button (click)="onFollowChange(notifications ,notification.notification.senderId,$event)"
+                    *ngIf="notification.isFollowing!=null && notification.notification.type==NotificationType.Follow"
+                    [ngClass]="{'unfollow-button':  notification.isFollowing}"
 
-                    [ngClass]="{'unfollow-button':  notification.isFollowing}">
+                    class="form-submit-button ">
               <span>    {{ notification.isFollowing ? 'Unfollow' : 'Follow' }}</span>
             </button>
           </div>
@@ -73,7 +77,6 @@
 
 
       </div>
-
 
 
     </div>

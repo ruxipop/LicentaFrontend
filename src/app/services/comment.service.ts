@@ -13,7 +13,6 @@ export class CommentService {
 
   addCommentForImage(imageID:number,userID:number,commentText:string){
     const comment=new Comment(0,userID,imageID,commentText,new Date())
-    console.log(comment.createdAt)
     return this.http.post(`${environment.apiUrl}/api/Comment/addComment`,comment)
   }
 

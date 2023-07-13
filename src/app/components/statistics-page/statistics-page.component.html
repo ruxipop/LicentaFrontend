@@ -8,38 +8,38 @@
         <div class="chart1">
           <div class="top">
             <div class="buttons">
-              <button class="toggle-button" [class.active]="selectedButton=='allUsers'" (click)="toggle('allUsers')">
+              <button (click)="toggle('allUsers')" [class.active]="selectedButton=='allUsers'" class="toggle-button">
                 <div class="button-top-text">Users</div>
                 <div class="button-bottom-text">{{allUsersNb}}</div>
               </button>
-              <button class="toggle-button" [class.active]="selectedButton=='newUsers'" (click)="toggle('newUsers')">
+              <button (click)="toggle('newUsers')" [class.active]="selectedButton=='newUsers'" class="toggle-button">
                 <div class="button-top-text">New Users</div>
                 <div class="button-bottom-text">{{newUsersNb}}</div>
               </button>
             </div>
             <mat-form-field appearance="fill" style="padding: 0.5rem!important; margin-right: 1.5rem!important;">
               <mat-label>Choose Date</mat-label>
-              <mat-date-range-input [rangePicker]="picker1" [formGroup]="rangeDate">
-                <input matStartDate formControlName="start" placeholder="Start date" [max]="maxDate">
-                <input matEndDate formControlName="end" placeholder="End date" [max]="maxDate">
+              <mat-date-range-input [formGroup]="rangeDate" [rangePicker]="picker1">
+                <input [max]="maxDate" formControlName="start" matStartDate placeholder="Start date">
+                <input [max]="maxDate" formControlName="end" matEndDate placeholder="End date">
               </mat-date-range-input>
-              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker-toggle [for]="picker1" matSuffix></mat-datepicker-toggle>
               <mat-date-range-picker #picker1></mat-date-range-picker>
             </mat-form-field>
           </div>
           <tui-axes
             *ngIf="computeLabels$(selectedRange) | async as labels"
-            class="axes"
-            [verticalLines]="labels.length < 1 ? 1 : labels.length"
-            [horizontalLines]="4"
             [axisXLabels]="labels"
+            [horizontalLines]="4"
+            [verticalLines]="labels.length < 1 ? 1 : labels.length"
+            class="axes"
           >
             <tui-line-days-chart
-              class="chart"
               [height]="250"
               [value]="(computeValue(selectedRange) | async) ?? []"
-              [yStringify]="yStringify"
               [xStringify]="xStringify$ | async"
+              [yStringify]="yStringify"
+              class="chart"
             ></tui-line-days-chart>
           </tui-axes>
 
@@ -48,45 +48,45 @@
         <div class="chart1" style="margin-top: 2rem!important;">
           <div class="top">
             <div class="buttons">
-              <button class="toggle-button" [class.active]="selectedButton=='allImages'" (click)="toggle('allImages')">
+              <button (click)="toggle('allImages')" [class.active]="selectedButton=='allImages'" class="toggle-button">
                 <div class="button-top-text">Images</div>
-                <div class="button-bottom-text">{{allUsersNb}}</div>
+                <div class="button-bottom-text">{{allImagesNb}}</div>
               </button>
-              <button class="toggle-button" [class.active]="selectedButton=='newImages'" (click)="toggle('newImages')">
+              <button (click)="toggle('newImages')" [class.active]="selectedButton=='newImages'" class="toggle-button">
                 <div class="button-top-text">New Images</div>
-                <div class="button-bottom-text">{{newUsersNb}}</div>
+                <div class="button-bottom-text">{{newImagesNb}}</div>
               </button>
             </div>
             <mat-form-field appearance="fill" style="padding: 0.5rem!important; margin-right: 1.5rem!important;
 ">
               <mat-label>Choose Date</mat-label>
-              <mat-date-range-input [rangePicker]="picker2" [formGroup]="rangeDate2">
-                <input matStartDate formControlName="start" placeholder="Start date" [max]="maxDate">
-                <input matEndDate formControlName="end" placeholder="End date" [max]="maxDate">
+              <mat-date-range-input [formGroup]="rangeDate2" [rangePicker]="picker2">
+                <input [max]="maxDate" formControlName="start" matStartDate placeholder="Start date">
+                <input [max]="maxDate" formControlName="end" matEndDate placeholder="End date">
               </mat-date-range-input>
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker-toggle [for]="picker2" matSuffix></mat-datepicker-toggle>
               <mat-date-range-picker #picker2></mat-date-range-picker>
             </mat-form-field>
           </div>
           <tui-axes
             *ngIf="computeLabels$(selectedRange2) | async as labels"
-            class="axes"
-            [verticalLines]="labels.length < 1 ? 1 : labels.length"
-            [horizontalLines]="4"
             [axisXLabels]="labels"
+            [horizontalLines]="4"
+            [verticalLines]="labels.length < 1 ? 1 : labels.length"
+            class="axes"
           >
             <tui-line-days-chart
-              class="chart"
               [height]="250"
               [value]="(computeValue2(selectedRange2) | async) ?? []"
-              [yStringify]="yStringifyImages"
               [xStringify]="xStringify$| async"
+              [yStringify]="yStringifyImages"
+              class="chart"
             ></tui-line-days-chart>
           </tui-axes>
         </div>
       </div>
       <div class="additional-container">
-        <div class="container-wrapper" *ngIf="users$ | async as users">
+        <div *ngIf="users$ | async as users" class="container-wrapper">
           <div class="title">
 
             <h4 class="title-style">
@@ -96,11 +96,11 @@
             </h4>
           </div>
           <div class="wrapper">
-            <div class="not-item" *ngFor="let user of users">
-              <div class="item-wrapper" (click)="goToUserProfile(user.id)">
+            <div *ngFor="let user of users" class="not-item">
+              <div (click)="goToUserProfile(user.id)" class="item-wrapper">
                 <div class="profile-photo">
-                  <tui-svg *ngIf="!user.profilePhoto && isUserType()" src="tuiIconUserLarge"
-                           class="profile-icon"></tui-svg>
+                  <tui-svg *ngIf="!user.profilePhoto && isUserType()" class="profile-icon"
+                           src="tuiIconUserLarge"></tui-svg>
 
                   <img *ngIf="(user.profilePhoto && isUserType())|| !isUserType()"
                        [src]="isUserType()? user.profilePhoto :user.imageUrl">
@@ -137,36 +137,34 @@
             <p> Most Appreciated</p>
           </div>
 
-          <tui-axes class="axes"
-                    [axisXLabels]="(statisticsImageName$| async) ?? []"
+          <tui-axes [axisXLabels]="(statisticsImageName$| async) ?? []"
                     [axisYLabels]="labelsY"
+                    class="axes"
           >
             <tui-bar-chart
               [max]="25"
-              [value]="(statisticsImageNb$| async) ?? []"
               [tuiHintContent]="hint"
+              [value]="(statisticsImageNb$| async) ?? []"
             ></tui-bar-chart>
           </tui-axes>
-
-
 
 
         </div>
       </div>
 
       <div class="additional-chart-container">
-        <tui-ring-chart style="margin-right: 20px;"
-                        size="xl"
+        <tui-ring-chart [(activeItemIndex)]="index"
                         [value]="(statisticsTypeNb$| async) ?? []"
-                        [(activeItemIndex)]="index"
+                        size="xl"
+                        style="margin-right: 20px;"
         >
           <span>{{getLabel((statisticsTypeLabel$ | async), index) }}</span>
           <p>{{getSum((statisticsTypeNb$ | async), index) }}</p>
         </tui-ring-chart>
         <tui-ring-chart
-          size="xl"
-          [value]="(statisticsCategoryNb$| async) ?? []"
           [(activeItemIndex)]="index1"
+          [value]="(statisticsCategoryNb$| async) ?? []"
+          size="xl"
         >
           <span>{{getLabel((statisticsCategoryLabel$ | async), index1) }}</span>
           <p>{{getSum((statisticsCategoryNb$ | async), index1) }}</p>

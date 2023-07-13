@@ -11,12 +11,11 @@ import {ChatService} from "../../services/chat.service";
 
 })
 export class NavbarComponent {
+
   isUploadModalOpen = false;
   isUserMenuOpen = false;
   isMenuOpen = false;
   loggedId: number;
-  protected readonly isAdminAuthenticated = isAdminAuthenticated;
-
   readonly items = [
     {
       text: 'Home',
@@ -45,6 +44,7 @@ export class NavbarComponent {
     },
 
   ];
+  protected readonly isAdminAuthenticated = isAdminAuthenticated;
 
   constructor(private elementRef: ElementRef,
               private chatService: ChatService,
@@ -82,6 +82,7 @@ export class NavbarComponent {
   login() {
     this.router.navigate(['auth/login']).then();
   }
+
   register() {
     this.router.navigate(['auth/register'])
   }
@@ -92,8 +93,9 @@ export class NavbarComponent {
   }
 
   logOut() {
-    this.isUserMenuOpen=false;
-    this.router.navigateByUrl('auth/login').then(()=>  localStorage.clear())
+    this.chatService.ngOnDestroy()
+    this.isUserMenuOpen = false;
+    this.router.navigateByUrl('auth/login').then(() => localStorage.clear())
   }
 
   openUserMenu() {

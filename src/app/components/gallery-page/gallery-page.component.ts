@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable, tap} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {Gallery} from "../../models/gallery";
 import {GalleryService} from "../../services/gallery.service";
-import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AlertService} from "../../services/alert.service";
@@ -19,18 +19,15 @@ import {isUserAuthenticated} from "../../utils";
 })
 export class GalleryPageComponent implements OnInit {
   galleryId: number = 1;
-
-
-  constructor(private galleryService: GalleryService,private likeService:LikeService,private alertService: AlertService, private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
-  }
-
-
   gallery$: Observable<Gallery>;
+
+  constructor(private galleryService: GalleryService, private likeService: LikeService, private alertService: AlertService, private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
+  }
 
   openDeleteDialog(galleryId: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '500px',
-      data: {label: 'Delete',message:"Are you sure you want to delete this Gallery!",button:"Delete"}
+      data: {label: 'Delete', message: "Are you sure you want to delete this Gallery!", button: "Delete"}
     });
 
     dialogRef.afterClosed().subscribe((result: string) => {
@@ -40,6 +37,7 @@ export class GalleryPageComponent implements OnInit {
       }
     });
   }
+
   isInLikesList(image: Picture) {
 
     return image.likes.some(item => item.userId === parseInt(localStorage.getItem("id")!));
@@ -88,69 +86,34 @@ export class GalleryPageComponent implements OnInit {
   }
 
   onLikeChange(image: Picture) {
-    if (isUserAuthenticated() ) {
+    if (isUserAuthenticated()) {
       if (image.likes.some(item => item.userId === parseInt(localStorage.getItem("id")!))) {
         this.removeLike(image)
       } else {
         this.addLike(image)
       }
     } else {
-      console.log("Trebe sa te loghezi")
-      //ToDo
-      // this.router.navigate(['/auth/login'])
     }
   }
-
-  private removeLike(image: Picture) {
-    this.likeService.removeLike(image.id)
-      .pipe(
-        tap(()=> {
-
-
-
-          }
-        )
-      )
-      .subscribe({
-        next: () => {
-          const index = image.likes.findIndex(item => item.userId ===parseInt(localStorage.getItem("id")!));
-
-          if (index !== -1) {
-            image.likes.splice(index, 1);
-          }
-
-
-        },
-        error: (error: HttpErrorResponse) => {
-          const notification = { id:1,label:"Oops...",message:error.error, type: "error" };
-          this.alertService.addNotification(notification)
-        }
-      })
-  }
-
 
   addLike(image: Picture) {
     this.likeService.addLikeToImage(image.id)
       .subscribe({
         next: () => {
-          // if (this.tabTitle === 'Liked') {
-
           image.likes.push(new Like(image.id, parseInt(localStorage.getItem("id")!)));
-          // }
-
-
         },
         error: (error: HttpErrorResponse) => {
-          const notification = { id:1,label:"Oops...",message:error.error, type: "error" };
+          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
           this.alertService.addNotification(notification)
         }
       })
   }
+
   openRemovePhoto(gallery: Gallery, image: Picture) {
     console.log("aici")
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '500px',
-      data: {label: 'Delete',message:"Are you sure you want to delete this Image?",button:"Delete"}
+      data: {label: 'Delete', message: "Are you sure you want to delete this Image?", button: "Delete"}
     });
 
     dialogRef.afterClosed().subscribe((result: string) => {
@@ -160,8 +123,26 @@ export class GalleryPageComponent implements OnInit {
     });
   }
 
-
   goToImagePage(imageId: number) {
-    window.location.href='image/'+imageId
+    window.location.href = 'image/' + imageId
+  }
+
+  private removeLike(image: Picture) {
+    this.likeService.removeLike(image.id)
+      .subscribe({
+        next: () => {
+          const index = image.likes.findIndex(item => item.userId === parseInt(localStorage.getItem("id")!));
+
+          if (index !== -1) {
+            image.likes.splice(index, 1);
+          }
+
+
+        },
+        error: (error: HttpErrorResponse) => {
+          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
+          this.alertService.addNotification(notification)
+        }
+      })
   }
 }

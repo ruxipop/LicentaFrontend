@@ -7,6 +7,7 @@ export function isAdminAuthenticated(): boolean {
 }
 
 export function isUserAuthenticated(): boolean {
+  console.log("aj"+localStorage.getItem("role"))
   return localStorage.getItem('accessToken') !== null && localStorage.getItem("role") === 'USER';
 }
 

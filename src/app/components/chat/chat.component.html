@@ -114,19 +114,6 @@
             </div>
           </div>
         </div>
-        <div class="ant-dropdown-trigger " (click)="toggleDropdown()">
-
-
-          <span>&#8230;</span>
-          <ul class="dropdown-menu" [ngClass]="{ 'show-menu': isDropdownOpen }">
-            <li><a href="/user-profile/{{ this.selectedUser.id}}">View profile</a></li>
-            <li><a href="#">Report user</a></li>
-            <li><a href="#">Block user</a></li>
-
-          </ul>
-
-
-        </div>
       </div>
 
       <div class="chat-conversation" *ngIf="combinedMessages$ | async as combinedMessages">

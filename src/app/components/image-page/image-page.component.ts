@@ -5,7 +5,13 @@ import {ImageService} from "../../services/image.service";
 import {CommentService} from "../../services/comment.service";
 import {Comment} from "../../models/comment";
 import {CategoryImage} from "../../models/categoryImage";
-import {calculateTime, getUserAuthenticatedId, isAuthenticated, isUserAuthenticated} from "../../utils";
+import {
+  calculateTime,
+  getUserAuthenticatedId,
+  isAdminAuthenticated,
+  isAuthenticated,
+  isUserAuthenticated
+} from "../../utils";
 import {LikeService} from "../../services/like.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FollowService} from "../../services/follow.service";
@@ -19,6 +25,11 @@ import {ChatService} from "../../services/chat.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ReportDialogComponent} from "../report-dialog/report-dialog.component";
+import {ReportService} from "../../services/report.service";
+import {EmailMessage} from "../../models/email-message";
+import {SuccessMessage} from "../../models/success-message";
+import { Report } from 'src/app/models/report';
 
 @Component({
   selector: 'app-image-page',
@@ -43,13 +54,36 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
 
   element: ElementRef
   @ViewChild('carouselContainer') carouselContainer: ElementRef;
-
-  currentPosition = 0;
-
   @ViewChild('carouselWrapper') carouselWrapper: ElementRef;
-  private isFollowingSubject: Subject<Follow[]> = new Subject<Follow[]>();
   public isGalleryModalOpen: boolean = false;
+  screenWidth: number = window.innerWidth;
+  protected readonly CategoryImage = CategoryImage;
+  protected readonly isAuthenticated = isAuthenticated;
+  protected readonly Follow = Follow;
+  protected readonly calculateTime = calculateTime;
+  private isFollowingSubject: Subject<Follow[]> = new Subject<Follow[]>();
+  existReport:Observable<boolean>
 
+  constructor(private elementRef: ElementRef,
+              private authService: AuthenticationService,
+              private router: Router,
+              private dialog: MatDialog,
+              private renderer: Renderer2,
+              private route: ActivatedRoute,
+              private imageService: ImageService,
+              private followService: FollowService,
+              private alertService: AlertService,
+              private likeService: LikeService,
+              private reportService:ReportService,
+              private chatService: ChatService,
+              private commentService: CommentService) {
+
+
+  }
+  fetchReport(){
+    this.existReport=this.reportService.existReport(this.id).pipe()
+
+  }
 
   ngOnInit() {
 
@@ -61,8 +95,8 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     const routeParams = this.route.snapshot.paramMap;
     this.id = Number(routeParams.get('id'));
     this.fetchImage();
+    this.fetchReport();
     this.fetchComments();
-    // this.fetchFollowing();
 
   }
 
@@ -70,24 +104,16 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     this.element = this.elementRef.nativeElement;
   }
 
-
   fetchImage() {
     this.image$ = this.imageService.getImage(this.id).pipe(
       tap(image => {
         this.isLiked = image.likes.some(item => item.user.id === this.currentUserId);
-        // this.followService.getAllFollowing(this.currentUserId).subscribe(item => {
-        //   const filteredItems = item.filter(x => x.following.id === image.autor.id);
-        //   this.isFollowing = filteredItems.length === 1;
-        //   this.isFollowingSubject.next(item); // Trimiti rezultatul filtrat prin subject
-        // });
-
         if (isUserAuthenticated()) {
           this.followService.isUserFollowing(image.autor.id).subscribe((data) => {
             this.isFollowing = data
           })
         }
         this.imageService.getImagesByColor(image).subscribe(authorImages => {
-          console.log(authorImages)
           this.authorImages$ = authorImages;
         });
 
@@ -114,7 +140,6 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     return formattedDate;
   }
 
-
   getImageType(type: string) {
     switch (type) {
       case "Popular":
@@ -135,27 +160,9 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     wrapper.scrollLeft -= 400;
   }
 
-  private readonly parentRoot: HTMLElement;
-
   scrollToNext() {
     const wrapper = this.carouselWrapper.nativeElement;
     wrapper.scrollLeft += 400;
-  }
-
-  constructor(private elementRef: ElementRef,
-              private authService: AuthenticationService,
-              private router: Router,
-              private dialog: MatDialog,
-              private renderer: Renderer2,
-              private route: ActivatedRoute,
-              private imageService: ImageService,
-              private followService: FollowService,
-              private alertService: AlertService,
-              private likeService: LikeService,
-              private chatService: ChatService,
-              private commentService: CommentService) {
-
-
   }
 
   @HostListener('document:fullscreenchange', ['$event'])
@@ -181,14 +188,12 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     this.isInputFocused = true;
   }
 
-
   cancelComment() {
     this.value = '';
     this.isInputFocused = false;
   }
 
-
-  postComment(image:Picture) {
+  postComment(image: Picture) {
     let userID = localStorage.getItem("id")
     if (userID) {
       this.commentService.addCommentForImage(image.id, parseInt(userID), this.value).subscribe({
@@ -197,13 +202,12 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
           this.isInputFocused = false;
 
           this.fetchComments();
-          this.chatService.sendNotification(image.autorId.toString(),NotificationType.Comment,image.id.toString() )
+          this.chatService.sendNotification(image.autorId.toString(), NotificationType.Comment, image.id.toString())
         },
 
       })
     }
   }
-
 
   openModal() {
     if (isAuthenticated()) {
@@ -215,7 +219,6 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
 
 
   }
-
 
   openLoginMessage() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -233,8 +236,6 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     })
   }
 
-  protected readonly CategoryImage = CategoryImage;
-
   handleCloseModal() {
     document.body.style.overflow = 'initial';
     this.isGalleryModalOpen = false;
@@ -242,16 +243,9 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
 
   }
 
-  protected readonly isAuthenticated = isAuthenticated;
-
-  isUserAuthenticated() {
-    return isUserAuthenticated();
-  }
-
 
   onLikeChange(image: Picture) {
-    if (this.isUserAuthenticated()) {
-      console.log(this.isLiked)
+    if (isUserAuthenticated()) {
       if (this.isLiked) {
         const index = image.likes.findIndex(item => item.userId === this.currentUserId);
 
@@ -263,7 +257,7 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       } else {
 
         this.addLike()
-        this.sendNotification( NotificationType.Like, image.autorId.toString(),image.id.toString())
+        this.sendNotification(NotificationType.Like, image.autorId.toString(), image.id.toString())
 
         image.likes.push(new Like(image.id, this.currentUserId))
       }
@@ -272,6 +266,73 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  addLike() {
+    this.likeService.addLikeToImage(this.id)
+      .subscribe({
+        next: () => {
+          this.isLiked = true;
+        },
+        error: (error: HttpErrorResponse) => {
+          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
+          this.alertService.addNotification(notification)
+        }
+      })
+  }
+
+  onFollowChange(following: User) {
+    if (isUserAuthenticated()) {
+
+      if (this.isFollowing) {
+        this.removeFollow(following.id)
+      } else {
+        this.addFollow(following.id)
+        this.sendNotification(NotificationType.Follow, following.id.toString(), null)
+
+      }
+    } else {
+      this.openLoginMessage()
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: Event) {
+    this.screenWidth = window.innerWidth;
+  }
+
+  changeFollowStatus($event: boolean) {
+    this.isFollowing = $event;
+  }
+
+  sendNotification(type: NotificationType, receiverId: string, imageId: string | null) {
+    this.chatService.sendNotification(receiverId, type, imageId);
+  }
+
+  openGalleryModal() {
+    if (isAuthenticated()) {
+      document.body.style.overflow = 'hidden';
+      this.isGalleryModalOpen = true;
+    } else {
+      this.openLoginMessage();
+    }
+  }
+
+  goToUserPage(autorId: number) {
+    this.router.navigate(["user-profile/" + autorId])
+  }
+
+  goToImagePage(id: number) {
+
+    this.router.navigateByUrl("/image/" + id).then(() => {
+
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        window.location.reload();
+
+      }, 10);
+    });
+
+
+  }
 
   private removeLike() {
     this.likeService.removeLike(this.id)
@@ -282,20 +343,6 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
         next: () => {
           this.isLiked = false;
 
-        },
-        error: (error: HttpErrorResponse) => {
-          const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
-          this.alertService.addNotification(notification)
-        }
-      })
-  }
-
-
-  addLike() {
-    this.likeService.addLikeToImage(this.id)
-      .subscribe({
-        next: () => {
-          this.isLiked = true;
         },
         error: (error: HttpErrorResponse) => {
           const notification = {id: 1, label: "Oops...", message: error.error, type: "error"};
@@ -317,7 +364,6 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       })
   }
 
-
   private addFollow(followingId: number) {
     this.followService.addFollow(followingId)
       .subscribe({
@@ -331,71 +377,79 @@ export class ImagePageComponent implements OnInit, AfterViewInit {
       })
   }
 
-  protected readonly Follow = Follow;
+  openDialogReport() {
 
-  onFollowChange(following: User) {
-    if (this.isUserAuthenticated()) {
+      const dialogRef = this.dialog.open(ReportDialogComponent);
 
-      if (this.isFollowing) {
-        this.removeFollow(following.id)
-      } else {
-        this.addFollow(following.id)
-        this.sendNotification( NotificationType.Follow, following.id.toString(),null)
+      dialogRef.afterClosed().subscribe(result => {
+        if(result!=undefined){
+          let report = new Report(" "," ",result,this.id,this.currentUserId)
+          this.reportService.createReport(report).subscribe({
+            next: (response:SuccessMessage) => {
+              const notification = {
+                id: 1,
+                label: "Hooray...",
+                message: response.message,
+                type: "success"
+              };
+              this.alertService.addNotification(notification)
+            },
+            error: (error: any) => {
+              const notification = {
+                id: 1,
+                label: "Hooray...",
+                message: error.error,
+                type: "error"
+              };
+              this.alertService.addNotification(notification)
+            }
+          })
+        }
+      });
 
+  }
+
+  protected readonly isAdminAuthenticated = isAdminAuthenticated;
+  deleteImageViaReport(image: Picture) {
+    this.reportService.deleteReportImage(this.id).subscribe({
+      next: () => {
+        this.imageService.deleteImage(image.id).subscribe({
+          next: (response: SuccessMessage) => {
+            const notification = {
+              id: 1,
+              label: "Hooray...",
+              message: response.message,
+              type: "success"
+            };
+            this.alertService.addNotification(notification);
+
+          },
+          error: (error: any) => {
+            const notification = {
+              id: 1,
+              label: "Hooray...",
+              message: error.error,
+              type: "error"
+            };
+            this.alertService.addNotification(notification);
+          }
+        });
+      },
+      error: (error: any) => {
+        const notification = {
+          id: 1,
+          label: "Hooray...",
+          message: error.error,
+          type: "error"
+        };
+        this.alertService.addNotification(notification);
       }
-    } else {
-      this.openLoginMessage()
-    }
-  }
-
-  screenWidth: number = window.innerWidth;
-
-  @HostListener('window:resize', ['$event'])
-  onWindowResize(event: Event) {
-    this.screenWidth = window.innerWidth;
-    console.log(this.screenWidth)
-  }
-
-  changeFollowStatus($event: boolean) {
-    this.isFollowing = $event;
-  }
-
-
-  sendNotification( type: NotificationType, receiverId: string,imageId:string|null) {
-    this.chatService.sendNotification(receiverId, type,imageId);
-  }
-
-
-  openGalleryModal() {
-    if (isAuthenticated()) {
-      document.body.style.overflow = 'hidden';
-      this.isGalleryModalOpen = true;
-    } else {
-      this.openLoginMessage();
-    }
-  }
-
-  goToUserPage(autorId: number) {
-    this.router.navigate(["user-profile/" + autorId])
-  }
-
-
-  goToImagePage(id: number) {
-
-    this.router.navigateByUrl("/image/" + id).then(() => {
-
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        window.location.reload();
-
-      }, 10);
     });
-
-
   }
 
 
-  protected readonly calculateTime = calculateTime;
+  protected readonly isUserAuthenticated = isUserAuthenticated;
+  protected readonly localStorage = localStorage;
 }
 
 

@@ -24,21 +24,21 @@ export class LoginComponent implements OnDestroy, OnInit {
   isLoading = false;
   private ngUnsubscribe = new Subject<void>();
 
-  ngOnInit() {
-
-  }
-
   constructor(private authService: AuthenticationService,
               private formBuilder: FormBuilder,
               private sealService: SealService,
               private chatService: ChatService,
-              private router:Router,
+              private router: Router,
               private alertService: TuiAlertService,
               private alertService1: AlertService) {
     this.form = formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required])
     });
+  }
+
+  ngOnInit() {
+
   }
 
   login() {
@@ -49,7 +49,7 @@ export class LoginComponent implements OnDestroy, OnInit {
         .pipe(
           first(),
           finalize(() => this.isLoading = false
-            )
+          )
         )
         .subscribe({
           next: (result: User) => {
@@ -58,11 +58,10 @@ export class LoginComponent implements OnDestroy, OnInit {
             localStorage.setItem('email', result.email);
             localStorage.setItem('role', result.role);
             localStorage.setItem('password', result.password)
-            console.log(result.password)
             this.chatService.startConnection(localStorage.getItem("id")!)
             this.sealService.setSecretKey(result.username, this.form.controls['password'].value)
             setTimeout(() => {
-             window.location.href='/discover'
+              window.location.href = '/discover'
             }, 1000);
 
 
@@ -77,7 +76,6 @@ export class LoginComponent implements OnDestroy, OnInit {
             this.alertService1.addNotification(notification)
           }
         })
-      // window.location.href = '/discover';
     }
   }
 

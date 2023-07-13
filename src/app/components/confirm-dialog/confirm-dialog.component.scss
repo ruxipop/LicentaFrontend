@@ -15,9 +15,10 @@
 
     .dialog-content {
 
-      tui-svg{
+      tui-svg {
         font-size: 30px;
       }
+
       width: 100%;
       text-align: center;
       padding: 1.5rem;
@@ -31,17 +32,19 @@
 
       section {
         display: block;
-        p{
+
+        p {
           font-size: 16px;
-          color:black;
+          color: black;
         }
 
-.actions{
-  justify-content: center!important;
-  .form-submit-button{
-    width: auto;
-  }
-}
+        .actions {
+          justify-content: center !important;
+
+          .form-submit-button {
+            width: auto;
+          }
+        }
       }
     }
   }

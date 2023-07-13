@@ -1,26 +1,8 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {SealService} from "../../services/seal.service";
 import {ChatService} from "../../services/chat.service";
 import {MessageRequest, MessageResponse} from "../../models/message";
-import {
-  BehaviorSubject,
-  combineLatest,
-  forkJoin,
-
-
-  map,
-
-  Observable,
-
-  take,
-
-} from "rxjs";
+import {BehaviorSubject, combineLatest, forkJoin, map, Observable, take,} from "rxjs";
 import {ChatSenderService} from "../../services/chat-sender.service";
 import {User} from "../../models/user";
 import {TransferDataService} from "../../services/transfer-data.service";
@@ -50,26 +32,23 @@ export class ChatComponent implements OnInit {
   profilePhoto: string;
   obsArray: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   following$: Observable<any> = this.obsArray.asObservable();
-
-  private combinedMessagesSource = new BehaviorSubject<MessageResponse[]>([]);
-  combinedMessages$ = this.combinedMessagesSource.asObservable();
-
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   value: string = '';
   isDropdownOpen: any = false;
-
+  selectedUser: User;
+  protected readonly formatMessageTime = formatMessageTime;
+  private combinedMessagesSource = new BehaviorSubject<MessageResponse[]>([]);
+  combinedMessages$ = this.combinedMessagesSource.asObservable();
 
   constructor(private sealService: SealService, private elementRef: ElementRef, private followingService: FollowService, private chatService: ChatService, private chatSender: ChatSenderService, private dataService: TransferDataService) {
     this.senderId = localStorage.getItem("id")!;
     this.dataService.data$5.subscribe((data) => {
 
       if (data.senderId == this.selectedUser.id) {
-        console.log("sa")
         this.receiveMessageFromNotification(data)
       }
     })
   }
-
 
   searchMethod() {
 
@@ -78,20 +57,11 @@ export class ChatComponent implements OnInit {
     this.fetchFollowing()
   }
 
-  private scrollChatToBottom() {
-    const chatContainerEl = this.chatContainer.nativeElement;
-    chatContainerEl.scrollTop = chatContainerEl.scrollHeight;
-  }
-
-
   ngOnInit() {
-
-
     this.fetchUsers();
     this.fetchFollowing()
 
   }
-
 
   onScroll() {
     this.currentPage += 1;
@@ -120,7 +90,6 @@ export class ChatComponent implements OnInit {
 
   }
 
-
   fetchUsers() {
     this.usersInChat$ = this.chatSender.getUsers(parseInt(this.senderId)).pipe()
 
@@ -135,8 +104,6 @@ export class ChatComponent implements OnInit {
     });
 
   }
-
-  selectedUser: User;
 
   selectUser(user: User) {
     this.selectedUser = user;
@@ -230,19 +197,21 @@ export class ChatComponent implements OnInit {
   }
 
 
-  // @HostListener('document:click', ['$event'])
-  // onDocumentClick(event: MouseEvent) {
-  //   const target = event.target as HTMLElement;
-  //   const dropdownElement = this.elementRef.nativeElement;
-  //   const dropdownMenu = dropdownElement.querySelector('.dropdown-menu');
-  //   const threeDotsElement = dropdownElement.querySelector('.ant-dropdown-trigger');
-  //
-  //   if (!dropdownMenu.contains(target) && !threeDotsElement.contains(target) && this.currentUsername!= ' ') {
-  //     this.isDropdownOpen = false;
-  //   }
-  // }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const dropdownElement = this.elementRef.nativeElement;
+    const dropdownMenu = dropdownElement.querySelector('.dropdown-menu');
+    const threeDotsElement = dropdownElement.querySelector('.ant-dropdown-trigger');
 
+    // if (!dropdownMenu.contains(target) && !threeDotsElement.contains(target) && this.currentUsername!= ' ') {
+    //   this.isDropdownOpen = false;
+    // }
+  }
 
-  protected readonly formatMessageTime = formatMessageTime;
+  private scrollChatToBottom() {
+    const chatContainerEl = this.chatContainer.nativeElement;
+    chatContainerEl.scrollTop = chatContainerEl.scrollHeight;
+  }
 }
 

@@ -1,49 +1,32 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
-  ApexXAxis,
   ApexDataLabels,
-  ApexTitleSubtitle,
+  ApexGrid,
   ApexStroke,
-  ApexGrid
+  ApexTitleSubtitle,
+  ApexXAxis
 } from "ng-apexcharts";
 
 import {
-  TUI_IS_CYPRESS, TuiContextWithImplicit,
+  TUI_IS_CYPRESS,
+  TuiContextWithImplicit,
   TuiDay,
   TuiDayLike,
   TuiDayRange,
   TuiMonth,
   tuiPure,
-  TuiStringHandler, tuiSum,
+  TuiStringHandler,
+  tuiSum,
 } from '@taiga-ui/cdk';
-import {TUI_MONTHS, tuiFormatNumber} from '@taiga-ui/core';
-import {
-  BehaviorSubject,
-  catchError,
-  defaultIfEmpty, filter,
-  forkJoin,
-  Observable,
-  of, shareReplay,
-  Subscription,
-  switchMap,
-  take, tap
-} from 'rxjs';
+import {TUI_MONTHS} from '@taiga-ui/core';
+import {BehaviorSubject, filter, forkJoin, Observable, of, shareReplay, switchMap, take} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {FormControl, FormGroup} from "@angular/forms";
 import {StatisticsService} from "../../services/statistics.service";
-import {StatisticsType} from "../../models/statisticsType";
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  dataLabels: ApexDataLabels;
-  grid: ApexGrid;
-  stroke: ApexStroke;
-  title: ApexTitleSubtitle;
-};
+
 interface ChartData {
   type: string;
   number: number;
@@ -66,7 +49,7 @@ interface PieChartData {
 
   styleUrls: ['./statistics-page.component.scss']
 })
-export class StatisticsPageComponent implements OnInit, AfterViewInit {
+export class StatisticsPageComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
   obsArray: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
@@ -83,6 +66,8 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
 
   allUsersNb: number;
   newUsersNb: number;
+  allImagesNb: number;
+  newImagesNb: number;
   rangeDate = new FormGroup({
     start: new FormControl(),
     end: new FormControl()
@@ -94,17 +79,40 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
   });
   readonly maxLength: TuiDayLike = {month: 12};
   val: number[] = []
-  private chartData$: Observable<PieChartData>;
-
-  ngAfterViewInit() {
-    console.log("ce[")
-  }
-
   statisticsCategoryNb$: Observable<any>;
   statisticsCategoryLabel$: Observable<any>;
-
   statisticsTypeNb$: Observable<any>;
   statisticsTypeLabel$: Observable<any>;
+  selectedButton: string = 'allUsers';
+  readonly xStringify$: Observable<TuiStringHandler<TuiDay>> = this.months$.pipe(
+    map(
+      months =>
+        ({month, day}) =>
+          `${months[month]}, ${day}`,
+    ),
+  );
+  readonly value = [13769, 12367, 10172, 3018, 2592];
+  readonly total = tuiSum(...this.value);
+  index = NaN;
+  index1 = NaN;
+  readonly value2 = [
+    [1000, 8000, 4000, 3000, 4000, 1000, 8000, 4000, 3000, 4000, 1000, 8000, 4000, 3000, 4000],
+  ];
+  readonly labelsX = ['Jan 2021', 'Feb', 'Mar', 'Mar', 'ce', 'Jan 2021', 'Feb', 'Mar', 'Mar', 'ce', 'Jan 2021', 'Feb', 'Mar', 'Mar', 'ce'];
+  readonly labelsY = ['0', '5', '10', '15', '20', '25'];
+  statisticsImageNb$: Observable<any>
+  statisticsImageName$: Observable<any>
+  private chartData$: Observable<PieChartData>;
+  private readonly labels = ['Food', 'Cafe', 'Open Source', 'Taxi', 'other'];
+
+  constructor(
+    private statisticsService: StatisticsService,
+    @Inject(TUI_MONTHS) private readonly months$: Observable<readonly string[]>,
+    @Inject(TUI_IS_CYPRESS) readonly isCypress: boolean,
+  ) {
+  }
+
+
 
   toggle(any: string) {
 
@@ -114,7 +122,7 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
     this.getUsers(any)
   }
 
-  getStatisticsByType(){
+  getStatisticsByType() {
     const statistics$ = this.statisticsService.getStatisticsByType().pipe(
       filter(statistics => !!statistics),
       shareReplay(1)
@@ -122,10 +130,12 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
 
     this.statisticsTypeNb$ = statistics$.pipe(
       map(statistics => statistics.map(statistic => statistic.number)),
-      map(numbers => numbers.length > 0 ? numbers : [0]) // Adăugăm valoarea 0 în cazul în care nu există alte valori
-    );    this.statisticsTypeLabel$ = statistics$.pipe(map(statistics => statistics.map(statistic => statistic.type)));
+      map(numbers => numbers.length > 0 ? numbers : [0])
+    );
+    this.statisticsTypeLabel$ = statistics$.pipe(map(statistics => statistics.map(statistic => statistic.type)));
   }
-  getStatisticsByCategory(){
+
+  getStatisticsByCategory() {
     const statistics$ = this.statisticsService.getStatisticsByCategory().pipe(
       filter(statistics => !!statistics),
       shareReplay(1)
@@ -133,7 +143,7 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
 
     this.statisticsCategoryNb$ = statistics$.pipe(
       map(statistics => statistics.map(statistic => statistic.number)),
-      map(numbers => numbers.length > 0 ? numbers : [0]) // Adăugăm valoarea 0 în cazul în care nu există alte valori
+      map(numbers => numbers.length > 0 ? numbers : [0])
     );
 
     this.statisticsCategoryLabel$ = statistics$.pipe(
@@ -141,13 +151,15 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
     );
   }
 
-
   ngOnInit() {
     this.statisticsService.getAllUsersNb().subscribe((data) => this.allUsersNb = data)
     this.statisticsService.getNewsUsersNb().subscribe(data => this.newUsersNb = data)
+    this.statisticsService.getNewsImageNb().subscribe(data => this.newImagesNb = data)
+    this.statisticsService.getAllImagesNb().subscribe(data => this.allImagesNb = data)
+
     this.getStatisticsByType();
-   this. getStatisticsByCategory();
-   this.getMostAppreciatedImage()
+    this.getStatisticsByCategory();
+    this.getMostAppreciatedImage()
     let today = new Date();
     let lastWeek = new Date();
     lastWeek.setDate(today.getDate() - 7);
@@ -164,8 +176,6 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
     let startTuiDay: TuiDay;
     let endTuiDay
     this.rangeDate.get('start')!.valueChanges.subscribe(start => {
-
-      console.log(this.val)
       startTuiDay = TuiDay.fromLocalNativeDate(start);
 
 
@@ -177,14 +187,11 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
       endTuiDay = TuiDay.fromLocalNativeDate(end);
       if (this.rangeDate.valid) {
         this.selectedRange = new TuiDayRange(startTuiDay, endTuiDay);
-        console.log("cen")
       }
 
     });
 
     this.rangeDate2.get('start')!.valueChanges.subscribe(start => {
-
-      console.log(this.val)
       startTuiDay = TuiDay.fromLocalNativeDate(start);
 
 
@@ -201,24 +208,6 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-  selectedButton: string = 'allUsers';
-  readonly xStringify$: Observable<TuiStringHandler<TuiDay>> = this.months$.pipe(
-    map(
-      months =>
-        ({month, day}) =>
-          `${months[month]}, ${day}`,
-    ),
-  );
-
-  constructor(
-    private statisticsService: StatisticsService,
-    @Inject(TUI_MONTHS) private readonly months$: Observable<readonly string[]>,
-    @Inject(TUI_IS_CYPRESS) readonly isCypress: boolean,
-  ) {
-  }
-
-
   @tuiPure
   computeLabels$({from, to}: TuiDayRange): Observable<readonly string[]> {
     return this.months$.pipe(
@@ -233,16 +222,11 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
   }
 
 
-  convertToTuiDay(date: Date): TuiDay {
-    return TuiDay.fromLocalNativeDate(date);
-  }
-
   readonly yStringify: TuiStringHandler<number> = y =>
     `${(y / 10).toLocaleString('en-US', {maximumFractionDigits: 0})}  Users`;
 
   readonly yStringifyImages: TuiStringHandler<number> = y =>
     `${(y / 10).toLocaleString('en-US', {maximumFractionDigits: 0})}  Images`;
-
 
   @tuiPure
 
@@ -250,7 +234,6 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
 
     let today = new Date(from.year, from.month, from.day);
     let nextWeek = new Date(to.year, to.month, to.day);
-    console.log("ce ccat")
     return this.statisticsService.getStatistics(today, nextWeek).pipe(
       map((values: number[]) => {
         const result: ReadonlyArray<[TuiDay, number]> = values.map((value, i) => [
@@ -261,6 +244,7 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
       }),
     );
   }
+
   @tuiPure
 
   public computeValue2({from, to}: TuiDayRange): Observable<ReadonlyArray<[TuiDay, number]>> {
@@ -277,7 +261,6 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
       }),
     );
   }
-
 
   onScroll() {
     this.currentPage += 1;
@@ -338,45 +321,24 @@ export class StatisticsPageComponent implements OnInit, AfterViewInit {
     return this.selectedButton.includes('User')
   }
 
-
-
-  private readonly labels = ['Food', 'Cafe', 'Open Source', 'Taxi', 'other'];
-  readonly value = [13769, 12367, 10172, 3018, 2592];
-  readonly total = tuiSum(...this.value);
-
-  index = NaN;
-index1=NaN;
-
   getSum(numbers: readonly number[] | null, index: number): number | null {
     if (!numbers) {
       return null;
     }
-    if ( Number.isNaN(index)) {
+    if (Number.isNaN(index)) {
       return numbers.reduce((a, b) => a + b, 0);
     }
     return numbers[index];
   }
 
-   getLabel(labels:string[],index:number): string {
+  getLabel(labels: string[], index: number): string {
     return Number.isNaN(index) ? 'Total' : labels[index];
   }
-
-
-  readonly value2 = [
-    [1000, 8000, 4000, 3000, 4000,1000, 8000, 4000, 3000, 4000,1000, 8000, 4000, 3000, 4000],
-  ];
-
-  readonly labelsX = ['Jan 2021', 'Feb', 'Mar','Mar','ce','Jan 2021', 'Feb', 'Mar','Mar','ce','Jan 2021', 'Feb', 'Mar','Mar','ce'];
-  readonly labelsY = ['0', '5','10','15','20','25'];
-
-
 
   readonly hint = ({$implicit}: TuiContextWithImplicit<number>): string =>
     `Valorarea este ${$implicit}`
 
-  statisticsImageNb$:Observable<any>
-  statisticsImageName$:Observable<any>
-  getMostAppreciatedImage(){
+  getMostAppreciatedImage() {
     const statistics$ = this.statisticsService.getMostAppreciatedImages().pipe(
       filter(statistics => !!statistics),
       shareReplay(1)
@@ -391,13 +353,12 @@ index1=NaN;
   }
 
 
-  goToUserProfile(userId:number) {
-    window.location.href='user-profile/'+userId;
+  goToUserProfile(id: number) {
+    if(this.isUserType()){
+
+    window.location.href = 'user-profile/' + id;}
+     else
+       window.location.href='image/'+id
   }
 
-  goToImagePage(imageName:any) {
-    const clickedElement = event.target as HTMLElement;
-
- console.log(clickedElement)
-  }
 }

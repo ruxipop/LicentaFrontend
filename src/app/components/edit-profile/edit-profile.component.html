@@ -1,9 +1,9 @@
 <body>
 <div class="profile-container">
-  <div class="background" [ngClass]="{ 'exist-background': backgroundImage!='' }">
+  <div [ngClass]="{ 'exist-background': backgroundImage!='' }" class="background">
     <img *ngIf="backgroundImage!=''" [src]="backgroundImage">
-    <div class="icon-overlay" (click)="openModalPhoto('background')">
-      <tui-svg src="tuiIconEdit2Large" class="icon-edit"></tui-svg>
+    <div (click)="openModalPhoto('background')" class="icon-overlay">
+      <tui-svg class="icon-edit" src="tuiIconEdit2Large"></tui-svg>
     </div>
   </div>
 
@@ -12,10 +12,10 @@
 
       <img *ngIf="profileImage!=''" [src]="profileImage">
       <div *ngIf="profileImage==''" class="profile-icon">
-        <tui-svg src="tuiIconUserLarge" class="icon-edit"></tui-svg>
+        <tui-svg class="icon-edit" src="tuiIconUserLarge"></tui-svg>
       </div>
-      <div class="edit-icon" (click)="openModalPhoto('profile')">
-        <tui-svg src="tuiIconEdit2" class="icon-edit"></tui-svg>
+      <div (click)="openModalPhoto('profile')" class="edit-icon">
+        <tui-svg class="icon-edit" src="tuiIconEdit2"></tui-svg>
       </div>
     </div>
 
@@ -24,13 +24,13 @@
         <div class="form-row" style="margin-top: 30px">
           <div class="form-column">
             <label for="username">Username*</label>
-            <input type="text" id="username" name="username" [(ngModel)]="this.username"
-                   maxlength="50">
+            <input [(ngModel)]="this.username" id="username" maxlength="50" name="username"
+                   type="text" readonly>
             <p>{{ currentCharacterCount(this.username) }}/50</p>
           </div>
           <div class="form-column">
             <label for="name">Name*</label>
-            <input type="text" id="name" name="name" [(ngModel)]="this.name"      maxlength="50">
+            <input [(ngModel)]="this.name" id="name" maxlength="50" name="name" type="text">
             <p>{{ currentCharacterCount(this.name) }}/50</p>
           </div>
         </div>
@@ -41,8 +41,8 @@
               <label>Country</label>
               <div class="select-wrapper form-column form-column-field">
 
-                <select name="country" id="country" [(ngModel)]="this.country"
-                        onfocus="this.size=10;" onblur="this.size=1;" onchange="this.size=1; this.blur();">
+                <select [(ngModel)]="this.country" id="country" name="country"
+                        onblur="this.size=1;" onchange="this.size=1; this.blur();" onfocus="this.size=10;">
                   <option value="">None</option>
                   <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
                 </select>
@@ -52,16 +52,16 @@
           <div class="form-column">
 
             <label for="city">City</label>
-            <input type="text" id="city" name="city" [(ngModel)]="this.city"
-                   maxlength="50">
+            <input [(ngModel)]="this.city" id="city" maxlength="50" name="city"
+                   type="text">
             <p>{{ currentCharacterCount(this.city) }}/50</p>
           </div>
         </div>
         <div class="form-row" style="margin-bottom: 30px">
           <div class="form-column">
             <label for="description">Bio</label>
-            <textarea id="description" name="description" [(ngModel)]="this.description"  rows="5"
-                      placeholder="About me..." maxlength="250">
+            <textarea [(ngModel)]="this.description" id="description" maxlength="250" name="description"
+                      placeholder="About me..." rows="5">
 
             </textarea>
             <p>{{ currentCharacterCount(this.description) }}/250</p>
@@ -70,10 +70,11 @@
         </div>
 
         <div class="actions">
-          <button class="cancel-button" (click)="cancelUpdate()">Cancel</button>
+          <button (click)="cancelUpdate()" class="cancel-button">Cancel</button>
 
           <div class="button-upload">
-            <button [disabled]="isButtonDisabled()" (click)="updateUser()" class="form-submit-button" [ngClass]="{ 'loading': loading }">
+            <button (click)="updateUser()" [disabled]="isButtonDisabled()" [ngClass]="{ 'loading': loading }"
+                    class="form-submit-button">
               <span *ngIf="!loading">Upload</span>
               <span *ngIf="loading" class="spinner"></span>
             </button>
@@ -86,5 +87,6 @@
 </body>
 
 
-<app-modal-select-photo (closeEvent)="handleCloseModal()" (selectedPhoto)="handleSelectedPhoto($event)" [userId]="getUserAuthenticatedId()"
-                        [openModal]="openChoosePhoto"></app-modal-select-photo>
+<app-modal-select-photo (closeEvent)="handleCloseModal()" (selectedPhoto)="handleSelectedPhoto($event)"
+                        [openModal]="openChoosePhoto"
+                        [userId]="getUserAuthenticatedId()"></app-modal-select-photo>

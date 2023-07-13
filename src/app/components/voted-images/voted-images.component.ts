@@ -12,11 +12,9 @@ export class VotedImagesComponent {
   pageSize = 20
   obsArray: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   editors$: Observable<any> = this.obsArray.asObservable();
-  nbVotes:number=0;
+  nbVotes: number = 0;
 
   constructor(private editorService: EditorService) {
-
-
   }
 
   ngOnInit(): void {
@@ -24,14 +22,14 @@ export class VotedImagesComponent {
     this.getVotes()
   }
 
-  getVotes(){
-    this.editorService.getNbOfVotes(parseInt(localStorage.getItem("id")!)).subscribe(data=>{
-      console.log(data +" =============================")
-      this.nbVotes=data
+  getVotes() {
+    this.editorService.getNbOfVotes(parseInt(localStorage.getItem("id")!)).subscribe(data => {
+      this.nbVotes = data
 
-  })
+    })
 
   }
+
   onScroll() {
     this.currentPage += 1;
     forkJoin([this.editors$.pipe(take(1)), this.editorService.getVotedImages(parseInt(localStorage.getItem("id")!), this.currentPage, this.pageSize)])
@@ -53,15 +51,13 @@ export class VotedImagesComponent {
       const images1 = data.map((image: any) => {
         return {...image, voted: true};
       });
-      console.log(images1)
       this.obsArray.next(images1);
     });
   }
 
 
   removeElement($event: number) {
-    this.nbVotes=0;
-    console.log("ce")
+    this.nbVotes = 0;
     this.getVotes()
 
   }

@@ -1,10 +1,9 @@
-
 @import '../../../variables';
 
 
 .modal-box {
   width: 90%;
-  margin-top: 10rem!important;
+  margin-top: 10rem !important;
   height: 100%;
   max-height: 100%;
   overflow: hidden;
@@ -57,13 +56,13 @@
                 font-weight: bold;
               }
 
-              .follow-style{
+              .follow-style {
                 font-size: 14px;
                 line-height: 20px;
                 letter-spacing: 0;
                 text-transform: none;
                 margin: 0;
-                color: rgb(109,115,120);
+                color: rgb(109, 115, 120);
               }
             }
           }
@@ -133,39 +132,35 @@
 
 }
 
-//@media screen and (min-width: 429px) {
-  .modal-wrapper {
-    padding: 32px;
-    width: 480px;
-    height: 736px;
+.modal-wrapper {
+  padding: 32px;
+  width: 480px;
+  height: 736px;
 
-  }
-  .modal-box {
-    //height: 430px;
-    height: auto;
-    max-height: 500px;
-    border-radius: 4px;
-    overflow: hidden;
+}
 
-  }
+.modal-box {
+  height: auto;
+  max-height: 500px;
+  border-radius: 4px;
+  overflow: hidden;
 
-  .modal-close-button {
-    left: 24px;
-    top: unset;
-  }
+}
 
-  .likes-modal {
-    padding: 0 0 24px;
-  }
+.modal-close-button {
+  left: 24px;
+  top: unset;
+}
 
-  .modal-content {
-    padding: 0 24px;
-  }
+.likes-modal {
+  padding: 0 0 24px;
+}
+
+.modal-content {
+  padding: 0 24px;
+}
+
 //}
-
-
-
-
 
 
 .icon {
@@ -203,17 +198,16 @@
 }
 
 
-.form-submit-button{
+.form-submit-button {
   width: 25%;
 }
 
-.unfollow-button{
+.unfollow-button {
   color: white;
 }
 
 
-
-.profile-icon{
+.profile-icon {
 
   border-radius: 50%;
   height: 3rem;

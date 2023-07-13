@@ -22,7 +22,11 @@ nav {
     font-size: 35px;
     margin-left: 2%;
     margin-bottom: 0.5rem !important;
-
+    cursor: pointer;
+    pointer-events: auto;
+    &:hover{
+      color:$app-button-color-hover !important;
+    }
     dialog {
       border-bottom: 2px solid black;
       margin-bottom: 10px;
@@ -257,9 +261,10 @@ li.dropdown {
 .dropdown-menu {
   left: 0;
   margin: 0;
-li{
-  margin-left: -1rem!important;
-}
+
+  li {
+    margin-left: -1rem !important;
+  }
 }
 
 .show-menu {
@@ -274,8 +279,10 @@ li{
 
 @media screen and (max-width: 768px) {
 
-  .logo {
-    margin-bottom: 0 !important;
+  .logo {    margin-bottom: 0 !important;
+
+
+
   }
   .principal-buttons {
     display: none;

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, forkJoin, Observable, take} from "rxjs";
 import {ImageService} from "../../services/image.service";
-import {EditorService} from "../../services/editor.service";
 
 @Component({
   selector: 'app-discover-page',
@@ -11,7 +10,7 @@ import {EditorService} from "../../services/editor.service";
 export class DiscoverPageComponent implements OnInit {
   currentPage = 1;
   pageSize = 20
-  type: string = 'Popular'
+  type: string = 'Fresh'
   category: string | null = null
   allCategory: string[] = [];
   deselectCategory: string | null = null;

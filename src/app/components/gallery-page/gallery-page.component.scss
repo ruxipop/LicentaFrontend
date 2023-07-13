@@ -157,9 +157,8 @@
   left: 0;
   width: 100%;
   height: 40px;
-  background: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%); /* Adaugă gradientul liniar cu valorile alpha dorite */
+  background: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
   box-shadow: none;
-  //backdrop-filter: blur(1px); /* Adaugă efectul de blur pe fundal */
   padding: 8px;
   opacity: 0;
   transition: opacity 0.2s ease 0s, max-height 0.2s ease 0s, transform 0.3s ease;
@@ -176,11 +175,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px;
-  background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.6) 100%); /* Gradient liniar cu valorile alpha dorite */
+  background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.6) 100%);
   box-shadow: none;
   color: white;
   height: 50px;
-  //font-size: 14px;
   opacity: 0;
   transition: opacity 0.2s ease 0s, max-height 0.2s ease 0s, transform 0.3s ease;
 
@@ -202,7 +200,7 @@
 }
 
 .hover-button {
-  margin-left: 10px; /* Adaugă un spațiu între cele două iconițe */
+  margin-left: 10px;
   position: relative;
 }
 
@@ -215,15 +213,15 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.3); /* Setează fundalul transparent și închis */
+  background-color: rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease;
-  display: none; /* Ascunde cercul inițial */
-  pointer-events: none; /* Nu permite interacțiunea cu cercul ascuns */
-  z-index: -10001; /* Asigură că cercul apare deasupra imaginii */
+  display: none;
+  pointer-events: none;
+  z-index: -10001;
 }
 
 .hover-button:hover::before {
-  display: block; /* Afișează cercul la hover */
+  display: block;
 }
 
 .hover-button::before tui-svg {
@@ -233,7 +231,7 @@
 }
 
 .hover-button:hover::before {
-  background-color: rgba(255, 255, 255, 0.3); /* Mărește opacitatea culorii cercului alb transparent */
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 
@@ -265,6 +263,5 @@
 
 .checked {
   color: white !important;
-
   fill: white !important;
 }

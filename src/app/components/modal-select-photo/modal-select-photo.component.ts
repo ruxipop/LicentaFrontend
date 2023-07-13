@@ -9,9 +9,9 @@ import {switchMap} from "rxjs/operators";
   templateUrl: './modal-select-photo.component.html',
   styleUrls: ['./modal-select-photo.component.scss']
 })
-export class ModalSelectPhotoComponent implements OnInit,OnChanges {
+export class ModalSelectPhotoComponent implements OnInit, OnChanges {
   @Input() openModal = false;
-  @Input() userId=0;
+  @Input() userId = 0;
   pageSize = 15;
   openUploadNewPhoto = false;
   currentPage = 1;
@@ -31,15 +31,12 @@ export class ModalSelectPhotoComponent implements OnInit,OnChanges {
   }
 
   ngOnInit() {
-    console.log("sal")
     this.fetchImages();
   }
 
   fetchImages() {
     this.obsArray.next([]);
     this.imageService.getImagesByAuthorID(this.currentPage, this.pageSize, this.userId).subscribe(data => {
-      console.log(this.userId)
-      console.log("ii"+data.length)
       this.obsArray.next(data);
     });
   }

@@ -11,7 +11,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {FileUpload} from "../../models/file-upload.model";
 import {AlertService} from "../../services/alert.service";
 import {currentCharacterCount, getUserAuthenticatedId} from "../../utils";
-import {FollowService} from "../../services/follow.service";
 
 @Component({
   selector: 'app-upload-modal',
@@ -38,10 +37,10 @@ export class UploadModalComponent implements OnInit, AfterViewInit {
   height: number;
   categories$: Observable<string[]>
   public countries: Countries[] | null = countries
+  protected readonly currentCharacterCount = currentCharacterCount;
 
   constructor(private imageService: ImageService, private dialog: MatDialog, private alertService: AlertService) {
   }
-
 
   ngAfterViewInit() {
     if (this.dummyButton) {
@@ -97,13 +96,10 @@ export class UploadModalComponent implements OnInit, AfterViewInit {
     return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
   }
 
-
   openFileInput() {
     const fileInput = this.fileInput.nativeElement;
     fileInput.click();
   }
-
-
 
   uploadPhoto() {
     this.loading = true;
@@ -114,7 +110,6 @@ export class UploadModalComponent implements OnInit, AfterViewInit {
 
       this.imageService.pushFileToStorage(fileUpload).pipe(
         switchMap(uploadResult => {
-          console.log(this.selectedDate)
           const picture = new Picture(
             image.width,
             this.category as CategoryImage,
@@ -124,7 +119,7 @@ export class UploadModalComponent implements OnInit, AfterViewInit {
             this.title,
             new Date(),
             new Date(this.selectedDate),
-            new Location(1, this.country, this.city),
+            new Location(0, this.country, this.city),
             uploadResult.url,
             getUserAuthenticatedId(),
           );
@@ -177,13 +172,10 @@ export class UploadModalComponent implements OnInit, AfterViewInit {
     if (this.file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        console.log("Sal")
         this.selectedImage = e.target.result;
         this.dummyButton.nativeElement.click();
       };
       reader.readAsDataURL(this.file);
     }
   }
-
-  protected readonly currentCharacterCount = currentCharacterCount;
 }

@@ -34,6 +34,7 @@
   box-shadow: rgb(215, 216, 219) 0px -1px 0px 0px inset;
   padding: 0 1rem;
   height: 4rem;
+
   a {
     color: $app-primary-hover;
     cursor: pointer;
@@ -124,10 +125,11 @@ img {
             display: flex;
 
             .date-wrapper {
-              text-align: right!important;
+              text-align: right !important;
               display: flex;
               justify-content: flex-end;
             }
+
             .user-username {
               word-break: break-word;
               max-width: 100%;
@@ -193,14 +195,12 @@ img {
 }
 
 
-
 .chat-conversation {
   position: relative;
   display: flex;
   -webkit-box-flex: 1;
   flex-grow: 1;
-  overflow: hidden; /* Adaugă această linie pentru a ascunde conținutul depășit */
-
+  overflow: hidden;
   padding: 1rem 1rem 0;
   flex-direction: row;
 
@@ -210,7 +210,7 @@ img {
     -webkit-box-flex: 1;
     flex-grow: 1;
     overflow-y: auto;
-    scrollbar-width: thin; /* Adaugă o lățime subțire la scrollbar */
+    scrollbar-width: thin;
     scrollbar-color: transparent transparent;
     margin-bottom: 3.3rem;
 
@@ -222,11 +222,11 @@ img {
 }
 
 .chat-conv-source::-webkit-scrollbar {
-  width: 5px; /* Setează lățimea scrollbar-ului */
+  width: 5px;
 }
 
 .chat-conv-source::-webkit-scrollbar-thumb {
-  background-color: transparent; /* Setează culoarea thumb-ului la transparent */
+  background-color: transparent;
 }
 
 .chat-input-wrapper {
@@ -247,26 +247,25 @@ img {
   flex-grow: 1;
   padding: 10px;
   align-self: flex-end;
-  margin-top: -20px!important;
+  margin-top: -20px !important;
 }
 
-.form-submit-button{
-  background-color: $app-primary-hover!important;
-font-weight: bold!important;
+.form-submit-button {
+  background-color: $app-primary-hover !important;
+  font-weight: bold !important;
   width: 12% !important;
-  margin-top: 0px!important;
-  padding: 5px!important;
+  margin-top: 0px !important;
+  padding: 5px !important;
 
-  &:hover{
-    background-color: $app-secondary!important;
+  &:hover {
+    background-color: $app-secondary !important;
   }
 
-  &:disabled{
+  &:disabled {
     color: white;
-    background-color: $gray-button!important;
+    background-color: $gray-button !important;
 
   }
-
 
 
 }
@@ -281,8 +280,8 @@ font-weight: bold!important;
   background-color: darkblue;
 }
 
-.message-wrapper{
-display: flex;
+.message-wrapper {
+  display: flex;
   flex-direction: column;
 
 }
@@ -315,9 +314,9 @@ display: flex;
   color: black;
 }
 
-.message-hour{
+.message-hour {
   font-size: 12px;
-  margin:4px 0 0;
+  margin: 4px 0 0;
   color: rgb(109, 115, 120);
 }
 
@@ -349,7 +348,7 @@ display: flex;
 .input-wrapper {
   display: flex;
   margin-top: 1.1rem;
-  justify-content: center; /* Adăugați această linie pentru a centra pe axa verticală */
+  justify-content: center;
 
   align-items: center;
 
@@ -447,28 +446,27 @@ span {
 
 
 .selected-user {
-border:2px solid $app-primary-hover;
+  border: 2px solid $app-primary-hover;
   background-color: rgb(247, 248, 250);
 
 }
 
 
-
-
 .show-menu {
   display: block;
 }
+
 .ant-dropdown-trigger {
   cursor: pointer;
   margin-bottom: 10px !important;
   position: relative;
 
 
-
   span {
     font-weight: bold !important;
     font-size: 32px !important;
     margin-bottom: 100px !important;
+
     &:hover {
       color: #619CE6;
     }
@@ -476,7 +474,8 @@ border:2px solid $app-primary-hover;
 
 
 }
-.icon-profile{
+
+.icon-profile {
   border: 2px solid white;
   border-radius: 50%;
   color: white;
@@ -485,7 +484,7 @@ border:2px solid $app-primary-hover;
   width: 2.3rem;
 }
 
-.last-message{
+.last-message {
   display: flex;
   flex-direction: row;
 

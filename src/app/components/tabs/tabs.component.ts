@@ -1,11 +1,4 @@
-import {
-  Component,
-  ContentChildren,
-  QueryList,
-  AfterContentInit,
-  Input,
-  Output, EventEmitter
-} from '@angular/core';
+import {AfterContentInit, Component, ContentChildren, EventEmitter, Input, Output, QueryList} from '@angular/core';
 import {TabComponent} from '../tab/tab.component';
 import {TransferDataService} from "../../services/transfer-data.service";
 import {ActivatedRoute} from "@angular/router";

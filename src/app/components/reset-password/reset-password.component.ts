@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {TuiAlertService, TuiNotification} from "@taiga-ui/core";
 import {AuthenticationService} from "../../services/authentication.service";
 import {ConfirmedValidator} from "../../validators/confirmPasswordValidator";
 import {finalize, first} from "rxjs";
@@ -13,17 +12,19 @@ import {AlertService} from "../../services/alert.service";
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent  implements OnInit{
+export class ResetPasswordComponent implements OnInit {
   form: FormGroup;
   hidePassword: boolean = true;
   hideConfirmPassword: boolean = true;
   isLoading: boolean = false;
   token: string | null = ''
+  disabledInput: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
-    private alertService:AlertService,
+    private alertService: AlertService,
     private authService: AuthenticationService,
-    private router:Router,
+    private router: Router,
     private route: ActivatedRoute,
   ) {
     this.form = formBuilder.group(
@@ -45,39 +46,55 @@ export class ResetPasswordComponent  implements OnInit{
         {
           next: () => {
           },
-          error: (error) => {
-            const notification = { id:1,label:"Oops...",message: "The link has expired or is invalid.", type: "error" };
+          error: () => {
+            this.disabledInput = true
+            const notification = {
+              id: 1,
+              label: "Oops...",
+              message: "The link has expired or is invalid.",
+              type: "error"
+            };
             this.alertService.addNotification(notification)
-            // this.router.navigate(['auth/login'])
-
           }
         }
       )
     }
   }
+
   changePassword() {
     if (this.form.invalid) {
       return
     }
     this.isLoading = true;
-    this.authService.resetPassword(new ResetPassword(this.form.controls['newPassword'].value, this.token)).pipe(
-      first(),
-      finalize(() => (this.isLoading = false))
-    ).subscribe({
+    this.authService.resetPassword(new ResetPassword(this.form.controls['confirmPassword'].value, this.token))
+
+
+      .pipe(
+        first(),
+        finalize(() => (this.isLoading = false))
+      ).subscribe({
         next: () => {
-          const notification = { id:1,label:"Hooray!",message:'Password changed successfully! You can log in with your new credentials.', type: "error" };
+          const notification = {
+            id: 1,
+            label: "Hooray!",
+            message: 'Password changed successfully! You can log in with your new credentials.',
+            type: "success"
+          };
           this.alertService.addNotification(notification)
-          this.router.navigate(['auth/login']);
+          setTimeout(() => this.router.navigate(['auth/login']), 1000)
+
         },
         error: (error) => {
-          for (let key in error.error) {
-          const notification = { id:1,label:"Oops!",message:error.error[key], type: "error" };
+
+          const notification = {id: 1, label: "Oops!", message: error.error, type: "error"};
           this.alertService.addNotification(notification)
-          }
+
+
         }
       }
     )
   }
+
   getPasswordErrorMessage() {
     const field = this.form.get('password') as FormControl;
     return field.hasError('required') ?

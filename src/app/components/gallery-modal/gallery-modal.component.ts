@@ -1,7 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {GalleryService} from "../../services/gallery.service";
 import {BehaviorSubject, forkJoin, Observable, take} from "rxjs";
-import {Modal} from "../../models/modal";
 import {Gallery} from "../../models/gallery";
 import {Picture} from "../../models/picture";
 import {AlertService} from "../../services/alert.service";
@@ -32,7 +31,6 @@ export class GalleryModalComponent implements OnInit {
   userId: number;
 
 
-
   constructor(private galleryService: GalleryService, private alertService: AlertService) {
     this.form = new FormGroup({
       nameGallery: new FormControl('', Validators.required),
@@ -48,9 +46,8 @@ export class GalleryModalComponent implements OnInit {
   }
 
   onScroll() {
-    console.log("ca")
     this.currentPage += 1;
-    forkJoin([this.galleries$.pipe(take(1)), this.galleryService.getAllGalleries(this.userId, this.currentPage, this.pageSize,this.searchValue)])
+    forkJoin([this.galleries$.pipe(take(1)), this.galleryService.getAllGalleries(this.userId, this.currentPage, this.pageSize, this.searchValue)])
       .subscribe((data: Array<Array<Gallery>>) => {
         const newArr = [...data[0], ...data[1]];
         this.obsArray.next(newArr);
@@ -58,11 +55,12 @@ export class GalleryModalComponent implements OnInit {
   }
 
   fetchGalleries() {
-    if(this.userId){
-    this.obsArray.next([]);
-    this.galleryService.getAllGalleries(this.userId, this.currentPage, this.pageSize,this.searchValue).subscribe(data => {
-      this.obsArray.next(data);
-    });}
+    if (this.userId) {
+      this.obsArray.next([]);
+      this.galleryService.getAllGalleries(this.userId, this.currentPage, this.pageSize, this.searchValue).subscribe(data => {
+        this.obsArray.next(data);
+      });
+    }
   }
 
   openNewGalleyDialog() {
@@ -71,12 +69,12 @@ export class GalleryModalComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
-    this.createNewGallery=false;
+    this.createNewGallery = false;
     this.form.reset();
     this.closeEvent.emit(false);
     this.obsArray.next([]);
     this.currentPage = 1;
-    this.searchValue='';
+    this.searchValue = '';
     this.fetchGalleries()
   }
 
@@ -100,9 +98,9 @@ export class GalleryModalComponent implements OnInit {
     if (this.form.invalid)
       return;
     let gallery = new Gallery(0, this.userId, this.form.get('nameGallery')!.value, '', this.form.get('isChecked')!.value)
-    this.galleryService.createGallery(gallery).subscribe((response)=>{
+    this.galleryService.createGallery(gallery).subscribe((response) => {
       this.addPhotoToGallery(response)
-   })
+    })
 
   }
 

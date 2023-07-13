@@ -7,6 +7,8 @@ import {TransferDataService} from "../../services/transfer-data.service";
   styleUrls: ['./crop-menu.component.scss', '../edit-bar/edit-bar.component.scss']
 })
 export class CropMenuComponent {
+  isCropOpen: boolean = false;
+
   constructor(private dataService: TransferDataService) {
 
   }
@@ -34,8 +36,6 @@ export class CropMenuComponent {
     this.dataService.sendObject("cropRect")
 
   }
-
-  isCropOpen: boolean = false;
 
   closeCrop() {
     this.isCropOpen = false;

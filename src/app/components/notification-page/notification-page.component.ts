@@ -28,7 +28,7 @@ export class NotificationPageComponent implements OnInit {
   protected readonly NotificationType = NotificationType;
 
 
-  constructor(private followService: FollowService,private dialog: MatDialog,  private chatService: ChatService, private notificationService: NotificationService, private alertService: AlertService) {
+  constructor(private followService: FollowService, private dialog: MatDialog, private chatService: ChatService, private notificationService: NotificationService, private alertService: AlertService) {
   }
 
 
@@ -78,10 +78,60 @@ export class NotificationPageComponent implements OnInit {
   fetchNotifications() {
     this.obsArray.next([]);
     this.notificationService.getNotifications(this.userId, this.currentPage, this.pageSize).subscribe(data => {
-      console.log(data)
       this.obsArray.next(data);
 
     })
+  }
+
+  typeOfNotification(type: NotificationType) {
+    switch (type) {
+      case NotificationType.Follow:
+        return ' followed you!'
+      case NotificationType.Like:
+        return ' liked your photo!'
+      case NotificationType.Comment:
+        return ' left a comment on your picture'
+
+    }
+  }
+
+  onFollowChange(notifications: any[], followingId: number, event: MouseEvent) {
+    event.stopPropagation()
+    const currentNot = notifications.find((obj) => obj.notification.senderId === followingId)
+    if (isAuthenticated() && currentNot) {
+      if (currentNot.isFollowing) {
+        this.removeFollow(followingId)
+        notifications.forEach(obj => {
+            if (obj.notification.senderId === followingId)
+              obj.isFollowing = false;
+
+          }
+        )
+
+
+      } else {
+        this.addFollow(followingId)
+        notifications.forEach(obj => {
+
+
+            if (obj.notification.senderId === followingId)
+              obj.isFollowing = true;
+
+          }
+        )
+        currentNot.isFollowing = true
+        this.chatService.sendNotification(followingId.toString(), NotificationType.Follow, null)
+
+
+      }
+    } else {
+      const notification = {id: 1, label: "Oops...", message: "You need to login first!", type: "error"};
+      this.alertService.addNotification(notification)
+    }
+  }
+
+  goToPage(notification: Notification) {
+    window.location.href = (notification.type === NotificationType.Follow) ? 'user-profile/' + notification.senderId : 'image/' + notification.imageId
   }
 
   private removeFollow(followingId: number) {
@@ -96,7 +146,6 @@ export class NotificationPageComponent implements OnInit {
       })
   }
 
-
   private addFollow(followingId: number) {
     this.followService.addFollow(followingId)
       .subscribe({
@@ -108,60 +157,5 @@ export class NotificationPageComponent implements OnInit {
           this.alertService.addNotification(notification)
         }
       })
-  }
-
-
-
-
-  typeOfNotification(type: NotificationType) {
-    switch (type) {
-      case NotificationType.Follow:
-        return ' followed you!'
-      case NotificationType.Like:
-        return ' liked your photo!'
-      case NotificationType.Comment:
-        return ' left a comment on your picture'
-
-    }
-  }
-
-  onFollowChange(notifications: any[], followingId: number,event: MouseEvent) {
-    event.stopPropagation()
-    const currentNot = notifications.find((obj) => obj.notification.senderId === followingId)
-    if (isAuthenticated() && currentNot) {
-      if (currentNot.isFollowing) {
-        this.removeFollow(followingId)
-       notifications.forEach(obj=>{
-         if(obj.notification.senderId===followingId)
-           obj.isFollowing=false;
-
-         }
-       )
-
-
-      } else {
-        this.addFollow(followingId)
-        notifications.forEach(obj=>{
-
-
-          if(obj.notification.senderId===followingId)
-            obj.isFollowing=true;
-
-          }
-        )
-        currentNot.isFollowing = true
-        this.chatService.sendNotification(followingId.toString(), NotificationType.Follow,null)
-
-
-      }
-    } else {
-      const notification = {id: 1, label: "Oops...", message: "You need to login first!", type: "error"};
-      this.alertService.addNotification(notification)
-    }
-  }
-
-
-  goToPage(notification: Notification) {
-    window.location.href= (notification.type===NotificationType.Follow)? 'user-profile/'+notification.senderId : 'image/'+notification.imageId
   }
 }

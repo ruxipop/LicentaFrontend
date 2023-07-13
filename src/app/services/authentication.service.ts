@@ -8,6 +8,7 @@ import {Credentials} from "../models/credentials";
 import {environment} from "../../environments/environment";
 import {ForgotPassword, ResetPassword} from "../models/password";
 import {AuthInterceptor} from "../interceptors/auth.interceptor";
+import {EmailMessage} from "../models/email-message";
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +88,9 @@ export class AuthenticationService {
     return this.http.post(`${environment.apiUrl}/api/User/reset-password`, resetPassword);
   }
 
+  sendEmail(emailMessage:EmailMessage){
+    return this.http.post(`${environment.apiUrl}/api/User/sent-email`, emailMessage);
+  }
   isTokenValid(token:string){
     let params = new HttpParams();
     if (location) {

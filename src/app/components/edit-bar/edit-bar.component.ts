@@ -8,15 +8,21 @@ import {SubMenuType} from "../../models/subMenuType";
   styleUrls: ['./edit-bar.component.scss']
 })
 export class EditBarComponent {
-  @Input() selectedIcon: any; // Iconul selectat primit de la componenta părinte
-  @Output() selectIcon: EventEmitter<any> = new EventEmitter<any>(); // Eveniment emis atunci când se selectează un icon
+  @Input() selectedIcon: any;
+  @Output() selectIcon: EventEmitter<any> = new EventEmitter<any>();
   @Output() public colorSelected = new EventEmitter<string>();
   @Output() public thicknessSelected = new EventEmitter<number>();
-
+@Input() public isFileSelected=false
   @Output() public buttonChanges = new EventEmitter<SubMenuType>();
   @Output() public textFormat = new EventEmitter<TextFormat>();
   @Output() public addNewTextBotton = new EventEmitter<[boolean, TextFormat]>();
-
+  selectedIconIndex: number = -1;
+  icons = [
+    {name: 'tuiIconEdit2Large', label: 'Markup', type: SubMenuType.drawBrush},
+    {name: 'tuiIconTypeLarge', label: 'Text', type: SubMenuType.text},
+    {name: 'tuiIconSlidersLarge', label: 'Filter', type: SubMenuType.filter},
+    {name: 'tuiIconCropLarge', label: 'Crop', type: SubMenuType.crop}
+  ];
 
   handleColorChange(color: string) {
     this.colorSelected.emit(color);
@@ -40,21 +46,14 @@ export class EditBarComponent {
     this.buttonChanges.emit(type)
   }
 
-  selectedIconIndex: number = -1; // Proprietatea pentru iconul selectat
-
-  icons = [
-    {name: 'tuiIconEdit2Large', label: 'Markup', type: SubMenuType.drawBrush},
-    {name: 'tuiIconTypeLarge', label: 'Text', type: SubMenuType.text},
-    {name: 'tuiIconSlidersLarge', label: 'Filter', type: SubMenuType.filter},
-    {name: 'tuiIconCropLarge', label: 'Crop', type: SubMenuType.crop}
-  ];
-
   selectIconM(index: number, type: SubMenuType) {
+    if(!this.isFileSelected)
+    return
     if (this.selectedIconIndex === index) {
       this.selectIcon.emit(SubMenuType.none)
-      this.selectedIconIndex = -1; // Deselectați butonul dacă acesta este deja selectat
+      this.selectedIconIndex = -1;
     } else {
-      this.selectedIconIndex = index; // Actualizați indexul butonului selectat
+      this.selectedIconIndex = index;
       this.selectIcon.emit(type)
 
     }

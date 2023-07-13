@@ -1,48 +1,35 @@
-
-
 <div class="container">
   <form [formGroup]="testForm">
     <div class="toggle-item">
       <label for="toggle1">Invert</label>
       <div class="toggle-wrapper">
-        <tui-toggle id="toggle1" formControlName="Invert"></tui-toggle>
+        <tui-toggle formControlName="Invert" id="toggle1"></tui-toggle>
       </div>
     </div>
-
-    <div class="toggle-item">
-      <label for="toggle2">Grayscale</label>
-      <div class="toggle-wrapper">
-        <tui-toggle id="toggle2" formControlName="Grayscale"></tui-toggle>
-      </div>
-    </div>
-
   </form>
 
   <div class="filter">
     <label>Blur</label>
-    <input class="custom-range" type="range" id="blurSlider" min="0" max="1" step="0.1" [(ngModel)]="blurIntensity" (ngModelChange)="applyBlurFilter()">
+    <input (ngModelChange)="applyBlurFilter()" [(ngModel)]="blurIntensity" class="custom-range" id="blurSlider" max="1" min="0" step="0.1"
+           type="range">
   </div>
   <div class="filter">
     <label>Saturation</label>
 
-    <input class="custom-range" type="range" id="satSlider" min="0" max="1" step="0.1" [(ngModel)]="saturationValue" (ngModelChange)="applySaturationFilter()">
+    <input (ngModelChange)="applySaturationFilter()" [(ngModel)]="saturationValue" class="custom-range" id="satSlider" max="1" min="0" step="0.1"
+           type="range">
   </div>
   <div class="filter">
     <label>Noise</label>
 
-    <input class="custom-range" type="range" id="noiseSlider" min="0" max="100" step="0.1" [(ngModel)]="noiseValue" (ngModelChange)="applyNoiseFilter()">
+    <input (ngModelChange)="applyNoiseFilter()" [(ngModel)]="noiseValue" class="custom-range" id="noiseSlider" max="100" min="0" step="0.1"
+           type="range">
   </div>
 
   <div class="filter">
     <label>Pixelate</label>
 
-    <input  class="custom-range" type="range" id="pixelateSlider" min="1" max="100" step="0.1" [(ngModel)]="pixelateValue" (ngModelChange)="applyPixelateFilter()">
-  </div>
-
-
-  <div class="filter">
-    <label>Hue</label>
-
-    <input  class="custom-range" type="range" id="lider" min="0" max="100" step="0.1" [(ngModel)]="hueValue" (ngModelChange)="applyHueFilter()">
+    <input (ngModelChange)="applyPixelateFilter()" [(ngModel)]="pixelateValue" class="custom-range" id="pixelateSlider" max="100" min="1"
+           step="0.1" type="range">
   </div>
 </div>

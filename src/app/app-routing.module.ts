@@ -26,6 +26,7 @@ import {AngularFireDatabaseModule} from '@angular/fire/compat/database';
 import {AngularFireStorageModule} from '@angular/fire/compat/storage';
 import {HomePageComponent} from "./components/home-page/home-page.component";
 import {AuthGuard} from "./auth/auth.guard";
+import {ReportsPageComponent} from "./components/reports-page/reports-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -46,6 +47,7 @@ const routes: Routes = [
   {path: "notifications-page/:id", component: NotificationPageComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR','USER']}},
   {path: "statistics-page", component: StatisticsPageComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR']}},
   {path: "votes-page/:id", component: VotedImagesComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR']}},
+  {path:"reports-page",component:ReportsPageComponent,canActivate: [AuthGuard], data: {roles: ['EDITOR']}}
 ]
 
 @NgModule({

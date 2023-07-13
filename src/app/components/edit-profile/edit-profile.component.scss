@@ -90,7 +90,6 @@
     background-size: cover;
     background-position: center;
     border-radius: 50%;
-    //overflow: hidden;
     position: relative;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -181,7 +180,7 @@ select {
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 100px;
-  align-items: flex-start; /* Align items to the start of the container */
+  align-items: flex-start;
 }
 
 .form-wrapper form {
@@ -223,8 +222,6 @@ select {
 }
 
 select {
-  //height: 42.99px !important;
-
   position: relative !important;
   width: 100% !important;
 }

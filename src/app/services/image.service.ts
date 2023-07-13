@@ -144,9 +144,8 @@ export class ImageService {
 
   getImagesByColor(image:Picture):Observable<any[]>{
   let params = new HttpParams()
-    .set("queryImagePath",image.imageUrl)
     .set("imageTitle",image.title)
-    return this.http.get<any[]>(`${environment.apiUrl}/api/Image/getSimi`, {params});
+    return this.http.get<any[]>(`${environment.apiUrl}/api/Image/getSimilarImage`, {params});
 
   }
 
@@ -154,7 +153,3 @@ export class ImageService {
 
 
 }
-function uuidv4() {
-    throw new Error('Function not implemented.');
-}
-

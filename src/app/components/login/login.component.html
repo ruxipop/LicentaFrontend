@@ -5,7 +5,7 @@
       <form [formGroup]="form" class="login-form">
         <h2>Sign In</h2>
         <div class="form-field">
-          <input placeholder="Email" type="email" id="email" formControlName="email" class="no-border-form" required>
+          <input class="no-border-form" formControlName="email" id="email" placeholder="Email" required type="email">
           <div *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)"
                class="error">
             {{getEmailErrorMessage()}}
@@ -14,15 +14,15 @@
 
         <div class="form-field">
           <div class="input">
-            <input placeholder="Password" matInput type="password" id="password"
-                   [type]="hidePassword ? 'password' : 'text'" class="no-border-form" formControlName="password">
-            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hidePassword">
+            <input [type]="hidePassword ? 'password' : 'text'" class="no-border-form" formControlName="password" id="password"
+                   matInput placeholder="Password" type="password">
+            <button (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" mat-icon-button
+                    matSuffix>
               <ng-container *ngIf="hidePassword; else showPasswordIcon">
-                <tui-svg src="tuiIconEye" class="icon"></tui-svg>
+                <tui-svg class="icon" src="tuiIconEye"></tui-svg>
               </ng-container>
               <ng-template #showPasswordIcon>
-                <tui-svg src="tuiIconEyeOff" class="icon"></tui-svg>
+                <tui-svg class="icon" src="tuiIconEyeOff"></tui-svg>
               </ng-template>
             </button>
           </div>

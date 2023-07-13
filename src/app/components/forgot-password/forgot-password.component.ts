@@ -30,21 +30,19 @@ export class ForgotPasswordComponent {
 
     if (this.form.valid) {
       this.isLoading = true;
-      this.authService.sendEmailResetPass(new ForgotPassword(this.form.controls['email'].value)).pipe(
-        first(),
-        finalize(() => (this.isLoading = false))
-      ).subscribe({
+      this.authService.sendEmailResetPass(new ForgotPassword(this.form.controls['email'].value))
+        .subscribe({
           next: () => {
             const notification = { id:1,label:"Hooray...", message:'Email sent successfully! Check your email!', type: "success" };
             this.alertService.addNotification(notification)
 
             this.form.controls['email'].reset();
+            this.isLoading = false
           },
           error: (error) => {
-            for (let key in error.error) {
-              const notification = { id:1,label:"Oops...", message:error.error[key], type: "error" };
+              const notification = { id:1,label:"Oops...", message:error, type: "error" };
               this.alertService.addNotification(notification)
-            }
+
           }
         }
       )

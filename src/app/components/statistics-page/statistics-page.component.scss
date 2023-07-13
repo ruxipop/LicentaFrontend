@@ -147,8 +147,8 @@
     box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 6px;
     cursor: pointer;
 
-    &:hover{
-      background-color: rgba(255,255,255,0.1);
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     .item-wrapper {
@@ -265,15 +265,14 @@ tui-ring-chart {
 
 
 .tui-axes__axis-label--x {
-  margin-right: 10px; /* Ajustați valoarea de spațiu dorită aici */
+  margin-right: 10px;
 }
 
 
 .statistics-wrapper {
-  margin-top: 7rem !important;
+  margin-top: 8rem !important;
 
   .statistics-title {
-    //margin-top: 2rem!important;
     font-size: 30px !important;
     font-weight: bold;
     padding-top: 1rem !important;

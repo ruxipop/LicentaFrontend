@@ -1,6 +1,6 @@
-<div infiniteScroll (scrolled)="onScroll()">
-  <div class="profile-container" *ngIf="user$ |async as user">
-    <div class="background" [ngStyle]="{'background-color': user.backgroundPhoto? '' : 'rgb(34, 34, 34)'}">
+<div (scrolled)="onScroll()" infiniteScroll>
+  <div *ngIf="user$ |async as user" class="profile-container">
+    <div [ngStyle]="{'background-color': user.backgroundPhoto? '' : 'rgb(34, 34, 34)'}" class="background">
       <img *ngIf="user.backgroundPhoto" [src]=user.backgroundPhoto>
     </div>
 
@@ -11,36 +11,29 @@
         </ng-container>
         <ng-template #profileIcon>
           <div class="profile-icon">
-            <tui-svg src="tuiIconUserLarge" style="margin-left: 1.3rem; pointer-events: none" class="icon"></tui-svg>
+            <tui-svg class="icon" src="tuiIconUserLarge" style="margin-left: 1.3rem; pointer-events: none"></tui-svg>
           </div>
         </ng-template>
       </div>
 
 
       <div class="user-icon">
-        <tui-svg *ngIf="this.loggedUser!=this.userID && isAuthenticated()"
-
-                 src="tuiIconSendLarge"
-                 class="icon"
-
-        ></tui-svg>
 
 
-        <tui-svg (click)="goToEditPage()" class="icon" style="margin-right: -0.5rem"
-                 *ngIf="this.loggedUser==this.userID"
-                 src="tuiIconEdit2Large"></tui-svg>
+        <tui-svg (click)="goToEditPage()" *ngIf="this.loggedUser==this.userID" class="icon"
+                 src="tuiIconEdit2Large"
+                 style="margin-right: -0.5rem"></tui-svg>
 
-        <tui-svg src="tuiIconLinkLarge" (click)="copyLink()" class="icon"></tui-svg>
+        <tui-svg (click)="copyLink()" class="icon" src="tuiIconLinkLarge"></tui-svg>
 
-        <tui-svg *ngIf="this.loggedUser!=this.userID && isAuthenticated()" src="tuiIconFlagLarge"
-                 class="icon"></tui-svg>
+
 
       </div>
 
       <div class="profile-info">
         <div class="profile-name">
           <h4> {{user.name}} </h4>
-          <div class="profile-location" *ngIf="user.location">
+          <div *ngIf="user.location" class="profile-location">
             <tui-svg
               src="tuiIconMapPinLarge"
             ></tui-svg>
@@ -54,23 +47,23 @@
           </div>
         </div>
 
-        <button *ngIf="this.loggedUser!=this.userID" class="form-submit-button"
-                (click)="onFollowChange()"
-                [ngClass]="{'unfollow-button': isUserFollowing}">
+        <button (click)="onFollowChange()" *ngIf="this.loggedUser!=this.userID"
+                [ngClass]="{'unfollow-button': isUserFollowing}"
+                class="form-submit-button">
           {{ isUserFollowing ? 'Unfollow' : 'Follow' }}
         </button>
 
 
-        <div class="profile-about" *ngIf="user.description">
+        <div *ngIf="user.description" class="profile-about">
           <p>{{user.description}}</p>
         </div>
         <div class="profile-details">
-          <div class="profile-followers " [ngClass]="{'zero-followers': this.FollowersNb === 0 }">
+          <div [ngClass]="{'zero-followers': this.FollowersNb === 0 }" class="profile-followers ">
             <p (click)="this.FollowersNb !== 0 && openFollowers()"> {{ this.FollowersNb }} &nbsp;</p>
             <p (click)="this.FollowersNb !== 0 && openFollowers()"> Followers </p>
           </div>
 
-          <div class="profile-following" [ngClass]="{'zero-followers': this.FollowingNb === 0}">
+          <div [ngClass]="{'zero-followers': this.FollowingNb === 0}" class="profile-following">
             <p (click)=" this.FollowingNb!== 0 && openFollowing()"> {{this.FollowingNb}} &nbsp;</p>
             <p (click)=" this.FollowingNb !== 0 &&openFollowing()"> Following</p>
           </div>
@@ -81,21 +74,21 @@
   </div>
   <div class="profile-tabs">
 
-    <app-tabs (messageToParent)="handleMessage($event)" [displayDropdown]="false" *ngIf="images$ | async as images">
-      <app-tab [tabTitle]="'Photos'" [images]="images" [selectedTab]="this.type">
+    <app-tabs (messageToParent)="handleMessage($event)" *ngIf="images$ | async as images" [displayDropdown]="false">
+      <app-tab [images]="images" [selectedTab]="this.type" [tabTitle]="'Photos'">
 
       </app-tab>
-      <app-tab [tabTitle]="'Galleries'" [images]="images" [selectedTab]="this.type">
+      <app-tab [images]="images" [selectedTab]="this.type" [tabTitle]="'Galleries'">
 
       </app-tab>
-      <app-tab [selectedTab]="this.type" *ngIf="this.loggedUser==this.userID" (removeEvent)="removeElement($event)"
-               [tabTitle]="'Liked'" [images]="images">
+      <app-tab (removeEvent)="removeElement($event)" *ngIf="this.loggedUser==this.userID" [images]="images"
+               [selectedTab]="this.type" [tabTitle]="'Liked'">
 
       </app-tab>
     </app-tabs>
   </div>
 </div>
-<app-likes-modal (followingChangeEvent)="changeProfileFol()" [title]="'Followers'" [pageDetails]="[this.userID,0]"
-                 (closeEvent)="handleCloseModal()" [isModalOpen]="openFollowersModal"></app-likes-modal>
-<app-likes-modal (followingChangeEvent)="changeProfileFol()" [title]="'Following'" [pageDetails]="[this.userID,0]"
-                 (closeEvent)="handleCloseModal()" [isModalOpen]="openFollowingModal"></app-likes-modal>
+<app-likes-modal (closeEvent)="handleCloseModal()" (followingChangeEvent)="changeProfileFol()" [isModalOpen]="openFollowersModal"
+                 [pageDetails]="[this.userID,0]" [title]="'Followers'"></app-likes-modal>
+<app-likes-modal (closeEvent)="handleCloseModal()" (followingChangeEvent)="changeProfileFol()" [isModalOpen]="openFollowingModal"
+                 [pageDetails]="[this.userID,0]" [title]="'Following'"></app-likes-modal>

@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
 import {TextFormat} from "../../models/textFormat";
-import {Subject} from "rxjs";
 import {TransferDataService} from "../../services/transfer-data.service";
 import {SubMenuType} from "../../models/subMenuType";
 
@@ -10,8 +9,29 @@ import {SubMenuType} from "../../models/subMenuType";
   styleUrls: ['./edit-page.component.scss']
 })
 export class EditPageComponent {
-  selectedIcon: any = null; // Iconul selectat
+  selectedIcon: any = null;
   public selectedColor: string;
+  txtFormat: TextFormat;
+  textFormat: TextFormat;
+  addButton = false;
+
+  constructor(private dataService: TransferDataService) {
+    document.body.style.overflow = 'hidden';
+
+    this.dataService.data$2.subscribe((data) => {
+      switch (true) {
+        case (typeof data === 'boolean'):
+          break;
+        case (data instanceof TextFormat):
+          this.dataService.sendData3(data)
+          break;
+        default:
+          break;
+      }
+
+    });
+
+  }
 
   public setSelectedColor(color: string): void {
     this.dataService.sendColor(color)
@@ -20,29 +40,6 @@ export class EditPageComponent {
   public setThicknessColor(thickness: number) {
     this.dataService.sendThickenss(thickness)
   }
-
-  txtFormat: TextFormat;
-
-  constructor(private dataService: TransferDataService) {
-    document.body.style.overflow = 'hidden';
-
-    this.dataService.data$2.subscribe((data) => {
-      switch (true) {
-        case (typeof data === 'boolean'):
-          // this.onCli();
-          break;
-        case (data instanceof TextFormat):
-          this.dataService.sendData3(data)
-          break;
-        default:
-          // Alte cazuri
-          break;
-      }
-
-    });
-
-  }
-
 
   sendData(data: TextFormat) {
     this.dataService.sendData(data);
@@ -53,14 +50,10 @@ export class EditPageComponent {
 
   }
 
-  textFormat: TextFormat;
-
   setTextFormat(value: TextFormat) {
     this.textFormat = value;
     this.sendData(this.textFormat)
   }
-
-  addButton = false;
 
   setButtonAdd(event: [boolean, TextFormat]) {
 
@@ -69,18 +62,15 @@ export class EditPageComponent {
 
 
   selectIcon(icon: any): void {
-
-    // if (this.selectedIcon === icon) {
-    //   console.log("acum")//aici era inainte
-    //   this.selectedIcon = null;
-    // } else {
-    //   this.selectedIcon = icon;
-    // }
     this.selectedIcon = icon;
-    console.log("icon " + icon)
-    // this.dataService.sendResetFilters(true)
     this.dataService.sendSubMenuType(icon)
 
   }
+  isFileSelected=false
 
+  receiveData($event: boolean) {
+    this.isFileSelected=$event
+    console.log($event)
+
+  }
 }

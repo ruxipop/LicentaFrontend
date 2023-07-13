@@ -9,7 +9,6 @@ export class SecuritySettingsService {
   private httpHeaders:HttpHeaders;
 
   constructor() {
-   // this.updateHeaders()
   }
 
   getHeaders(){

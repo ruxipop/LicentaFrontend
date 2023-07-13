@@ -1,11 +1,10 @@
-
 <div class="container">
   <div class="box">
     <div class="title-gallery"><h3>{{ galleryId === 0 ? 'Create Gallery' : 'Edit Gallery'}}</h3></div>
     <form>
       <div class="element-input-wrapper">
-        <label for="title-input">{{galleryId === 0 ? 'Title*' :'Title'}}</label>
-        <input type="text" id="title-input" name="title" [(ngModel)]="this.galleryName" maxLength="50">
+        <label for="title-input">{{galleryId === 0 ? 'Title*' : 'Title'}}</label>
+        <input [(ngModel)]="this.galleryName" id="title-input" maxLength="50" name="title" type="text">
         <p>{{ currentCharacterCount(this.galleryName) }}/50</p>
 
       </div>
@@ -16,7 +15,7 @@
             Description
           </label>
 
-          <textarea maxlength="250" name="textareaValue" [(ngModel)]="this.galleryDescription"></textarea>
+          <textarea [(ngModel)]="this.galleryDescription" maxlength="250" name="textareaValue"></textarea>
           <p>{{ currentCharacterCount(this.galleryDescription) }}/250</p>
 
 
@@ -26,8 +25,8 @@
         </p>
         <div class="radio-button">
           <div class="radio-button-wrapper">
-<span role="radio" (click)="changeVisibility()">
-   <div class="radio-fill" *ngIf="!isPrivate">
+<span (click)="changeVisibility()" role="radio">
+   <div *ngIf="!isPrivate" class="radio-fill">
    </div>
 
 
@@ -39,8 +38,8 @@
             </label>
           </div>
           <div class="radio-button-wrapper">
-<span role="radio" (click)="changeVisibility()">
-   <div class="radio-fill" *ngIf="isPrivate">
+<span (click)="changeVisibility()" role="radio">
+   <div *ngIf="isPrivate" class="radio-fill">
    </div>
 
 
@@ -55,8 +54,9 @@
 
         </div>
         <div class="actions">
-          <button class="cancel-button" (click)="cancelUpdate()">Cancel</button>
-          <button class="post-button" [disabled]="this.galleryName==''" (click)="updateGallery()">{{ galleryId === 0 ? 'Create' : 'Edit'}}</button>
+          <button (click)="cancelUpdate()" class="cancel-button">Cancel</button>
+          <button (click)="updateGallery()" [disabled]="this.galleryName==''"
+                  class="post-button">{{ galleryId === 0 ? 'Create' : 'Edit'}}</button>
         </div>
       </div>
 

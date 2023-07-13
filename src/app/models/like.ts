@@ -5,8 +5,6 @@ export class Like{
   user:User;
   userId?:number
 
-
-
   constructor(id: number,userId:number) {
     this.id = id;
     this.userId=userId

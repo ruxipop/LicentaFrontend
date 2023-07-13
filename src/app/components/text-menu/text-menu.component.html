@@ -30,27 +30,25 @@
     <label style="margin-left: -82%!important;">Style:</label>
 
     <div class="buttons-font-style">
-    <div>
+      <div>
+        <button (click)="toggleBold()" [ngClass]="{ 'selected': isBold }">
+          <tui-svg src="tuiIconBoldLarge"></tui-svg>
+        </button>
+      </div>
+      <div>
+        <button (click)="toggleItalic()" [ngClass]="{ 'selected': isItalic }">
+          <tui-svg src="tuiIconItalicLarge"></tui-svg>
+        </button>
+      </div>
+      <div>
+        <button (click)="toggleUnderline()" [ngClass]="{ 'selected': isUnderline }">
+          <tui-svg src="tuiIconUnderlineLarge"></tui-svg>
+        </button>
+      </div>
+    </div>
 
-      <button (click)="toggleBold()">
-        <tui-svg src="tuiIconBoldLarge"></tui-svg>
-      </button>
-    </div>
-    <div>
-      <button (click)="toggleItalic()" >
-        <tui-svg src="tuiIconItalicLarge"></tui-svg>
-      </button>
-    </div>
-    <div>
-      <button (click)="toggleUnderline()">
-        <tui-svg src="tuiIconUnderlineLarge"></tui-svg>
-      </button>
-    </div>
-    </div>
 
-  </div>
-
-  <div class="color-picker">
+    <div class="color-picker">
     <label for="colorPicker">Color:</label>
     <input type="color" id="colorPicker" [value]="selectedColor" (input)="onColorChange($event)">
   </div>

@@ -69,9 +69,7 @@ export class ChatService implements OnDestroy {
 
 
   receiveChat(callback: (message: any) => void): void {
-    console.log("primeste")
     this.connection.on('ReceiveChat', callback);
-    console.log("primeste2")
   }
 
   receiveNotification(callback: (message: Notification) => void): void {

@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {fabric} from "fabric";
 import {TransferDataService} from "../../services/transfer-data.service";
 import {Subscription} from "rxjs";
@@ -14,25 +24,27 @@ import 'fabric-history';
 })
 export class UploadImageComponent implements AfterViewInit, OnDestroy {
   selectObject: any;
-  private mousedPressed = false;
   @Input() public addButton: boolean = false;
   @ViewChild('canvas') canvasRef: ElementRef;
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
-
   canvas!: fabric.Canvas;
   selectedFile: any | boolean = false;
   currentIndex: number;
-  private dataSubscription: Subscription;
-
   textBoxesMap: Map<fabric.Textbox, number> = new Map();
   index: number = 0;
   canvasHistory: any[] = [];
   currentHistoryIndex = -1;
   currentSubMenu: SubMenuType = SubMenuType.none;
   image: fabric.Image;
-
   isRectCrop: boolean = false;
   selectionRect: fabric.Rect
+  appliedFilter: { filter: fabric.IBaseFilter, value: boolean }[] = [];
+  private mousedPressed = false;
+  private dataSubscription: Subscription;
+  private angle: number = 0;
+  private flippedX = false;
+  private flippedY = false;
+  @Output() isFileSelected= new EventEmitter<boolean>();
 
   constructor(private dataService: TransferDataService) {
     this.dataService.data$.subscribe((data) => {
@@ -44,14 +56,15 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     this.initializeCanvas();
     this.attachCanvasEventHandlers();
   }
-  saveState(filter:any) {
+
+  saveState(filter: any) {
 
     const json = this.canvas.toJSON();
     const currentState = JSON.stringify(json);
     if (this.currentHistoryIndex < this.canvasHistory.length - 1) {
       this.canvasHistory.splice(this.currentHistoryIndex + 1);
     }
-    this.canvasHistory.push({ state: currentState, operation: filter });
+    this.canvasHistory.push({state: currentState, operation: filter});
     this.currentHistoryIndex++;
   }
 
@@ -65,7 +78,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
 
     }
   }
-
 
   handleRequest() {
     let obj = this.canvas.getActiveObject()
@@ -81,7 +93,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
 
     }
   }
-
 
   handleData(data: any): void {
     if (Array.isArray(data)) {
@@ -126,7 +137,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
   }
 
   resetAppliedFilter(): void {
-    console.log("reset")
     this.appliedFilter.forEach(obj => {
       obj.value = false;
     });
@@ -166,7 +176,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     this.canvas.freeDrawingBrush.width = data;
     this.canvas.renderAll();
   }
-
 
   addObject(obj: any) {
     const canvasCenter = this.canvas.getCenter();
@@ -212,9 +221,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
 
   }
 
-
-
-
   initializeCanvas() {
     this.canvas = new fabric.Canvas(this.canvasRef.nativeElement);
     this.canvas.setWidth(800);
@@ -225,7 +231,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     this.canvas.on('object:moving', this.onObjectMoving.bind(this));
     this.canvas.on('selection:created', this.onSelectionCreated.bind(this));
     this.canvas.on('selection:updated', this.onSelectionUpdated.bind(this));
-    // this.canvas.on('mouse:move', this.onMouseMove.bind(this));
     this.canvas.on('mouse:down', this.onMouseDown.bind(this));
     this.canvas.on('mouse:up', this.onMouseUp.bind(this));
   }
@@ -236,10 +241,9 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
 
   onSelectionCreated() {
     if (this.canvas.getActiveObject() instanceof fabric.Image) {
-      console.log("true")
     }
 
-      this.selectObject = this.canvas.getActiveObject();
+    this.selectObject = this.canvas.getActiveObject();
     this.handleActiveTextBox();
   }
 
@@ -247,7 +251,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     this.selectObject = this.canvas.getActiveObject();
     this.handleActiveTextBox();
   }
-
 
   onMouseDown() {
     this.mousedPressed = true;
@@ -263,7 +266,7 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
 
   handleActiveTextBox() {
     if (this.selectObject instanceof fabric.Textbox) {
-      this.currentIndex  = this.textBoxesMap.get(this.selectObject);
+      this.currentIndex = this.textBoxesMap.get(this.selectObject);
       const activeTextBox = Array.from(this.textBoxesMap.keys())[this.currentIndex];
       //@ts-ignore
       this.dataService.sendData2(new TextFormat(activeTextBox.fontFamily, activeTextBox.fontWeight, activeTextBox.underline, activeTextBox.fontStyle, activeTextBox.fill, activeTextBox.fontSize));
@@ -275,7 +278,7 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
   deleteSelectedObject() {
     this.canvas.remove(this.selectObject);
     this.canvas.discardActiveObject();
-    this.selectObject=null;
+    this.selectObject = null;
     this.canvas.renderAll();
   }
 
@@ -290,7 +293,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     }
     this.canvas.renderAll()
   }
-
 
   changeTextFillColor(textForm: TextFormat) {
     const activeTextBox = Array.from(this.textBoxesMap.keys())[this.currentIndex];
@@ -321,11 +323,9 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-
   ngOnDestroy() {
     this.dataSubscription.unsubscribe();
   }
-
 
   onDragOver(event: any) {
     event.preventDefault();
@@ -357,8 +357,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     this.canvas.isDrawingMode = false;
 
   }
-
-  private angle: number = 0;
 
   addImageToCanvas(imageUrl: string) {
     fabric.Image.fromURL(imageUrl, (image) => {
@@ -399,7 +397,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
       this.saveState(false)
     });
   }
-
 
   closeRectCrop() {
     this.canvas.remove(this.selectionRect)
@@ -479,10 +476,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-
-  private flippedX = false;
-  private flippedY = false;
-
   flipX() {
     this.flippedX = !this.flippedX;
     this.image.flipX = this.flippedX;
@@ -495,7 +488,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     this.canvas.renderAll();
   }
 
-
   loadImageFromFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -505,6 +497,7 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     };
     reader.readAsDataURL(file);
     this.selectedFile = true;
+    this.isFileSelected.emit(true)
 
 
   }
@@ -516,12 +509,12 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-
   deleteImage() {
     this.canvas.clear();
     this.textBoxesMap.clear()
     this.selectedFile = false;
     this.appliedFilter = []
+    this.isFileSelected.emit(false)
   }
 
   downloadImage() {
@@ -536,7 +529,6 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
 
 
   }
-
 
   rotateImageRight() {
     this.angle = (this.angle + 90) % 360;
@@ -554,13 +546,10 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     if (this.currentHistoryIndex > 0) {
       this.currentHistoryIndex--;
       this.canvas.loadFromJSON(this.canvasHistory[this.currentHistoryIndex].state, () => {
-
-        console.log(this.canvasHistory[this.currentHistoryIndex])
         this.canvas.renderAll();
       });
     }
   }
-
 
   redo(): void {
     if (this.currentHistoryIndex < this.canvasHistory.length - 1) {
@@ -571,63 +560,39 @@ export class UploadImageComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-
-  appliedFilter: { filter: fabric.IBaseFilter, value: boolean }[] = [];
-
-
   applyFilter(filter: fabric.IBaseFilter) {
     if (this.image) {
-      console.log("nnb"+this.image.filters)
       const existingFilterIndex = this.image.filters.findIndex(
         (applied) => applied instanceof filter.constructor
       );
 
       if (existingFilterIndex === -1) {
-        console.log("1 + nuex")
-        // Filter is not applied yet, so we add it
+
         this.image.filters.push(filter);
-        this.appliedFilter.push({ filter: filter, value: true }); // add a corresponding element in this.appliedFilter
+        this.appliedFilter.push({filter: filter, value: true});
       } else {
-        // Check if filter is Grayscale
         if (filter instanceof fabric.Image.filters.Grayscale) {
 
-          if(this.appliedFilter[existingFilterIndex].value) {
-            // If Grayscale filter is currently applied, we remove it
+          if (this.appliedFilter[existingFilterIndex].value) {
             this.image.filters.splice(existingFilterIndex, 1);
             this.appliedFilter[existingFilterIndex].value = false;
           } else {
-            // If Grayscale filter is not applied, we add it
             this.image.filters.push(filter);
             this.appliedFilter[existingFilterIndex].value = true;
           }
         } else {
-          console.log("2")
-          // For filters that are not Grayscale, we update the filter
           this.image.filters[existingFilterIndex] = filter;
-          this.appliedFilter[existingFilterIndex].value = true; // update the corresponding element in this.appliedFilter
+          this.appliedFilter[existingFilterIndex].value = true;
         }
       }
 
       this.image.applyFilters();
       this.canvas.renderAll();
       this.saveState(filter)
-      console.log("f"+this.image.filters.length)
     }
   }
 
 
 
-
-  undoFilter() {
-    if (this.image) {
-      // @ts-ignore
-      if (this.image.filters.length > 0) {
-        // @ts-ignore
-        this.image.filters.pop();
-       this.image.applyFilters();
-        this.canvas.renderAll();
-      }
-    }
-  }
 }
 

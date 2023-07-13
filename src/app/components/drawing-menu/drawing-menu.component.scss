@@ -1,5 +1,5 @@
 .container {
-  height: 20vh !important;
+  height: 10vh !important;
 }
 
 .content-wrapper {
@@ -8,9 +8,6 @@
   left: 0;
   width: 100%;
 }
-
-
-
 
 
 .line-thickness {
@@ -49,11 +46,6 @@
   margin-left: 0.5rem;
 }
 
-.color-input, .outline-inputs {
-  ////display: flex;
-  //margin-left: 20px;
-
-}
 
 .outline-inputs {
   display: flex;
@@ -61,19 +53,14 @@
 }
 
 
-/* Stilizare aspect checkbox */
 input[type="checkbox"] {
-  /* Ascunde aspectul implicit al checkbox-ului */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  /* Dimensiuni */
   width: 20px;
   height: 20px;
-  /* Stilizare fundal */
   background-color: #ffffff;
   border: 1px solid #999999;
-  /* Stilizare verificare */
   border-radius: 3px;
   cursor: pointer;
 }
@@ -102,33 +89,28 @@ input[type="color"]::-webkit-color-swatch-wrapper {
   padding: 0;
 }
 
-/* Stilizare aspect checkbox selectat */
 input[type="checkbox"]:checked {
   background-color: #999999;
 }
 
-/* Stilizare indicator verificare */
 input[type="checkbox"]:after {
   content: "\2713";
   color: #ffffff;
   font-size: 14px;
   line-height: 1;
   text-align: center;
-  /* Afișează indicatorul verificare doar pentru checkbox-urile selectate */
   display: none;
 }
 
-/* Stilizare indicator verificare pentru checkbox selectat */
 input[type="checkbox"]:checked:after {
   display: block;
 }
 
 .shape-component {
   position: absolute;
-  top: 100%; /* Afișează componenta sub butoanele din button-group */
+  top: 100%;
   left: 0;
-  z-index: 1; /* Asigură că componenta este afișată peste celelalte elemente */
-  /* Adăugați alte stiluri dorite pentru componentă */
+  z-index: 1;
 }
 
 .menu {
@@ -152,23 +134,21 @@ input[type="checkbox"]:checked:after {
 }
 
 
-
-
 .check-align {
   display: flex;
   flex-direction: row;
 }
 
 .icon-button {
-  border: none!important;
-  background: none!important;
-  padding: 0!important;
-  color: black!important;
-  cursor: pointer!important;
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  color: black !important;
+  cursor: pointer !important;
 
   &:disabled {
-    pointer-events: none!important;
-    color:gray!important;
+    pointer-events: none !important;
+    color: gray !important;
 
   }
 
